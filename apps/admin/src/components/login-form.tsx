@@ -36,13 +36,13 @@ export function LoginForm() {
 
   return (
     <form onSubmit={onSubmit} className="space-y-4">
-      <Field label="이메일">
+      <Field label="아이디">
         <Input
           name="email"
-          type="email"
+          type="text"
           required
           autoComplete="username"
-          defaultValue="admin@studio115.kr"
+          defaultValue="admin"
         />
       </Field>
       <Field label="비밀번호">

@@ -8,8 +8,8 @@ const img = (seed: string, w = 1600, h = 1067) =>
   `https://picsum.photos/seed/studio115-${seed}/${w}/${h}`;
 
 async function seedAdmin() {
-  const email = process.env.ADMIN_SEED_EMAIL ?? 'admin@studio115.kr';
-  const password = process.env.ADMIN_SEED_PASSWORD ?? 'studio115!admin';
+  const email = process.env.ADMIN_SEED_EMAIL ?? 'admin';
+  const password = process.env.ADMIN_SEED_PASSWORD ?? 'bboyong';
   const name = process.env.ADMIN_SEED_NAME ?? 'Studio115 Admin';
   await prisma.user.upsert({
     where: { email },

@@ -60,7 +60,7 @@ pnpm dev
 | admin | http://localhost:3001    |
 | api   | http://localhost:4000/api  (Swagger: `/api/docs`) |
 
-Seeded admin login: **admin@studio115.kr** / **studio115!admin**
+Seeded admin login: **admin** / **bboyong**
 
 > The web app ships fallback placeholder data, so it renders even if the API/DB
 > isn't up yet. The admin app needs the API running.

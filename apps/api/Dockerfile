@@ -9,13 +9,12 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends openssl \
   && corepack enable
 WORKDIR /repo
 
-# ---- install (cached on manifests) ----
+# ---- install ----
 FROM base AS deps
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
 COPY packages/shared/package.json packages/shared/
 COPY apps/api/package.json apps/api/
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
-  pnpm install --frozen-lockfile --filter @studio115/api... --filter @studio115/shared
+RUN pnpm install --frozen-lockfile --filter @studio115/api... --filter @studio115/shared
 
 # ---- build ----
 FROM deps AS build
