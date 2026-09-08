@@ -20,6 +20,9 @@ FROM base AS deps
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
 COPY packages/shared/package.json packages/shared/
 COPY apps/api/package.json apps/api/
+# The api package's postinstall runs `prisma generate`, so the schema must be
+# present before `pnpm install`.
+COPY apps/api/prisma apps/api/prisma
 RUN pnpm install --frozen-lockfile --filter @studio115/api... --filter @studio115/shared
 
 # ---- build ----
@@ -37,6 +40,7 @@ COPY --from=build /repo /repo
 WORKDIR /repo/apps/api
 EXPOSE 4000
 # Sync schema (db push — shared MSSQL host has no shadow DB for migrations), then start.
+# pnpm installs the prisma CLI into apps/api/node_modules, not the repo root.
 # No --accept-data-loss: a destructive schema drift fails the deploy loudly instead
 # of dropping columns. Run `pnpm db:push` by hand when a destructive change is intended.
-CMD ["sh", "-c", "node ../../node_modules/prisma/build/index.js db push --skip-generate && node dist/main.js"]
+CMD ["sh", "-c", "node_modules/.bin/prisma db push --skip-generate && node dist/main.js"]
