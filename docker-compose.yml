@@ -1,0 +1,27 @@
+# Local Postgres for development.
+#   docker compose up -d db
+# Then set in apps/api/.env:
+#   DATABASE_URL="postgresql://studio115:studio115@localhost:5432/studio115?schema=public"
+#
+# No Docker? Use a free Railway Postgres and paste its DATABASE_URL instead.
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: studio115
+      POSTGRES_PASSWORD: studio115
+      POSTGRES_DB: studio115
+    ports:
+      - "5432:5432"
+    volumes:
+      - studio115_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U studio115"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  studio115_pgdata:

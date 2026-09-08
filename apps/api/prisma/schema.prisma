@@ -1,0 +1,127 @@
+// Studio115 — database schema
+// Keep enums in sync with packages/shared/src/enums.ts
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  EDITOR
+}
+
+enum ProjectCategory {
+  RESIDENTIAL
+  COMMERCIAL
+  OFFICE
+  HOSPITALITY
+  RETAIL
+}
+
+enum InquiryStatus {
+  NEW
+  IN_PROGRESS
+  CONTACTED
+  CLOSED
+  SPAM
+}
+
+enum BudgetRange {
+  UNDER_20M
+  FROM_20M_TO_50M
+  FROM_50M_TO_100M
+  OVER_100M
+  UNDECIDED
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  role         UserRole @default(EDITOR)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Project {
+  id            String          @id @default(cuid())
+  slug          String          @unique
+  titleKo       String
+  titleEn       String
+  summaryKo     String
+  summaryEn     String
+  descriptionKo String
+  descriptionEn String
+  category      ProjectCategory
+  location      String?
+  areaSqm       Float?
+  year          Int?
+  coverImageUrl String?
+  featured      Boolean         @default(false)
+  published     Boolean         @default(true)
+  order         Int             @default(0)
+  images        ProjectImage[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@index([published, featured])
+  @@index([category])
+  @@index([order])
+}
+
+model ProjectImage {
+  id        String  @id @default(cuid())
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String
+  url       String
+  alt       String?
+  order     Int     @default(0)
+
+  @@index([projectId])
+}
+
+model Service {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  titleKo       String
+  titleEn       String
+  descriptionKo String
+  descriptionEn String
+  icon          String?
+  order         Int      @default(0)
+  published     Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([published, order])
+}
+
+model Inquiry {
+  id               String        @id @default(cuid())
+  name             String
+  phone            String
+  email            String?
+  message          String
+  projectType      String?
+  budgetRange      BudgetRange?
+  preferredContact String?
+  status           InquiryStatus @default(NEW)
+  adminNote        String?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+model SiteSetting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}

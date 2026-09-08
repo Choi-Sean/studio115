@@ -1,0 +1,120 @@
+{
+  "meta": {
+    "titleDefault": "Studio115 — Interior Design Studio",
+    "titleTemplate": "%s · Studio115",
+    "description": "Studio115 is an interior design studio working across residential and commercial spaces — design, build and styling handled by one team."
+  },
+  "nav": {
+    "home": "Home",
+    "projects": "Projects",
+    "services": "Services",
+    "about": "Studio",
+    "contact": "Contact",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
+  },
+  "cta": {
+    "inquiry": "Start a project",
+    "viewProjects": "View projects",
+    "viewAll": "View all",
+    "backToProjects": "All projects",
+    "readMore": "Read more"
+  },
+  "home": {
+    "heroKicker": "Interior Design Studio",
+    "heroTitle": "We build spaces that live",
+    "heroBody": "Studio115 designs from the way people live and work. From homes to commercial spaces, one team owns design, construction and styling end to end.",
+    "featuredKicker": "Selected Work",
+    "featuredTitle": "Recent projects",
+    "servicesKicker": "What We Do",
+    "servicesTitle": "Services",
+    "servicesBody": "Take the whole journey from brief to handover, or just the parts you need.",
+    "statsProjects": "Projects delivered",
+    "statsYears": "Years in practice",
+    "statsAwards": "Awards",
+    "ctaTitle": "Planning a new space?",
+    "ctaBody": "Leave a few details and we'll get back to you within two business days."
+  },
+  "projects": {
+    "title": "Projects",
+    "intro": "A selection of residential, commercial and workplace work. Filter by category below.",
+    "filterAll": "All",
+    "empty": "No projects match this filter yet.",
+    "category": {
+      "RESIDENTIAL": "Residential",
+      "COMMERCIAL": "Commercial",
+      "OFFICE": "Office",
+      "HOSPITALITY": "Hospitality",
+      "RETAIL": "Retail"
+    },
+    "meta": {
+      "location": "Location",
+      "area": "Area",
+      "year": "Year",
+      "category": "Type"
+    }
+  },
+  "services": {
+    "title": "Services",
+    "intro": "The scope Studio115 covers. We combine these to fit the nature of each project."
+  },
+  "about": {
+    "title": "Studio",
+    "intro": "We make spaces that hold up in daily life, not just in photos.",
+    "bodyTitle": "How we work",
+    "body": "Every project starts with an on-site survey and a conversation about how you live. We resolve it in drawings and 3D before breaking ground, and a designer stays on site through construction. (Placeholder body.)",
+    "valuesTitle": "What we hold to",
+    "values": {
+      "one": { "title": "Honest estimates", "body": "Line-item quotes, kept open. Any change in cost is agreed before the work." },
+      "two": { "title": "One team, accountable", "body": "Design and build are not split. You have a single point of contact." },
+      "three": { "title": "Finishes that last", "body": "We prioritise the quality of the work you can't see." }
+    }
+  },
+  "contact": {
+    "title": "Start a project",
+    "intro": "The space type, a rough budget and a timeline are enough to begin. A designer will follow up after we review it.",
+    "infoTitle": "Contact",
+    "hoursLabel": "Hours",
+    "form": {
+      "name": "Name",
+      "phone": "Phone",
+      "email": "Email (optional)",
+      "message": "Message",
+      "messagePlaceholder": "Space type, location, size, timeline — anything useful.",
+      "projectType": "Space type (optional)",
+      "projectTypePlaceholder": "e.g. 105㎡ apartment, cafe in Seongsu",
+      "budget": "Budget (optional)",
+      "preferredContact": "Preferred contact (optional)",
+      "preferredContactPlaceholder": "e.g. phone / text / email",
+      "budgetOptions": {
+        "none": "No preference",
+        "UNDER_20M": "Under ₩20M",
+        "FROM_20M_TO_50M": "₩20M – ₩50M",
+        "FROM_50M_TO_100M": "₩50M – ₩100M",
+        "OVER_100M": "Over ₩100M",
+        "UNDECIDED": "Undecided"
+      },
+      "submit": "Send inquiry",
+      "sending": "Sending…",
+      "successTitle": "Your inquiry is in",
+      "successBody": "We'll be in touch within two business days. Thank you.",
+      "errorBody": "Something went wrong. Please try again shortly or call us.",
+      "requiredHint": "Fields marked * are required."
+    }
+  },
+  "footer": {
+    "tagline": "Interior design · architecture · build",
+    "sitemap": "Sitemap",
+    "contact": "Contact",
+    "rights": "All rights reserved."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "body": "The page may have moved or been removed.",
+    "home": "Back to home"
+  },
+  "common": {
+    "sqm": "㎡",
+    "loading": "Loading…"
+  }
+}
