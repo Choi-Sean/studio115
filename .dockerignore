@@ -1,0 +1,26 @@
+# Keep the Railway build context small. Do NOT ignore anything the root
+# Dockerfile COPYs: package.json, pnpm-lock.yaml, pnpm-workspace.yaml, .npmrc,
+# packages/shared, apps/api.
+
+.git
+**/node_modules
+**/dist
+**/.next
+**/.turbo
+**/*.log
+
+# other apps aren't part of the API image
+apps/web
+apps/admin
+
+# secrets — Railway injects env vars
+**/.env
+**/.env.*
+!**/.env.example
+
+# local-only
+.claude
+.vscode
+.idea
+**/coverage
+apps/api/uploads

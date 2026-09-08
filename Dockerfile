@@ -1,5 +1,8 @@
-# Studio115 API — build context MUST be the repo root (needs packages/shared).
-# Railway: set root directory to the repo root and point at apps/api/Dockerfile.
+# Studio115 API — lives at the repo root so the Docker build context is the
+# whole monorepo (the API needs packages/shared + the workspace lockfile).
+#
+# Railway: leave the service's Root Directory EMPTY (= repo root). railway.json
+# points the builder here.
 # syntax=docker/dockerfile:1
 
 FROM node:22-slim AS base

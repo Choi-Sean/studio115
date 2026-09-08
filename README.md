@@ -137,8 +137,9 @@ DATABASE_URL="sqlserver://…" pnpm db:seed
 
 ### API → Railway
 1. New project → **Deploy from GitHub repo** → this repo.
-2. Settings → **Root Directory** = `/` (the Docker build needs `packages/shared`).
-   `railway.json` points the build at `apps/api/Dockerfile`.
+2. Settings → **Root Directory** = leave **empty** (repo root — the Docker
+   build needs `packages/shared` + the workspace lockfile). `railway.json`
+   points the build at the repo-root `Dockerfile`.
 3. Variables: `DATABASE_URL`, `JWT_SECRET`, `CORS_ORIGINS` (the Vercel web + admin
    URLs), `API_PUBLIC_URL`, and the `STORAGE_*` block (`STORAGE_DRIVER=s3` + R2).
 
