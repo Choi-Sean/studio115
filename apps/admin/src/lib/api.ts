@@ -3,8 +3,9 @@
 import useSWR, { type SWRConfiguration, type SWRResponse } from 'swr';
 import { clearSession, getToken } from './auth';
 
+// `||` (not `??`) so an empty-string env var also falls back.
 export const API_URL = (
-  process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000'
+  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'
 ).replace(/\/$/, '');
 
 export class ApiError extends Error {
