@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import type { ServiceDto } from '@studio115/shared';
 import { ApiError, apiFetch } from '@/lib/api';
-import { slugify } from '@/lib/utils';
+import { slugify, slugifyInput } from '@/lib/utils';
 import { Button, Field, Input, Textarea } from './ui';
 
 export function ServiceForm({
@@ -19,13 +19,14 @@ export function ServiceForm({
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [slug, setSlug] = useState(initial?.slug ?? '');
+  const [slugTouched, setSlugTouched] = useState(Boolean(initial?.slug));
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
     const s = (k: string) => String(fd.get(k) ?? '').trim();
     const body = {
-      slug: slug || slugify(s('titleEn')),
+      slug: slugify(slug || s('titleEn')),
       titleKo: s('titleKo'),
       titleEn: s('titleEn'),
       descriptionKo: s('descriptionKo'),
@@ -66,13 +67,24 @@ export function ServiceForm({
           <Input name="titleKo" required defaultValue={initial?.title.ko} />
         </Field>
         <Field label="Title (EN)">
-          <Input name="titleEn" required defaultValue={initial?.title.en} />
+          <Input
+            name="titleEn"
+            required
+            defaultValue={initial?.title.en}
+            onChange={(e) => {
+              if (!slugTouched) setSlug(slugify(e.target.value));
+            }}
+          />
         </Field>
         <Field label="슬러그">
           <Input
             name="slug"
             value={slug}
-            onChange={(e) => setSlug(slugify(e.target.value))}
+            onChange={(e) => {
+              setSlugTouched(true);
+              setSlug(slugifyInput(e.target.value));
+            }}
+            onBlur={(e) => setSlug(slugify(e.target.value))}
             required
           />
         </Field>

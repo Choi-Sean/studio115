@@ -10,9 +10,10 @@ import {
   IsString,
   MaxLength,
   Min,
+  MinLength,
   ValidateNested,
 } from 'class-validator';
-import { MEDIA_TYPES, type MediaType } from '@studio115/shared';
+import { MEDIA_TYPES, slugify, type MediaType } from '@studio115/shared';
 import { PaginationQueryDto } from '../common/pagination-query.dto';
 
 const toBool = () =>
@@ -46,9 +47,14 @@ export class ProjectMediaInput {
   order?: number;
 }
 
+const toSlug = () =>
+  Transform(({ value }) => (typeof value === 'string' ? slugify(value) : value));
+
 export class CreateProjectDto {
-  @ApiProperty()
+  @ApiProperty({ description: 'URL path; auto-normalised (lowercase, ASCII, hyphens)' })
+  @toSlug()
   @IsString()
+  @MinLength(1)
   @MaxLength(200)
   slug!: string;
 

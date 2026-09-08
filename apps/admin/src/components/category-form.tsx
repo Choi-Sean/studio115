@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import type { CategoryDto } from '@studio115/shared';
 import { ApiError, apiFetch } from '@/lib/api';
-import { slugify } from '@/lib/utils';
+import { slugify, slugifyInput } from '@/lib/utils';
 import { Button, Field, Input } from './ui';
 
 export function CategoryForm({
@@ -19,12 +19,13 @@ export function CategoryForm({
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [slug, setSlug] = useState(initial?.slug ?? '');
+  const [slugTouched, setSlugTouched] = useState(Boolean(initial?.slug));
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
     const body = {
-      slug: slug || slugify(String(fd.get('nameEn') ?? '')),
+      slug: slugify(slug || String(fd.get('nameEn') ?? '')),
       nameKo: String(fd.get('nameKo') ?? '').trim(),
       nameEn: String(fd.get('nameEn') ?? '').trim(),
       order: fd.get('order') ? Number(fd.get('order')) : 0,
@@ -60,13 +61,24 @@ export function CategoryForm({
         <Input name="nameKo" required defaultValue={initial?.name.ko} />
       </Field>
       <Field label="Name (EN)">
-        <Input name="nameEn" required defaultValue={initial?.name.en} />
+        <Input
+          name="nameEn"
+          required
+          defaultValue={initial?.name.en}
+          onChange={(e) => {
+            if (!slugTouched) setSlug(slugify(e.target.value));
+          }}
+        />
       </Field>
       <Field label="슬러그" hint="URL">
         <Input
           name="slug"
           value={slug}
-          onChange={(e) => setSlug(slugify(e.target.value))}
+          onChange={(e) => {
+            setSlugTouched(true);
+            setSlug(slugifyInput(e.target.value));
+          }}
+          onBlur={(e) => setSlug(slugify(e.target.value))}
           required
         />
       </Field>

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import type { CategoryDto, ProjectDto } from '@studio115/shared';
 import { ApiError, apiFetch, useApi } from '@/lib/api';
 import { uploadMedia } from '@/lib/upload';
-import { slugify } from '@/lib/utils';
+import { slugify, slugifyInput } from '@/lib/utils';
 import { RichEditor } from './rich-editor';
 import { Button, Field, Input, Select } from './ui';
 
@@ -25,6 +25,7 @@ export function ProjectForm({ initial }: { initial?: ProjectDto }) {
   const [busy, setBusy] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [slug, setSlug] = useState(initial?.slug ?? '');
+  const [slugTouched, setSlugTouched] = useState(Boolean(initial?.slug));
   const [categoryId, setCategoryId] = useState(initial?.category.id ?? '');
   const [descKo, setDescKo] = useState(initial?.description.ko ?? '');
   const [descEn, setDescEn] = useState(initial?.description.en ?? '');
@@ -58,7 +59,7 @@ export function ProjectForm({ initial }: { initial?: ProjectDto }) {
     }
 
     const body = {
-      slug: slug || slugify(s('titleEn')),
+      slug: slugify(slug || s('titleEn')),
       titleKo: s('titleKo'),
       titleEn: s('titleEn'),
       summaryKo: s('summaryKo'),
@@ -146,7 +147,7 @@ export function ProjectForm({ initial }: { initial?: ProjectDto }) {
             required
             defaultValue={initial?.title.en}
             onChange={(e) => {
-              if (!editing && !slug) setSlug(slugify(e.target.value));
+              if (!slugTouched) setSlug(slugify(e.target.value));
             }}
           />
         </Field>
@@ -154,7 +155,11 @@ export function ProjectForm({ initial }: { initial?: ProjectDto }) {
           <Input
             name="slug"
             value={slug}
-            onChange={(e) => setSlug(slugify(e.target.value))}
+            onChange={(e) => {
+              setSlugTouched(true);
+              setSlug(slugifyInput(e.target.value));
+            }}
+            onBlur={(e) => setSlug(slugify(e.target.value))}
             required
           />
         </Field>

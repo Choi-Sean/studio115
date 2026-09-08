@@ -1,8 +1,11 @@
 import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
 import { IsInt, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
+import { slugify } from '@studio115/shared';
 
 export class CreateCategoryDto {
-  @ApiProperty()
+  @ApiProperty({ description: 'URL path; auto-normalised' })
+  @Transform(({ value }) => (typeof value === 'string' ? slugify(value) : value))
   @IsString()
   @MinLength(1)
   @MaxLength(120)
