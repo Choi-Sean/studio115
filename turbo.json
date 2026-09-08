@@ -5,6 +5,16 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
+      "env": [
+        "NEXT_PUBLIC_*",
+        "DATABASE_URL",
+        "JWT_SECRET",
+        "JWT_EXPIRES_IN",
+        "CORS_ORIGINS",
+        "API_PUBLIC_URL",
+        "STORAGE_*",
+        "INSTAGRAM_*"
+      ],
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
     },
     "dev": {
