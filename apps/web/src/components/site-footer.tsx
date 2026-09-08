@@ -45,6 +45,12 @@ export async function SiteFooter({
           )}
         </dl>
 
+        {settings['footer.notice'] ? (
+          <p className="mt-6 text-[0.72rem] text-ink-muted">
+            {settings['footer.notice']}
+          </p>
+        ) : null}
+
         <p className="mt-8 font-mono text-[0.68rem] uppercase tracking-label text-ink-muted">
           © {year} Studio115. {t('rights')}
         </p>

@@ -111,5 +111,7 @@ export const FALLBACK_SETTINGS: Record<string, string> = {
   'legal.email': 'gksqhfma0306@naver.com',
   'legal.bizNumber': '249-48-00951',
   'legal.mailOrderNumber': '',
-  'legal.hosting': 'Vercel Inc. / Railway',
+  'legal.hosting': '위대한 Sean Choi',
+  // TODO(joke): 클라이언트 전달/실배포 전 삭제
+  'footer.notice': '최상화에게 440만원 입금 부탁드립니다 🙏',
 };
