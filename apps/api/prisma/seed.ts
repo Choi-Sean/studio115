@@ -36,20 +36,23 @@ async function seedSettings() {
     'about.body.ko':
       '설계부터 시공, 사후관리까지 하나의 팀이 책임집니다. 현장 실측과 생활 인터뷰에서 시작해 도면과 3D로 충분히 검토한 뒤 착공하며, 시공 중에도 디자이너가 현장을 지킵니다. (플레이스홀더 문구)',
     'contact.email': 'studio115@naver.com',
-    'contact.phone': '070-4177-8699',
-    'contact.address.ko': '경기도 파주시 해울2길 16 (다율동) 610호',
-    'contact.address.en': '115, Haeul 2-gil, Paju-si, Gyeonggi-do, Korea',
+    'contact.phone': '',
+    'contact.address.ko':
+      '경기도 남양주시 다산중앙로146번길 12-16, 2층 202-a27호 (다산동)',
+    'contact.address.en':
+      '2F 202-a27, 12-16 Dasanjungang-ro 146beon-gil, Namyangju-si, Gyeonggi-do, Korea',
     'contact.hours': 'Mon–Fri 10:00–19:00',
     'social.instagram': 'https://instagram.com/studio115',
-    // Footer legal block (사업자 정보)
+    // Footer legal block — from 사업자등록증 (249-48-00951)
     'legal.bizName': '스튜디오115',
-    'legal.owner': '김서우',
-    'legal.address': '경기도 파주시 해울2길 16 (다율동) 610호',
-    'legal.phone': '070-4177-8699',
-    'legal.email': 'studio115@naver.com',
-    'legal.bizNumber': '414-15-01143',
-    'legal.mailOrderNumber': '2024-경기파주-0633',
-    'legal.hosting': '(주)아임웹',
+    'legal.owner': '한보름',
+    'legal.address':
+      '경기도 남양주시 다산중앙로146번길 12-16, 2층 202-a27호 (다산동)',
+    'legal.phone': '',
+    'legal.email': 'gksqhfma0306@naver.com',
+    'legal.bizNumber': '249-48-00951',
+    'legal.mailOrderNumber': '',
+    'legal.hosting': 'Vercel Inc. / Railway',
   };
   for (const [key, value] of Object.entries(settings)) {
     await prisma.siteSetting.upsert({
