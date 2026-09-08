@@ -7,13 +7,16 @@
 
 FROM node:22-slim AS base
 ENV PNPM_HOME="/pnpm" PATH="/pnpm:$PATH"
-RUN apt-get update -y && apt-get install -y --no-install-recommends openssl \
+RUN apt-get update -y && apt-get install -y --no-install-recommends openssl ca-certificates \
   && rm -rf /var/lib/apt/lists/* \
   && corepack enable
 WORKDIR /repo
 
 # ---- install ----
 FROM base AS deps
+# These four only exist at the monorepo root. If this COPY fails with
+# "pnpm-lock.yaml: not found", the Railway service Root Directory is wrong —
+# it must be EMPTY (repo root), not "apps/api".
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
 COPY packages/shared/package.json packages/shared/
 COPY apps/api/package.json apps/api/
