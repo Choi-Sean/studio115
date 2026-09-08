@@ -4,7 +4,7 @@ Website, backend and admin for **Studio115**, an interior design company.
 
 - **`apps/web`** — public marketing site. Next.js 15 (App Router) · Tailwind · `next-intl` (ko / en). Deploys to **Vercel**.
 - **`apps/admin`** — staff admin panel. Next.js 15 · Tailwind · SWR. Deploys to **Vercel**.
-- **`apps/api`** — REST backend. NestJS 11 · Prisma · PostgreSQL · JWT. Deploys to **Railway**.
+- **`apps/api`** — REST backend. NestJS 11 · Prisma · **Microsoft SQL Server** · JWT. Deploys to **Railway**.
 - **`packages/shared`** — TypeScript types + enums shared by all three.
 
 Monorepo: **pnpm workspaces + Turborepo**.
@@ -92,8 +92,11 @@ The API has a provider-agnostic storage layer (`apps/api/src/storage`).
     API Tokens* → *Create* → **Object Read & Write**, scoped to `studio1151`) →
     put the Access Key ID / Secret into `STORAGE_S3_*` on Railway.
   - Public reads: attach a **custom domain** to the bucket (e.g.
-    `img.studio115.com`) or enable its `pub-xxxx.r2.dev` URL →
+    `img.studioiio.com`) or enable its `pub-xxxx.r2.dev` URL →
     `STORAGE_PUBLIC_BASE_URL` (API) and `NEXT_PUBLIC_IMAGE_CDN` (web).
+  - **CORS**: the bucket CORS `AllowedOrigins` must include the **admin** origin
+    (`https://<admin-domain>`, `http://localhost:3001`) — that's what does the
+    presigned browser PUT. The public site origin does not upload.
 
 Admin/contact uploads: admin uses **presigned PUT** (browser → R2 directly);
 the public contact form posts to `POST /api/inquiries/attachments` (server-side
@@ -116,20 +119,21 @@ api    → Railway  · Root Directory: /  (repo root)   ~$5/mo
 db     → self-hosted PostgreSQL (개인 서버)
 ```
 
-### Database → self-hosted PostgreSQL
-`DATABASE_URL` points at the personal server, **not** a Railway plugin. It must be:
-- reachable from Railway — either exposed on the public internet (Railway egress
-  IPs are dynamic, so allow broadly + strong password), or via a tunnel
-  (Tailscale / WireGuard / `cloudflared`);
-- using SSL — append `?sslmode=require` (`?sslmode=no-verify` for a self-signed cert);
-- created with the `studio115` database and a login role.
+### Database → Microsoft SQL Server (shared host)
+`DATABASE_URL` (Prisma `sqlserver://` form) points at the MSSQL host — **not** a
+Railway plugin. Notes:
+- Prisma has no enum / scalar-list support on SQL Server, so enum-like values are
+  strings and `scopes` / `attachments` are stored serialized.
+- Shared hosting has no shadow DB, so the schema is applied with **`prisma db
+  push`**, not migrations. The API container runs `prisma db push` on every boot
+  (without `--accept-data-loss`, so a destructive drift fails the deploy loudly).
+- Tables & columns are **PascalCase**.
 
-Run migrations + seed once against it:
+Apply schema + seed once:
 ```bash
-DATABASE_URL="postgresql://…" pnpm db:migrate
-DATABASE_URL="postgresql://…" pnpm db:seed
+DATABASE_URL="sqlserver://…" pnpm db:push
+DATABASE_URL="sqlserver://…" pnpm db:seed
 ```
-(The API container also runs `prisma migrate deploy` on every boot.)
 
 ### API → Railway
 1. New project → **Deploy from GitHub repo** → this repo.
