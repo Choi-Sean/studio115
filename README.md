@@ -80,46 +80,73 @@ Seeded admin login: **admin@studio115.kr** / **studio115!admin**
 
 ---
 
-## Images / photo storage
+## Images / photo storage — Cloudflare R2
 
-Interior work is photo-heavy. The API has a provider-agnostic storage layer
-(`apps/api/src/storage`):
+The API has a provider-agnostic storage layer (`apps/api/src/storage`).
 
-- **dev** — `STORAGE_DRIVER=local`, files saved to `apps/api/uploads/`, served at `/uploads/*`.
-- **prod** — `STORAGE_DRIVER=s3`, works with any S3-compatible store:
-  **Cloudflare R2** (recommended — zero egress), NCP / NHN Cloud Object Storage
-  (Korean billing), AWS S3, Wasabi, Backblaze B2.
+- **dev** — `STORAGE_DRIVER=local`, files in `apps/api/uploads/`, served at `/uploads/*`.
+- **prod** — `STORAGE_DRIVER=s3` against **Cloudflare R2**:
+  - Bucket `studio1151`, account `c8c11b6f0653e467b146a45f884752ab`
+  - Endpoint `https://c8c11b6f0653e467b146a45f884752ab.r2.cloudflarestorage.com`
+  - Credentials: create an **R2 API token** (Cloudflare dashboard → R2 → *Manage
+    API Tokens* → *Create* → **Object Read & Write**, scoped to `studio1151`) →
+    put the Access Key ID / Secret into `STORAGE_S3_*` on Railway.
+  - Public reads: attach a **custom domain** to the bucket (e.g.
+    `img.studio115.com`) or enable its `pub-xxxx.r2.dev` URL →
+    `STORAGE_PUBLIC_BASE_URL` (API) and `NEXT_PUBLIC_IMAGE_CDN` (web).
 
-Admin uploads use **presigned PUT** — the browser uploads straight to storage,
-bytes never pass through Railway.
+Admin/contact uploads: admin uses **presigned PUT** (browser → R2 directly);
+the public contact form posts to `POST /api/inquiries/attachments` (server-side
+put, image/pdf only). The AWS SDK's flexible checksums are disabled in the S3
+client because R2 rejects them.
 
-The web app uses a **custom `next/image` loader** (`apps/web/src/lib/image-loader.ts`)
-so resizing happens at the image CDN, not on Vercel's quota. Set
-`NEXT_PUBLIC_IMAGE_CDN` to enable it.
+The web app's **custom `next/image` loader** serves images from R2 instead of
+Vercel's quota. `NEXT_PUBLIC_IMAGE_CDN_MODE=cloudflare` uses
+`/cdn-cgi/image/...` transforms (enable **Transformations** on the Cloudflare
+zone first); `query` / `passthrough` are fallbacks.
 
 ---
 
 ## Deployment
 
+```
+web    → Vercel   · Root Directory: apps/web
+admin  → Vercel   · Root Directory: apps/admin
+api    → Railway  · Root Directory: /  (repo root)   ~$5/mo
+db     → self-hosted PostgreSQL (개인 서버)
+```
+
+### Database → self-hosted PostgreSQL
+`DATABASE_URL` points at the personal server, **not** a Railway plugin. It must be:
+- reachable from Railway — either exposed on the public internet (Railway egress
+  IPs are dynamic, so allow broadly + strong password), or via a tunnel
+  (Tailscale / WireGuard / `cloudflared`);
+- using SSL — append `?sslmode=require` (`?sslmode=no-verify` for a self-signed cert);
+- created with the `studio115` database and a login role.
+
+Run migrations + seed once against it:
+```bash
+DATABASE_URL="postgresql://…" pnpm db:migrate
+DATABASE_URL="postgresql://…" pnpm db:seed
+```
+(The API container also runs `prisma migrate deploy` on every boot.)
+
 ### API → Railway
 1. New project → **Deploy from GitHub repo** → this repo.
-2. Add a **PostgreSQL** plugin. Railway sets `DATABASE_URL`.
-3. Service settings:
-   - Root directory: **`/`** (repo root — the Docker build needs `packages/shared`).
-   - Build: Dockerfile (`railway.json` points at `apps/api/Dockerfile`).
-4. Variables: `JWT_SECRET`, `CORS_ORIGINS` (the web + admin URLs),
-   `API_PUBLIC_URL`, storage vars.
-5. The container runs `prisma migrate deploy` on boot. Seed once from your
-   machine against the prod URL if needed: `DATABASE_URL=... pnpm db:seed`.
+2. Settings → **Root Directory** = `/` (the Docker build needs `packages/shared`).
+   `railway.json` points the build at `apps/api/Dockerfile`.
+3. Variables: `DATABASE_URL`, `JWT_SECRET`, `CORS_ORIGINS` (the Vercel web + admin
+   URLs), `API_PUBLIC_URL`, and the `STORAGE_*` block (`STORAGE_DRIVER=s3` + R2).
 
-### web / admin → Vercel (one project each)
-1. New Project → import repo.
-2. **Root Directory**: `apps/web` (and a second project for `apps/admin`).
-3. `vercel.json` in each app sets the install/build commands for the monorepo.
-4. Environment variables:
-   - web: `NEXT_PUBLIC_API_URL`, `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_IMAGE_CDN`
+### web / admin → Vercel (one project each, same repo)
+1. Import the repo twice.
+2. **Root Directory**: `apps/web` for one project, `apps/admin` for the other.
+   `vercel.json` in each sets the monorepo install/build commands.
+3. Environment variables:
+   - web: `NEXT_PUBLIC_API_URL`, `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_IMAGE_CDN`,
+     `NEXT_PUBLIC_IMAGE_CDN_MODE`
    - admin: `NEXT_PUBLIC_API_URL`
-5. After both are live, add their URLs to the API's `CORS_ORIGINS`.
+4. After both are live, put their URLs in the API's `CORS_ORIGINS` and redeploy the API.
 
 ---
 
