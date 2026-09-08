@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { setRequestLocale } from 'next-intl/server';
 import { Container } from '@/components/container';
+import { RichHtml } from '@/components/rich-html';
+import { pick } from '@/lib/format';
+import { getPage } from '@/lib/api';
 
 export async function generateMetadata({
   params,
@@ -8,8 +11,8 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: 'privacy' });
-  return { title: t('title') };
+  const page = await getPage('privacy');
+  return { title: pick(page.title, locale) };
 }
 
 export default async function PrivacyPage({
@@ -19,17 +22,12 @@ export default async function PrivacyPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations('privacy');
+  const page = await getPage('privacy');
 
   return (
     <Container className="py-8">
-      <p className="u-label">{t('title')}</p>
-      <p className="mt-3 font-mono text-[0.7rem] uppercase tracking-label text-ink-muted">
-        {t('updated')}
-      </p>
-      <p className="mt-8 max-w-prose text-sm leading-relaxed text-ink-soft">
-        {t('body')}
-      </p>
+      <p className="u-label">{pick(page.title, locale)}</p>
+      <RichHtml html={pick(page.body, locale)} className="mt-8 max-w-prose" />
     </Container>
   );
 }

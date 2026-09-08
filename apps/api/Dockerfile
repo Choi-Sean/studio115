@@ -31,5 +31,7 @@ ENV NODE_ENV=production
 COPY --from=build /repo /repo
 WORKDIR /repo/apps/api
 EXPOSE 4000
-# Apply pending migrations, then start.
-CMD ["sh", "-c", "node ../../node_modules/prisma/build/index.js migrate deploy && node dist/main.js"]
+# Sync schema (db push — shared MSSQL host has no shadow DB for migrations), then start.
+# No --accept-data-loss: a destructive schema drift fails the deploy loudly instead
+# of dropping columns. Run `pnpm db:push` by hand when a destructive change is intended.
+CMD ["sh", "-c", "node ../../node_modules/prisma/build/index.js db push --skip-generate && node dist/main.js"]

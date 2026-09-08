@@ -1,11 +1,15 @@
 import type {
+  CategoryDto,
   InstagramMediaDto,
+  PageDto,
   Paginated,
   ProjectDto,
   ServiceDto,
 } from '@studio115/shared';
 import { API_URL } from './env';
 import {
+  FALLBACK_CATEGORIES,
+  FALLBACK_PAGES,
   FALLBACK_PROJECTS,
   FALLBACK_SERVICES,
   FALLBACK_SETTINGS,
@@ -29,6 +33,10 @@ async function get<T>(path: string, fallback: T): Promise<T> {
   }
 }
 
+export function getCategories(): Promise<CategoryDto[]> {
+  return get<CategoryDto[]>('/categories', FALLBACK_CATEGORIES);
+}
+
 export function getProjects(params?: {
   category?: string;
   featured?: boolean;
@@ -41,7 +49,7 @@ export function getProjects(params?: {
 
   const filtered = FALLBACK_PROJECTS.filter(
     (p) =>
-      (!params?.category || p.category === params.category) &&
+      (!params?.category || p.category.slug === params.category) &&
       (!params?.featured || p.featured),
   ).slice(0, pageSize);
 
@@ -74,6 +82,25 @@ export function getServices(): Promise<ServiceDto[]> {
 
 export function getSettings(): Promise<Record<string, string>> {
   return get<Record<string, string>>('/settings', FALLBACK_SETTINGS);
+}
+
+export async function getPage(slug: string): Promise<PageDto> {
+  const fallback =
+    FALLBACK_PAGES[slug] ?? {
+      slug,
+      title: { ko: slug, en: slug },
+      body: { ko: '', en: '' },
+      updatedAt: '',
+    };
+  try {
+    const res = await fetch(`${API_URL}/api/pages/${encodeURIComponent(slug)}`, {
+      next: { revalidate: REVALIDATE },
+    });
+    if (!res.ok) throw new Error(String(res.status));
+    return (await res.json()) as PageDto;
+  } catch {
+    return fallback;
+  }
 }
 
 export function getInstagram(): Promise<InstagramMediaDto[]> {

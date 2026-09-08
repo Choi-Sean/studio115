@@ -33,7 +33,10 @@ export default async function StiioPage({
   ]);
 
   const galleryItems = projects.items.flatMap((p) =>
-    p.images.slice(0, 1).map((img) => ({ src: img.url, caption: p.title.en })),
+    p.media
+      .filter((m) => m.type === 'IMAGE')
+      .slice(0, 1)
+      .map((m) => ({ src: m.url, caption: p.title.en })),
   );
 
   return (

@@ -29,8 +29,8 @@ export class InquiriesService {
     const row = await this.prisma.inquiry.create({
       data: {
         ...rest,
-        scopes: scopes ?? [],
-        attachments: attachments ?? [],
+        scopes: (scopes ?? []).join(','),
+        attachmentsJson: JSON.stringify(attachments ?? []),
       },
     });
     return toInquiryDto(row);

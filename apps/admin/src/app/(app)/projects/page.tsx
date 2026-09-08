@@ -61,7 +61,7 @@ export default function ProjectsListPage() {
                     </Link>
                     <span className="ml-2 text-xs text-neutral-400">/{p.slug}</span>
                   </td>
-                  <td className="px-4 py-3 text-neutral-600">{p.category}</td>
+                  <td className="px-4 py-3 text-neutral-600">{p.category?.name?.ko ?? '—'}</td>
                   <td className="px-4 py-3 text-neutral-600">{p.year ?? '—'}</td>
                   <td className="px-4 py-3">
                     <span className="flex gap-1.5 text-xs">

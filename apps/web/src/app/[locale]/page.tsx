@@ -1,11 +1,10 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { PROJECT_CATEGORIES } from '@studio115/shared';
 import { Container } from '@/components/container';
 import { WorkCard } from '@/components/work-card';
 import { WorkFilter } from '@/components/work-filter';
 import { InstagramFeed } from '@/components/instagram-feed';
-import { getProjects } from '@/lib/api';
+import { getCategories, getProjects } from '@/lib/api';
 
 export async function generateMetadata({
   params,
@@ -28,25 +27,23 @@ export default async function WorkGridPage({
   const { category } = await searchParams;
   setRequestLocale(locale);
 
-  const valid =
-    category && (PROJECT_CATEGORIES as readonly string[]).includes(category)
-      ? category
-      : undefined;
-
-  const [t, data, all] = await Promise.all([
+  const [t, tCommon, categories, data] = await Promise.all([
     getTranslations('work'),
-    getProjects({ category: valid, pageSize: 60 }),
-    getProjects({ pageSize: 60 }),
+    getTranslations('common'),
+    getCategories(),
+    getProjects({ category, pageSize: 60 }),
   ]);
 
-  const available = Array.from(new Set(all.items.map((p) => p.category)));
+  const shown = categories.filter(
+    (c) => c.projectCount === undefined || c.projectCount > 0,
+  );
 
   return (
     <>
       <Container className="py-8">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <p className="u-label">{t('title')}</p>
-          <WorkFilter available={available} />
+          <WorkFilter categories={shown} allLabel={tCommon('all')} />
         </div>
 
         {data.items.length === 0 ? (

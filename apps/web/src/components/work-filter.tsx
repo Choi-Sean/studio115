@@ -1,17 +1,21 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { useTranslations } from 'next-intl';
-import { PROJECT_CATEGORIES } from '@studio115/shared';
+import { useLocale } from 'next-intl';
+import type { CategoryDto } from '@studio115/shared';
 import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/utils';
 
-export function WorkFilter({ available }: { available: string[] }) {
+export function WorkFilter({
+  categories,
+  allLabel,
+}: {
+  categories: CategoryDto[];
+  allLabel: string;
+}) {
   const active = useSearchParams().get('category');
-  const tc = useTranslations('work.categories');
-  const tCommon = useTranslations('common');
+  const locale = useLocale();
 
-  const cats = PROJECT_CATEGORIES.filter((c) => available.includes(c));
   const cls = (on: boolean) =>
     cn(
       'font-mono text-xs uppercase tracking-label transition-colors',
@@ -21,15 +25,15 @@ export function WorkFilter({ available }: { available: string[] }) {
   return (
     <div className="flex flex-wrap gap-x-5 gap-y-2">
       <Link href="/" className={cls(!active)}>
-        {tCommon('all')}
+        {allLabel}
       </Link>
-      {cats.map((c) => (
+      {categories.map((c) => (
         <Link
-          key={c}
-          href={{ pathname: '/', query: { category: c } }}
-          className={cls(active === c)}
+          key={c.slug}
+          href={{ pathname: '/', query: { category: c.slug } }}
+          className={cls(active === c.slug)}
         >
-          {tc(c)}
+          {locale === 'en' ? c.name.en : c.name.ko}
         </Link>
       ))}
     </div>

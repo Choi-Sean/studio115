@@ -12,17 +12,28 @@ import {
   Min,
   ValidateNested,
 } from 'class-validator';
-import { PROJECT_CATEGORIES, type ProjectCategory } from '@studio115/shared';
+import { MEDIA_TYPES, type MediaType } from '@studio115/shared';
 import { PaginationQueryDto } from '../common/pagination-query.dto';
 
-const CATEGORIES = PROJECT_CATEGORIES as unknown as string[];
 const toBool = () =>
   Transform(({ value }) => value === true || value === 'true' || value === '1');
 
-export class ProjectImageInput {
+export class ProjectMediaInput {
+  @ApiPropertyOptional({ enum: MEDIA_TYPES, default: 'IMAGE' })
+  @IsOptional()
+  @IsIn(MEDIA_TYPES as unknown as string[])
+  type?: MediaType;
+
   @ApiProperty()
   @IsString()
+  @MaxLength(1000)
   url!: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  @MaxLength(1000)
+  posterUrl?: string;
 
   @ApiPropertyOptional()
   @IsOptional()
@@ -38,19 +49,18 @@ export class ProjectImageInput {
 export class CreateProjectDto {
   @ApiProperty()
   @IsString()
-  @MaxLength(140)
+  @MaxLength(200)
   slug!: string;
 
   @ApiProperty() @IsString() titleKo!: string;
   @ApiProperty() @IsString() titleEn!: string;
   @ApiProperty() @IsString() summaryKo!: string;
   @ApiProperty() @IsString() summaryEn!: string;
-  @ApiProperty() @IsString() descriptionKo!: string;
-  @ApiProperty() @IsString() descriptionEn!: string;
 
-  @ApiProperty({ enum: PROJECT_CATEGORIES })
-  @IsIn(CATEGORIES)
-  category!: ProjectCategory;
+  @ApiProperty({ description: 'Rich HTML' }) @IsString() descriptionKo!: string;
+  @ApiProperty({ description: 'Rich HTML' }) @IsString() descriptionEn!: string;
+
+  @ApiProperty() @IsString() @MaxLength(30) categoryId!: string;
 
   @ApiPropertyOptional() @IsOptional() @IsString() type?: string;
   @ApiPropertyOptional() @IsOptional() @IsString() location?: string;
@@ -72,26 +82,26 @@ export class CreateProjectDto {
   @Min(1900)
   year?: number;
 
-  @ApiPropertyOptional() @IsOptional() @IsString() coverImageUrl?: string;
+  @ApiPropertyOptional() @IsOptional() @IsString() @MaxLength(1000) coverImageUrl?: string;
   @ApiPropertyOptional() @IsOptional() @IsBoolean() featured?: boolean;
   @ApiPropertyOptional() @IsOptional() @IsBoolean() published?: boolean;
   @ApiPropertyOptional() @IsOptional() @IsInt() order?: number;
 
-  @ApiPropertyOptional({ type: [ProjectImageInput] })
+  @ApiPropertyOptional({ type: [ProjectMediaInput] })
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => ProjectImageInput)
-  images?: ProjectImageInput[];
+  @Type(() => ProjectMediaInput)
+  media?: ProjectMediaInput[];
 }
 
 export class UpdateProjectDto extends PartialType(CreateProjectDto) {}
 
 export class ProjectQueryDto extends PaginationQueryDto {
-  @ApiPropertyOptional({ enum: PROJECT_CATEGORIES })
+  @ApiPropertyOptional({ description: 'Category slug' })
   @IsOptional()
-  @IsIn(CATEGORIES)
-  category?: ProjectCategory;
+  @IsString()
+  category?: string;
 
   @ApiPropertyOptional({ type: Boolean })
   @IsOptional()

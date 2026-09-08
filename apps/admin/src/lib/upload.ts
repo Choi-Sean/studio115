@@ -1,5 +1,6 @@
 'use client';
 
+import type { MediaType } from '@studio115/shared';
 import { apiFetch, API_URL } from './api';
 import { getToken } from './auth';
 
@@ -12,8 +13,8 @@ interface Presigned {
   fields?: Record<string, string>;
 }
 
-/** Presign with the API, upload the bytes straight to storage, return the public URL. */
-export async function uploadImage(file: File, prefix = 'projects'): Promise<string> {
+/** Presign with the API, upload straight to R2 (or local dev), return the public URL. */
+export async function uploadFile(file: File, prefix = 'uploads'): Promise<string> {
   const pre = await apiFetch<Presigned>('/admin/uploads/presign', {
     method: 'POST',
     body: JSON.stringify({
@@ -29,7 +30,7 @@ export async function uploadImage(file: File, prefix = 'projects'): Promise<stri
       headers: pre.headers,
       body: file,
     });
-    if (!res.ok) throw new Error(`Upload failed (${res.status})`);
+    if (!res.ok) throw new Error(`업로드 실패 (${res.status})`);
     return pre.publicUrl;
   }
 
@@ -42,7 +43,18 @@ export async function uploadImage(file: File, prefix = 'projects'): Promise<stri
     headers: { authorization: `Bearer ${getToken() ?? ''}` },
     body: form,
   });
-  if (!res.ok) throw new Error(`Upload failed (${res.status})`);
+  if (!res.ok) throw new Error(`업로드 실패 (${res.status})`);
   const data = (await res.json()) as { publicUrl: string };
   return data.publicUrl;
 }
+
+export async function uploadMedia(
+  file: File,
+  prefix = 'projects',
+): Promise<{ url: string; type: MediaType }> {
+  const url = await uploadFile(file, prefix);
+  return { url, type: file.type.startsWith('video/') ? 'VIDEO' : 'IMAGE' };
+}
+
+/** Back-compat alias. */
+export const uploadImage = uploadFile;

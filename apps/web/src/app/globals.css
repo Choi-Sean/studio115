@@ -39,4 +39,44 @@
       after:origin-right after:scale-x-0 after:bg-current after:transition-transform
       after:duration-300 hover:after:origin-left hover:after:scale-x-100;
   }
+
+  /* Admin-authored rich content (Project body, About / Terms / Privacy). */
+  .rich {
+    @apply text-sm leading-relaxed text-ink-soft;
+  }
+  .rich > * + * {
+    @apply mt-4;
+  }
+  .rich h1,
+  .rich h2,
+  .rich h3 {
+    @apply mt-8 font-medium text-ink;
+  }
+  .rich h2 {
+    @apply text-lg;
+  }
+  .rich h3 {
+    @apply text-base;
+  }
+  .rich a {
+    @apply text-ink underline underline-offset-2;
+  }
+  .rich ul {
+    @apply list-disc pl-5;
+  }
+  .rich ol {
+    @apply list-decimal pl-5;
+  }
+  .rich blockquote {
+    @apply border-l-2 border-line pl-4 text-ink-muted;
+  }
+  .rich :where(img, video) {
+    @apply my-6 h-auto w-full;
+  }
+  .rich figcaption {
+    @apply mt-2 text-xs text-ink-muted;
+  }
+  .rich hr {
+    @apply my-8 border-line;
+  }
 }

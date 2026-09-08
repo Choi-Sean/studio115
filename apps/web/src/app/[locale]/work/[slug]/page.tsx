@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Container } from '@/components/container';
+import { RichHtml } from '@/components/rich-html';
 import { Link } from '@/i18n/navigation';
 import { getProject } from '@/lib/api';
 import { pick } from '@/lib/format';
@@ -35,10 +36,6 @@ export default async function WorkDetailPage({ params }: { params: Params }) {
   ]);
   if (!p) notFound();
 
-  const body = pick(p.description, locale)
-    .split(/\n{2,}/)
-    .filter(Boolean);
-
   const meta: Array<[string, string | null]> = [
     [t('meta.type'), p.type],
     [t('meta.location'), p.location],
@@ -61,7 +58,9 @@ export default async function WorkDetailPage({ params }: { params: Params }) {
         <h1 className="font-mono text-lg uppercase tracking-label">
           {p.title.en}
         </h1>
-        <p className="text-sm text-ink-muted">{pick(p.title, locale)}</p>
+        <p className="text-sm text-ink-muted">
+          {pick(p.title, locale)} · {locale === 'en' ? p.category.name.en : p.category.name.ko}
+        </p>
       </div>
 
       {p.coverImageUrl ? (
@@ -78,11 +77,7 @@ export default async function WorkDetailPage({ params }: { params: Params }) {
       ) : null}
 
       <div className="mt-10 grid gap-10 md:grid-cols-[1fr_18rem] md:gap-16">
-        <div className="max-w-prose space-y-4 text-sm leading-relaxed text-ink-soft">
-          {body.map((para, i) => (
-            <p key={i}>{para}</p>
-          ))}
-        </div>
+        <RichHtml html={pick(p.description, locale)} className="max-w-prose" />
         <dl className="h-max border-t border-line md:sticky md:top-20">
           {meta.map(([k, v]) =>
             v ? (
@@ -100,19 +95,32 @@ export default async function WorkDetailPage({ params }: { params: Params }) {
         </dl>
       </div>
 
-      {p.images.length > 0 ? (
+      {p.media.length > 0 ? (
         <div className="mt-14 space-y-4">
-          {p.images.map((img) => (
-            <div key={img.id} className="relative aspect-[16/10] w-full bg-line">
-              <Image
-                src={img.url}
-                alt={img.alt ?? pick(p.title, locale)}
-                fill
-                sizes="100vw"
-                className="object-cover"
-              />
-            </div>
-          ))}
+          {p.media.map((m) =>
+            m.type === 'VIDEO' ? (
+              <video
+                key={m.id}
+                controls
+                playsInline
+                preload="metadata"
+                poster={m.posterUrl ?? undefined}
+                className="w-full bg-line"
+              >
+                <source src={m.url} />
+              </video>
+            ) : (
+              <div key={m.id} className="relative aspect-[16/10] w-full bg-line">
+                <Image
+                  src={m.url}
+                  alt={m.alt ?? pick(p.title, locale)}
+                  fill
+                  sizes="100vw"
+                  className="object-cover"
+                />
+              </div>
+            ),
+          )}
         </div>
       ) : null}
     </Container>

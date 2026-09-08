@@ -9,9 +9,11 @@ import { cn } from '@/lib/utils';
 const NAV = [
   { href: '/', label: '대시보드' },
   { href: '/projects', label: '프로젝트' },
+  { href: '/categories', label: '카테고리' },
   { href: '/services', label: '서비스' },
+  { href: '/pages', label: '페이지' },
   { href: '/inquiries', label: '문의' },
-  { href: '/settings', label: '사이트 설정' },
+  { href: '/site', label: '사이트 정보' },
 ];
 
 export function Sidebar() {

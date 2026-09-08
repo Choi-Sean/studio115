@@ -5,8 +5,10 @@ import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { RolesGuard } from './auth/roles.guard';
+import { CategoriesModule } from './categories/categories.module';
 import { ProjectsModule } from './projects/projects.module';
 import { ServicesModule } from './services/services.module';
+import { PagesModule } from './pages/pages.module';
 import { InquiriesModule } from './inquiries/inquiries.module';
 import { SettingsModule } from './settings/settings.module';
 import { StorageModule } from './storage/storage.module';
@@ -19,8 +21,10 @@ import { HealthModule } from './health/health.module';
     PrismaModule,
     AuthModule,
     StorageModule,
+    CategoriesModule,
     ProjectsModule,
     ServicesModule,
+    PagesModule,
     InquiriesModule,
     SettingsModule,
     InstagramModule,

@@ -1,33 +1,50 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { PROJECT_CATEGORIES, type ProjectDto } from '@studio115/shared';
-import { ApiError, apiFetch } from '@/lib/api';
-import { uploadImage } from '@/lib/upload';
+import type { CategoryDto, ProjectDto } from '@studio115/shared';
+import { ApiError, apiFetch, useApi } from '@/lib/api';
+import { uploadMedia } from '@/lib/upload';
 import { slugify } from '@/lib/utils';
-import { Button, Field, Input, Select, Textarea } from './ui';
+import { RichEditor } from './rich-editor';
+import { Button, Field, Input, Select } from './ui';
 
-type ImageRow = { url: string; alt: string };
-
-const CAT_KO: Record<string, string> = {
-  RESIDENTIAL: '주거',
-  COMMERCIAL: '상업',
-  OFFICE: '오피스',
-  HOSPITALITY: '호스피탈리티',
-  RETAIL: '리테일',
+type MediaRow = {
+  type: 'IMAGE' | 'VIDEO';
+  url: string;
+  posterUrl: string;
+  alt: string;
 };
 
 export function ProjectForm({ initial }: { initial?: ProjectDto }) {
   const router = useRouter();
   const editing = Boolean(initial);
+  const { data: categories } = useApi<CategoryDto[]>('/categories');
+
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [slug, setSlug] = useState(initial?.slug ?? '');
-  const [images, setImages] = useState<ImageRow[]>(
-    initial?.images.map((i) => ({ url: i.url, alt: i.alt ?? '' })) ?? [],
+  const [categoryId, setCategoryId] = useState(initial?.category.id ?? '');
+  const [descKo, setDescKo] = useState(initial?.description.ko ?? '');
+  const [descEn, setDescEn] = useState(initial?.description.en ?? '');
+  const [media, setMedia] = useState<MediaRow[]>(
+    initial?.media.map((m) => ({
+      type: m.type,
+      url: m.url,
+      posterUrl: m.posterUrl ?? '',
+      alt: m.alt ?? '',
+    })) ?? [],
   );
+
+  const catOptions = useMemo(
+    () => categories ?? (initial ? [{ ...initial.category, order: 0 }] : []),
+    [categories, initial],
+  );
+
+  function patchMedia(i: number, patch: Partial<MediaRow>) {
+    setMedia((prev) => prev.map((m, j) => (j === i ? { ...m, ...patch } : m)));
+  }
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -35,15 +52,20 @@ export function ProjectForm({ initial }: { initial?: ProjectDto }) {
     const s = (k: string) => String(fd.get(k) ?? '').trim();
     const n = (k: string) => (fd.get(k) ? Number(fd.get(k)) : undefined);
 
+    if (!categoryId) {
+      setError('카테고리를 선택하세요.');
+      return;
+    }
+
     const body = {
       slug: slug || slugify(s('titleEn')),
       titleKo: s('titleKo'),
       titleEn: s('titleEn'),
       summaryKo: s('summaryKo'),
       summaryEn: s('summaryEn'),
-      descriptionKo: s('descriptionKo'),
-      descriptionEn: s('descriptionEn'),
-      category: s('category'),
+      descriptionKo: descKo,
+      descriptionEn: descEn,
+      categoryId,
       type: s('type') || undefined,
       location: s('location') || undefined,
       sizeLabel: s('sizeLabel') || undefined,
@@ -52,13 +74,22 @@ export function ProjectForm({ initial }: { initial?: ProjectDto }) {
       photography: s('photography') || undefined,
       areaSqm: n('areaSqm'),
       year: n('year'),
-      coverImageUrl: s('coverImageUrl') || images[0]?.url || undefined,
+      coverImageUrl:
+        s('coverImageUrl') ||
+        media.find((m) => m.type === 'IMAGE')?.url ||
+        undefined,
       featured: fd.get('featured') === 'on',
       published: fd.get('published') === 'on',
       order: n('order') ?? 0,
-      images: images
-        .filter((i) => i.url.trim())
-        .map((i, idx) => ({ url: i.url.trim(), alt: i.alt.trim() || undefined, order: idx })),
+      media: media
+        .filter((m) => m.url.trim())
+        .map((m, i) => ({
+          type: m.type,
+          url: m.url.trim(),
+          posterUrl: m.posterUrl.trim() || undefined,
+          alt: m.alt.trim() || undefined,
+          order: i,
+        })),
     };
 
     setBusy(true);
@@ -90,8 +121,11 @@ export function ProjectForm({ initial }: { initial?: ProjectDto }) {
     setError('');
     try {
       for (const file of Array.from(files)) {
-        const url = await uploadImage(file, 'projects');
-        setImages((prev) => [...prev, { url, alt: '' }]);
+        const m = await uploadMedia(file, 'projects');
+        setMedia((prev) => [
+          ...prev,
+          { type: m.type, url: m.url, posterUrl: '', alt: '' },
+        ]);
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : '업로드에 실패했습니다.');
@@ -125,10 +159,17 @@ export function ProjectForm({ initial }: { initial?: ProjectDto }) {
           />
         </Field>
         <Field label="카테고리">
-          <Select name="category" defaultValue={initial?.category ?? 'RESIDENTIAL'}>
-            {PROJECT_CATEGORIES.map((c) => (
-              <option key={c} value={c}>
-                {CAT_KO[c] ?? c}
+          <Select
+            value={categoryId}
+            onChange={(e) => setCategoryId(e.target.value)}
+            required
+          >
+            <option value="" disabled>
+              선택…
+            </option>
+            {catOptions.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name.ko} · {c.name.en}
               </option>
             ))}
           </Select>
@@ -137,28 +178,19 @@ export function ProjectForm({ initial }: { initial?: ProjectDto }) {
 
       <div className="grid gap-4 sm:grid-cols-2">
         <Field label="요약 (KO)">
-          <Textarea name="summaryKo" required defaultValue={initial?.summary.ko} />
+          <Input name="summaryKo" required defaultValue={initial?.summary.ko} />
         </Field>
         <Field label="Summary (EN)">
-          <Textarea name="summaryEn" required defaultValue={initial?.summary.en} />
-        </Field>
-        <Field label="본문 (KO)">
-          <Textarea
-            name="descriptionKo"
-            required
-            className="min-h-40"
-            defaultValue={initial?.description.ko}
-          />
-        </Field>
-        <Field label="Body (EN)">
-          <Textarea
-            name="descriptionEn"
-            required
-            className="min-h-40"
-            defaultValue={initial?.description.en}
-          />
+          <Input name="summaryEn" required defaultValue={initial?.summary.en} />
         </Field>
       </div>
+
+      <Field label="본문 (KO)">
+        <RichEditor value={descKo} onChange={setDescKo} prefix="projects" />
+      </Field>
+      <Field label="Body (EN)">
+        <RichEditor value={descEn} onChange={setDescEn} prefix="projects" />
+      </Field>
 
       <div className="grid gap-4 sm:grid-cols-3">
         <Field label="TYPE" hint="예: Residence, Cafe">
@@ -193,57 +225,83 @@ export function ProjectForm({ initial }: { initial?: ProjectDto }) {
         </Field>
       </div>
 
-      {/* Images */}
+      {/* Media */}
       <div>
         <div className="mb-2 flex items-center justify-between">
-          <p className="text-xs font-medium text-neutral-600">이미지</p>
+          <p className="text-xs font-medium text-neutral-600">
+            이미지 / 영상 <span className="text-neutral-400">(첫 이미지가 커버)</span>
+          </p>
           <label className="cursor-pointer rounded-md border border-neutral-300 px-3 py-1.5 text-sm hover:bg-neutral-100">
             {uploading ? '업로드 중…' : '파일 추가'}
             <input
               type="file"
-              accept="image/*"
+              accept="image/*,video/*"
               multiple
               className="hidden"
-              onChange={(e) => onFiles(e.target.files)}
+              onChange={(e) => {
+                void onFiles(e.target.files);
+                e.currentTarget.value = '';
+              }}
             />
           </label>
         </div>
-        <div className="space-y-2">
-          {images.map((img, i) => (
-            <div key={i} className="flex items-center gap-2">
-              <span className="w-6 text-center text-xs text-neutral-400">{i + 1}</span>
-              <Input
-                value={img.url}
-                onChange={(e) =>
-                  setImages((prev) =>
-                    prev.map((p, j) => (j === i ? { ...p, url: e.target.value } : p)),
-                  )
-                }
-                placeholder="https://…"
-              />
-              <Input
-                value={img.alt}
-                onChange={(e) =>
-                  setImages((prev) =>
-                    prev.map((p, j) => (j === i ? { ...p, alt: e.target.value } : p)),
-                  )
-                }
-                placeholder="alt"
-                className="max-w-40"
-              />
-              <Button
-                type="button"
-                variant="danger"
-                onClick={() => setImages((prev) => prev.filter((_, j) => j !== i))}
-              >
-                ✕
-              </Button>
+
+        <div className="space-y-3">
+          {media.map((m, i) => (
+            <div
+              key={i}
+              className="rounded-md border border-neutral-200 bg-white p-3"
+            >
+              <div className="flex items-center gap-2">
+                <span className="w-5 text-center text-xs text-neutral-400">
+                  {i + 1}
+                </span>
+                <Select
+                  value={m.type}
+                  onChange={(e) =>
+                    patchMedia(i, { type: e.target.value as MediaRow['type'] })
+                  }
+                  className="max-w-28"
+                >
+                  <option value="IMAGE">이미지</option>
+                  <option value="VIDEO">영상</option>
+                </Select>
+                <Input
+                  value={m.url}
+                  onChange={(e) => patchMedia(i, { url: e.target.value })}
+                  placeholder="https://…"
+                />
+                <Button
+                  type="button"
+                  variant="danger"
+                  onClick={() => setMedia((p) => p.filter((_, j) => j !== i))}
+                >
+                  ✕
+                </Button>
+              </div>
+              <div className="mt-2 flex gap-2 pl-7">
+                <Input
+                  value={m.alt}
+                  onChange={(e) => patchMedia(i, { alt: e.target.value })}
+                  placeholder="alt 텍스트"
+                />
+                {m.type === 'VIDEO' ? (
+                  <Input
+                    value={m.posterUrl}
+                    onChange={(e) => patchMedia(i, { posterUrl: e.target.value })}
+                    placeholder="포스터 이미지 URL (선택)"
+                  />
+                ) : null}
+              </div>
             </div>
           ))}
-          {images.length === 0 ? (
-            <p className="text-sm text-neutral-400">첫 번째 이미지가 커버로 사용됩니다.</p>
+          {media.length === 0 ? (
+            <p className="text-sm text-neutral-400">
+              파일을 추가하거나 URL을 직접 붙여넣으세요.
+            </p>
           ) : null}
         </div>
+
         <Field label="커버 이미지 URL (선택)">
           <Input
             name="coverImageUrl"

@@ -1,141 +1,146 @@
-// Studio115 — database schema
-// Keep enums in sync with packages/shared/src/enums.ts
+// Studio115 — database schema (Microsoft SQL Server)
+// Tables & columns are PascalCase via @@map / @map; the Prisma client stays camelCase.
+// Enum-like values are plain strings validated in the DTOs (see packages/shared).
+// String columns that are PK / FK / unique / indexed get an explicit small
+// NVarChar length (SQL Server index key limit is 900 bytes).
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlserver"
   url      = env("DATABASE_URL")
 }
 
-enum UserRole {
-  ADMIN
-  EDITOR
-}
-
-enum ProjectCategory {
-  RESIDENTIAL
-  COMMERCIAL
-  OFFICE
-  HOSPITALITY
-  RETAIL
-}
-
-enum InquiryStatus {
-  NEW
-  IN_PROGRESS
-  CONTACTED
-  CLOSED
-  SPAM
-}
-
-enum ProjectScope {
-  CONSTRUCTION
-  DESIGN
-  BRANDING
-}
-
-enum ContractStatus {
-  SIGNED
-  IN_PROGRESS
-  NONE
-}
-
 model User {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  name         String
-  passwordHash String
-  role         UserRole @default(EDITOR)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id           String   @id @default(cuid()) @map("Id") @db.NVarChar(30)
+  email        String   @unique @map("Email") @db.NVarChar(320)
+  name         String   @map("Name")
+  passwordHash String   @map("PasswordHash")
+  role         String   @default("EDITOR") @map("Role") @db.NVarChar(20) // ADMIN | EDITOR
+  createdAt    DateTime @default(now()) @map("CreatedAt")
+  updatedAt    DateTime @updatedAt @map("UpdatedAt")
+
+  @@map("User")
+}
+
+model Category {
+  id        String    @id @default(cuid()) @map("Id") @db.NVarChar(30)
+  slug      String    @unique @map("Slug") @db.NVarChar(200)
+  nameKo    String    @map("NameKo")
+  nameEn    String    @map("NameEn")
+  order     Int       @default(0) @map("Order")
+  createdAt DateTime  @default(now()) @map("CreatedAt")
+  updatedAt DateTime  @updatedAt @map("UpdatedAt")
+  projects  Project[]
+
+  @@map("Category")
 }
 
 model Project {
-  id             String          @id @default(cuid())
-  slug           String          @unique
-  titleKo        String
-  titleEn        String
-  summaryKo      String
-  summaryEn      String
-  descriptionKo  String
-  descriptionEn  String
-  category       ProjectCategory
-  type           String?
-  location       String?
-  sizeLabel      String?
-  areaSqm        Float?
-  involvement    String?
-  completionDate String?
-  photography    String?
-  year           Int?
-  coverImageUrl  String?
-  featured       Boolean         @default(false)
-  published      Boolean         @default(true)
-  order          Int             @default(0)
-  images         ProjectImage[]
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
+  id             String         @id @default(cuid()) @map("Id") @db.NVarChar(30)
+  slug           String         @unique @map("Slug") @db.NVarChar(200)
+  titleKo        String         @map("TitleKo")
+  titleEn        String         @map("TitleEn")
+  summaryKo      String         @map("SummaryKo") @db.NVarChar(2000)
+  summaryEn      String         @map("SummaryEn") @db.NVarChar(2000)
+  descriptionKo  String         @map("DescriptionKo") @db.NVarChar(Max)
+  descriptionEn  String         @map("DescriptionEn") @db.NVarChar(Max)
+  categoryId     String         @map("CategoryId") @db.NVarChar(30)
+  category       Category       @relation(fields: [categoryId], references: [id])
+  type           String?        @map("Type")
+  location       String?        @map("Location")
+  sizeLabel      String?        @map("SizeLabel")
+  areaSqm        Float?         @map("AreaSqm")
+  involvement    String?        @map("Involvement")
+  completionDate String?        @map("CompletionDate")
+  photography    String?        @map("Photography")
+  year           Int?           @map("Year")
+  coverImageUrl  String?        @map("CoverImageUrl") @db.NVarChar(1000)
+  featured       Boolean        @default(false) @map("Featured")
+  published      Boolean        @default(true) @map("Published")
+  order          Int            @default(0) @map("Order")
+  media          ProjectMedia[]
+  createdAt      DateTime       @default(now()) @map("CreatedAt")
+  updatedAt      DateTime       @updatedAt @map("UpdatedAt")
 
+  @@index([categoryId])
   @@index([published, featured])
-  @@index([category])
   @@index([order])
+  @@map("Project")
 }
 
-model ProjectImage {
-  id        String  @id @default(cuid())
+model ProjectMedia {
+  id        String  @id @default(cuid()) @map("Id") @db.NVarChar(30)
+  projectId String  @map("ProjectId") @db.NVarChar(30)
   project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  projectId String
-  url       String
-  alt       String?
-  order     Int     @default(0)
+  type      String  @default("IMAGE") @map("Type") @db.NVarChar(20) // IMAGE | VIDEO
+  url       String  @map("Url") @db.NVarChar(1000)
+  posterUrl String? @map("PosterUrl") @db.NVarChar(1000)
+  alt       String? @map("Alt")
+  order     Int     @default(0) @map("Order")
 
   @@index([projectId])
+  @@map("ProjectMedia")
 }
 
 model Service {
-  id            String   @id @default(cuid())
-  slug          String   @unique
-  titleKo       String
-  titleEn       String
-  descriptionKo String
-  descriptionEn String
-  icon          String?
-  order         Int      @default(0)
-  published     Boolean  @default(true)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id            String   @id @default(cuid()) @map("Id") @db.NVarChar(30)
+  slug          String   @unique @map("Slug") @db.NVarChar(200)
+  titleKo       String   @map("TitleKo")
+  titleEn       String   @map("TitleEn")
+  descriptionKo String   @map("DescriptionKo") @db.NVarChar(Max)
+  descriptionEn String   @map("DescriptionEn") @db.NVarChar(Max)
+  icon          String?  @map("Icon")
+  order         Int      @default(0) @map("Order")
+  published     Boolean  @default(true) @map("Published")
+  createdAt     DateTime @default(now()) @map("CreatedAt")
+  updatedAt     DateTime @updatedAt @map("UpdatedAt")
 
-  @@index([published, order])
+  @@map("Service")
+}
+
+model Page {
+  id        String   @id @default(cuid()) @map("Id") @db.NVarChar(30)
+  slug      String   @unique @map("Slug") @db.NVarChar(100) // about | terms | privacy
+  titleKo   String   @map("TitleKo")
+  titleEn   String   @map("TitleEn")
+  bodyKo    String   @map("BodyKo") @db.NVarChar(Max) // rich HTML
+  bodyEn    String   @map("BodyEn") @db.NVarChar(Max)
+  updatedAt DateTime @updatedAt @map("UpdatedAt")
+
+  @@map("Page")
 }
 
 model Inquiry {
-  id             String          @id @default(cuid())
-  name           String
-  phone          String
-  email          String?
-  industry       String?
-  businessName   String?
-  region         String?
-  addressDetail  String?
-  scopes         ProjectScope[]
-  contractStatus ContractStatus?
-  message        String
-  budgetText     String?
-  attachments    String[]
-  status         InquiryStatus   @default(NEW)
-  adminNote      String?
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
+  id              String   @id @default(cuid()) @map("Id") @db.NVarChar(30)
+  name            String   @map("Name")
+  phone           String   @map("Phone")
+  email           String?  @map("Email")
+  industry        String?  @map("Industry")
+  businessName    String?  @map("BusinessName")
+  region          String?  @map("Region")
+  addressDetail   String?  @map("AddressDetail")
+  scopes          String   @default("") @map("Scopes") @db.NVarChar(200) // comma-joined
+  contractStatus  String?  @map("ContractStatus") @db.NVarChar(20)
+  message         String   @map("Message") @db.NVarChar(Max)
+  budgetText      String?  @map("BudgetText")
+  attachmentsJson String   @default("[]") @map("AttachmentsJson") @db.NVarChar(Max)
+  status          String   @default("NEW") @map("Status") @db.NVarChar(20)
+  adminNote       String?  @map("AdminNote") @db.NVarChar(Max)
+  createdAt       DateTime @default(now()) @map("CreatedAt")
+  updatedAt       DateTime @updatedAt @map("UpdatedAt")
 
   @@index([status])
   @@index([createdAt])
+  @@map("Inquiry")
 }
 
 model SiteSetting {
-  key       String   @id
-  value     String
-  updatedAt DateTime @updatedAt
+  key       String   @id @map("Key") @db.NVarChar(200)
+  value     String   @map("Value") @db.NVarChar(Max)
+  updatedAt DateTime @updatedAt @map("UpdatedAt")
+
+  @@map("SiteSetting")
 }

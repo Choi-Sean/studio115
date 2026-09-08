@@ -1,7 +1,7 @@
 import type {
   ContractStatus,
   InquiryStatus,
-  ProjectCategory,
+  MediaType,
   ProjectScope,
   UserRole,
 } from './enums';
@@ -19,9 +19,26 @@ export interface Paginated<T> {
   totalPages: number;
 }
 
-export interface ProjectImageDto {
+export interface CategoryDto {
   id: string;
+  slug: string;
+  name: LocalizedText;
+  order: number;
+  projectCount?: number;
+}
+
+/** Compact category reference embedded in a project. */
+export interface CategoryRefDto {
+  id: string;
+  slug: string;
+  name: LocalizedText;
+}
+
+export interface ProjectMediaDto {
+  id: string;
+  type: MediaType;
   url: string;
+  posterUrl: string | null;
   alt: string | null;
   order: number;
 }
@@ -31,19 +48,19 @@ export interface ProjectDto {
   slug: string;
   title: LocalizedText;
   summary: LocalizedText;
+  /** Rich HTML. */
   description: LocalizedText;
-  category: ProjectCategory;
-  /** WORK detail meta (보통공간 style). */
-  type: string | null; // "Salon", "Cafe", "Office"…
-  location: string | null; // "Okjeongdong-ro, Yangju-si"
-  sizeLabel: string | null; // "122 m²"
+  category: CategoryRefDto;
+  type: string | null;
+  location: string | null;
+  sizeLabel: string | null;
   areaSqm: number | null;
-  involvement: string | null; // "Design, Construction"
-  completionDate: string | null; // "12.2023"
-  photography: string | null; // credit
+  involvement: string | null;
+  completionDate: string | null;
+  photography: string | null;
   year: number | null;
   coverImageUrl: string | null;
-  images: ProjectImageDto[];
+  media: ProjectMediaDto[];
   featured: boolean;
   published: boolean;
   order: number;
@@ -59,6 +76,14 @@ export interface ServiceDto {
   icon: string | null;
   order: number;
   published: boolean;
+}
+
+export interface PageDto {
+  slug: string;
+  title: LocalizedText;
+  /** Rich HTML. */
+  body: LocalizedText;
+  updatedAt: string;
 }
 
 export interface InquiryDto {

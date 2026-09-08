@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Container } from '@/components/container';
-import { getProjects, getServices, getSettings } from '@/lib/api';
+import { RichHtml } from '@/components/rich-html';
+import { getPage, getProjects, getServices, getSettings } from '@/lib/api';
 
 export async function generateMetadata({
   params,
@@ -13,13 +14,7 @@ export async function generateMetadata({
   return { title: t('title') };
 }
 
-function LabelList({
-  label,
-  items,
-}: {
-  label: string;
-  items: string[];
-}) {
+function LabelList({ label, items }: { label: string; items: string[] }) {
   return (
     <div className="border-t border-line pt-4">
       <p className="font-mono text-[0.68rem] uppercase tracking-label text-ink-muted">
@@ -42,8 +37,9 @@ export default async function AboutPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const [t, services, projects, settings] = await Promise.all([
+  const [t, page, services, projects, settings] = await Promise.all([
     getTranslations('about'),
+    getPage('about'),
     getServices(),
     getProjects({ pageSize: 12 }),
     getSettings(),
@@ -65,12 +61,10 @@ export default async function AboutPage({
       </p>
 
       <div className="mt-16 grid gap-10 md:grid-cols-[1fr_18rem] md:gap-16">
-        <div className="max-w-prose space-y-5 text-sm leading-relaxed">
-          <p className="text-ink-soft">{settings['about.lead.en']}</p>
-          <p className="text-ink-soft">{settings['about.body.en']}</p>
-          <div className="space-y-4 border-t border-line pt-6">
-            <p className="text-ink-soft">{settings['about.lead.ko']}</p>
-            <p className="text-ink-soft">{settings['about.body.ko']}</p>
+        <div className="max-w-prose space-y-8">
+          <RichHtml html={page.body.en} />
+          <div className="border-t border-line pt-8">
+            <RichHtml html={page.body.ko} />
           </div>
         </div>
 
@@ -79,10 +73,7 @@ export default async function AboutPage({
             label={t('sections.services')}
             items={services.map((s) => s.title.en.toUpperCase())}
           />
-          <LabelList
-            label={t('sections.coreValues')}
-            items={coreValues}
-          />
+          <LabelList label={t('sections.coreValues')} items={coreValues} />
           <LabelList
             label={t('sections.featuredSpaces')}
             items={projects.items.map((p) => p.title.en)}

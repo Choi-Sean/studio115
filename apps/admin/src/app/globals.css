@@ -10,6 +10,35 @@
   body {
     @apply bg-neutral-50 font-sans text-neutral-900 antialiased;
   }
+  .rich-edit:empty::before {
+    content: attr(data-placeholder);
+    @apply text-neutral-400;
+  }
+  .rich-edit > * + * {
+    @apply mt-3;
+  }
+  .rich-edit h2 {
+    @apply text-lg font-semibold;
+  }
+  .rich-edit h3 {
+    @apply text-base font-semibold;
+  }
+  .rich-edit ul {
+    @apply list-disc pl-5;
+  }
+  .rich-edit ol {
+    @apply list-decimal pl-5;
+  }
+  .rich-edit a {
+    @apply text-blue-600 underline;
+  }
+  .rich-edit img,
+  .rich-edit video {
+    @apply my-2 max-w-full rounded;
+  }
+  .rich-edit hr {
+    @apply my-4 border-neutral-200;
+  }
   a:focus-visible,
   button:focus-visible,
   input:focus-visible,
