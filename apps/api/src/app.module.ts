@@ -10,6 +10,7 @@ import { ServicesModule } from './services/services.module';
 import { InquiriesModule } from './inquiries/inquiries.module';
 import { SettingsModule } from './settings/settings.module';
 import { StorageModule } from './storage/storage.module';
+import { InstagramModule } from './instagram/instagram.module';
 import { HealthModule } from './health/health.module';
 
 @Module({
@@ -22,6 +23,7 @@ import { HealthModule } from './health/health.module';
     ServicesModule,
     InquiriesModule,
     SettingsModule,
+    InstagramModule,
     HealthModule,
   ],
   providers: [

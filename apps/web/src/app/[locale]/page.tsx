@@ -4,6 +4,7 @@ import { PROJECT_CATEGORIES } from '@studio115/shared';
 import { Container } from '@/components/container';
 import { WorkCard } from '@/components/work-card';
 import { WorkFilter } from '@/components/work-filter';
+import { InstagramFeed } from '@/components/instagram-feed';
 import { getProjects } from '@/lib/api';
 
 export async function generateMetadata({
@@ -41,21 +42,25 @@ export default async function WorkGridPage({
   const available = Array.from(new Set(all.items.map((p) => p.category)));
 
   return (
-    <Container className="py-8">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <p className="u-label">{t('title')}</p>
-        <WorkFilter available={available} />
-      </div>
-
-      {data.items.length === 0 ? (
-        <p className="mt-20 text-sm text-ink-muted">{t('empty')}</p>
-      ) : (
-        <div className="mt-8 grid gap-x-5 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
-          {data.items.map((p, i) => (
-            <WorkCard key={p.id} project={p} priority={i < 3} />
-          ))}
+    <>
+      <Container className="py-8">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <p className="u-label">{t('title')}</p>
+          <WorkFilter available={available} />
         </div>
-      )}
-    </Container>
+
+        {data.items.length === 0 ? (
+          <p className="mt-20 text-sm text-ink-muted">{t('empty')}</p>
+        ) : (
+          <div className="mt-8 grid gap-x-5 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+            {data.items.map((p, i) => (
+              <WorkCard key={p.id} project={p} priority={i < 3} />
+            ))}
+          </div>
+        )}
+      </Container>
+
+      <InstagramFeed />
+    </>
   );
 }

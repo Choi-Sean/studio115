@@ -85,6 +85,15 @@ export interface SiteSettingDto {
   value: string;
 }
 
+export interface InstagramMediaDto {
+  id: string;
+  caption: string | null;
+  permalink: string;
+  mediaType: 'IMAGE' | 'VIDEO' | 'CAROUSEL_ALBUM';
+  imageUrl: string;
+  timestamp: string | null;
+}
+
 export interface AuthUserDto {
   id: string;
   email: string;

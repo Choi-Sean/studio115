@@ -1,4 +1,9 @@
-import type { Paginated, ProjectDto, ServiceDto } from '@studio115/shared';
+import type {
+  InstagramMediaDto,
+  Paginated,
+  ProjectDto,
+  ServiceDto,
+} from '@studio115/shared';
 import { API_URL } from './env';
 import {
   FALLBACK_PROJECTS,
@@ -69,4 +74,8 @@ export function getServices(): Promise<ServiceDto[]> {
 
 export function getSettings(): Promise<Record<string, string>> {
   return get<Record<string, string>>('/settings', FALLBACK_SETTINGS);
+}
+
+export function getInstagram(): Promise<InstagramMediaDto[]> {
+  return get<InstagramMediaDto[]>('/instagram', []);
 }

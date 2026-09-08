@@ -42,7 +42,7 @@ async function seedSettings() {
     'contact.address.en':
       '2F 202-a27, 12-16 Dasanjungang-ro 146beon-gil, Namyangju-si, Gyeonggi-do, Korea',
     'contact.hours': 'Mon–Fri 10:00–19:00',
-    'social.instagram': 'https://instagram.com/studio115',
+    'social.instagram': 'https://www.instagram.com/studio_115_',
     // Footer legal block — from 사업자등록증 (249-48-00951)
     'legal.bizName': '스튜디오115',
     'legal.owner': '한보름',
