@@ -44,7 +44,12 @@ export function ProjectForm({ initial }: { initial?: ProjectDto }) {
       descriptionKo: s('descriptionKo'),
       descriptionEn: s('descriptionEn'),
       category: s('category'),
+      type: s('type') || undefined,
       location: s('location') || undefined,
+      sizeLabel: s('sizeLabel') || undefined,
+      involvement: s('involvement') || undefined,
+      completionDate: s('completionDate') || undefined,
+      photography: s('photography') || undefined,
       areaSqm: n('areaSqm'),
       year: n('year'),
       coverImageUrl: s('coverImageUrl') || images[0]?.url || undefined,
@@ -155,11 +160,29 @@ export function ProjectForm({ initial }: { initial?: ProjectDto }) {
         </Field>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-4">
-        <Field label="위치">
+      <div className="grid gap-4 sm:grid-cols-3">
+        <Field label="TYPE" hint="예: Residence, Cafe">
+          <Input name="type" defaultValue={initial?.type ?? ''} />
+        </Field>
+        <Field label="LOCATION">
           <Input name="location" defaultValue={initial?.location ?? ''} />
         </Field>
-        <Field label="면적 (㎡)">
+        <Field label="SIZE" hint="예: 122 m²">
+          <Input name="sizeLabel" defaultValue={initial?.sizeLabel ?? ''} />
+        </Field>
+        <Field label="INVOLVEMENT" hint="예: Design, Construction">
+          <Input name="involvement" defaultValue={initial?.involvement ?? ''} />
+        </Field>
+        <Field label="DATE OF COMPLETION" hint="예: 12.2023">
+          <Input name="completionDate" defaultValue={initial?.completionDate ?? ''} />
+        </Field>
+        <Field label="PHOTOGRAPHY">
+          <Input name="photography" defaultValue={initial?.photography ?? ''} />
+        </Field>
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-3">
+        <Field label="면적 (㎡)" hint="숫자만">
           <Input name="areaSqm" type="number" step="0.1" defaultValue={initial?.areaSqm ?? ''} />
         </Field>
         <Field label="연도">

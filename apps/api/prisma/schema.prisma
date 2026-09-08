@@ -31,12 +31,16 @@ enum InquiryStatus {
   SPAM
 }
 
-enum BudgetRange {
-  UNDER_20M
-  FROM_20M_TO_50M
-  FROM_50M_TO_100M
-  OVER_100M
-  UNDECIDED
+enum ProjectScope {
+  CONSTRUCTION
+  DESIGN
+  BRANDING
+}
+
+enum ContractStatus {
+  SIGNED
+  IN_PROGRESS
+  NONE
 }
 
 model User {
@@ -50,25 +54,30 @@ model User {
 }
 
 model Project {
-  id            String          @id @default(cuid())
-  slug          String          @unique
-  titleKo       String
-  titleEn       String
-  summaryKo     String
-  summaryEn     String
-  descriptionKo String
-  descriptionEn String
-  category      ProjectCategory
-  location      String?
-  areaSqm       Float?
-  year          Int?
-  coverImageUrl String?
-  featured      Boolean         @default(false)
-  published     Boolean         @default(true)
-  order         Int             @default(0)
-  images        ProjectImage[]
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
+  id             String          @id @default(cuid())
+  slug           String          @unique
+  titleKo        String
+  titleEn        String
+  summaryKo      String
+  summaryEn      String
+  descriptionKo  String
+  descriptionEn  String
+  category       ProjectCategory
+  type           String?
+  location       String?
+  sizeLabel      String?
+  areaSqm        Float?
+  involvement    String?
+  completionDate String?
+  photography    String?
+  year           Int?
+  coverImageUrl  String?
+  featured       Boolean         @default(false)
+  published      Boolean         @default(true)
+  order          Int             @default(0)
+  images         ProjectImage[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
 
   @@index([published, featured])
   @@index([category])
@@ -103,18 +112,23 @@ model Service {
 }
 
 model Inquiry {
-  id               String        @id @default(cuid())
-  name             String
-  phone            String
-  email            String?
-  message          String
-  projectType      String?
-  budgetRange      BudgetRange?
-  preferredContact String?
-  status           InquiryStatus @default(NEW)
-  adminNote        String?
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
+  id             String          @id @default(cuid())
+  name           String
+  phone          String
+  email          String?
+  industry       String?
+  businessName   String?
+  region         String?
+  addressDetail  String?
+  scopes         ProjectScope[]
+  contractStatus ContractStatus?
+  message        String
+  budgetText     String?
+  attachments    String[]
+  status         InquiryStatus   @default(NEW)
+  adminNote      String?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
 
   @@index([status])
   @@index([createdAt])

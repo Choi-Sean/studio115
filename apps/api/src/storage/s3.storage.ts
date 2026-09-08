@@ -54,4 +54,15 @@ export class S3Storage implements StorageDriver {
     const ep = (process.env.STORAGE_S3_ENDPOINT ?? '').replace(/\/$/, '');
     return `${ep}/${this.bucket}/${key}`;
   }
+
+  async put(key: string, body: Buffer, contentType: string): Promise<void> {
+    await this.client.send(
+      new PutObjectCommand({
+        Bucket: this.bucket,
+        Key: key,
+        Body: body,
+        ContentType: contentType,
+      }),
+    );
+  }
 }

@@ -52,14 +52,15 @@ export default function InquiriesPage() {
               <th className="px-4 py-2.5 font-medium">상태</th>
               <th className="px-4 py-2.5 font-medium">이름</th>
               <th className="px-4 py-2.5 font-medium">연락처</th>
-              <th className="px-4 py-2.5 font-medium">유형</th>
+              <th className="px-4 py-2.5 font-medium">업종</th>
+              <th className="px-4 py-2.5 font-medium">지역</th>
               <th className="px-4 py-2.5 font-medium">접수일</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-neutral-100">
             {isLoading ? (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-neutral-400">
+                <td colSpan={6} className="px-4 py-8 text-center text-neutral-400">
                   불러오는 중…
                 </td>
               </tr>
@@ -79,7 +80,10 @@ export default function InquiriesPage() {
                   </td>
                   <td className="px-4 py-3 text-neutral-600">{q.phone}</td>
                   <td className="px-4 py-3 text-neutral-600">
-                    {q.projectType ?? '—'}
+                    {q.industry ?? '—'}
+                  </td>
+                  <td className="px-4 py-3 text-neutral-600">
+                    {q.region ?? '—'}
                   </td>
                   <td className="px-4 py-3 text-xs text-neutral-400">
                     {formatDateTime(q.createdAt)}
@@ -88,7 +92,7 @@ export default function InquiriesPage() {
               ))
             ) : (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-neutral-400">
+                <td colSpan={6} className="px-4 py-8 text-center text-neutral-400">
                   문의가 없습니다.
                 </td>
               </tr>

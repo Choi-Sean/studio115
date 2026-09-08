@@ -21,19 +21,17 @@ export const INQUIRY_STATUSES = [
 ] as const;
 export type InquiryStatus = (typeof INQUIRY_STATUSES)[number];
 
+/** Contact form — 프로젝트 유형 (multi-select). */
+export const PROJECT_SCOPES = ['CONSTRUCTION', 'DESIGN', 'BRANDING'] as const;
+export type ProjectScope = (typeof PROJECT_SCOPES)[number];
+
+/** Contact form — 부동산 계약 여부. */
+export const CONTRACT_STATUSES = ['SIGNED', 'IN_PROGRESS', 'NONE'] as const;
+export type ContractStatus = (typeof CONTRACT_STATUSES)[number];
+
 export const USER_ROLES = ['ADMIN', 'EDITOR'] as const;
 export type UserRole = (typeof USER_ROLES)[number];
 
 export const LOCALES = ['ko', 'en'] as const;
 export type Locale = (typeof LOCALES)[number];
 export const DEFAULT_LOCALE: Locale = 'ko';
-
-/** Free-form option lists surfaced in the contact form / admin filters. */
-export const BUDGET_RANGES = [
-  'UNDER_20M',
-  'FROM_20M_TO_50M',
-  'FROM_50M_TO_100M',
-  'OVER_100M',
-  'UNDECIDED',
-] as const;
-export type BudgetRange = (typeof BUDGET_RANGES)[number];

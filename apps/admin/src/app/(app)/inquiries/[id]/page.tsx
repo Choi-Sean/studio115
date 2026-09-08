@@ -19,12 +19,16 @@ const STATUS_KO: Record<string, string> = {
   SPAM: '스팸',
 };
 
-const BUDGET_KO: Record<string, string> = {
-  UNDER_20M: '2천만원 미만',
-  FROM_20M_TO_50M: '2천만 ~ 5천만원',
-  FROM_50M_TO_100M: '5천만 ~ 1억원',
-  OVER_100M: '1억원 이상',
-  UNDECIDED: '미정',
+const SCOPE_KO: Record<string, string> = {
+  CONSTRUCTION: '공간 시공',
+  DESIGN: '공간 디자인',
+  BRANDING: '브랜딩 디자인',
+};
+
+const CONTRACT_KO: Record<string, string> = {
+  SIGNED: '계약 완료',
+  IN_PROGRESS: '계약 중',
+  NONE: '미계약',
 };
 
 export default function InquiryDetailPage({
@@ -54,6 +58,8 @@ export default function InquiryDetailPage({
   if (error || !data)
     return <p className="text-sm text-red-600">문의를 찾을 수 없습니다.</p>;
 
+  const inquiry = data;
+
   async function save() {
     setBusy(true);
     setSaved(false);
@@ -82,18 +88,34 @@ export default function InquiryDetailPage({
   }
 
   const rows: Array<[string, string | null]> = [
-    ['이름', data.name],
-    ['연락처', data.phone],
-    ['이메일', data.email],
-    ['공간 유형', data.projectType],
-    ['예산', data.budgetRange ? BUDGET_KO[data.budgetRange] ?? data.budgetRange : null],
-    ['선호 연락', data.preferredContact],
-    ['접수일', formatDateTime(data.createdAt)],
+    ['이름', inquiry.name],
+    ['연락처', inquiry.phone],
+    ['이메일', inquiry.email],
+    ['업종', inquiry.industry],
+    ['상호', inquiry.businessName],
+    [
+      '프로젝트 지역',
+      [inquiry.region, inquiry.addressDetail].filter(Boolean).join(' ') || null,
+    ],
+    [
+      '프로젝트 유형',
+      inquiry.scopes.length
+        ? inquiry.scopes.map((s) => SCOPE_KO[s] ?? s).join(', ')
+        : null,
+    ],
+    [
+      '부동산 계약',
+      inquiry.contractStatus
+        ? CONTRACT_KO[inquiry.contractStatus] ?? inquiry.contractStatus
+        : null,
+    ],
+    ['예산', inquiry.budgetText],
+    ['접수일', formatDateTime(inquiry.createdAt)],
   ];
 
   return (
     <div className="max-w-2xl">
-      <PageHeader title={`문의 · ${data.name}`}>
+      <PageHeader title={`문의 · ${inquiry.name}`}>
         <Button variant="danger" onClick={remove}>
           삭제
         </Button>
@@ -112,27 +134,46 @@ export default function InquiryDetailPage({
       </dl>
 
       <div className="mt-4 rounded-lg border border-neutral-200 bg-white p-4">
-        <p className="mb-1 text-xs font-medium text-neutral-600">문의 내용</p>
+        <p className="mb-1 text-xs font-medium text-neutral-600">프로젝트 설명</p>
         <p className="whitespace-pre-wrap text-sm text-neutral-800">
-          {data.message}
+          {inquiry.message}
         </p>
       </div>
 
-      <div className="mt-6 space-y-4 rounded-lg border border-neutral-200 bg-white p-4">
-        <div className="grid gap-4 sm:grid-cols-2">
-          <Field label="상태">
-            <Select
-              value={status}
-              onChange={(e) => setStatus(e.target.value as InquiryStatus)}
-            >
-              {INQUIRY_STATUSES.map((s) => (
-                <option key={s} value={s}>
-                  {STATUS_KO[s] ?? s}
-                </option>
-              ))}
-            </Select>
-          </Field>
+      {inquiry.attachments.length > 0 ? (
+        <div className="mt-4 rounded-lg border border-neutral-200 bg-white p-4">
+          <p className="mb-2 text-xs font-medium text-neutral-600">첨부 파일</p>
+          <ul className="space-y-1 text-sm">
+            {inquiry.attachments.map((url, i) => (
+              <li key={i}>
+                <a
+                  href={url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-blue-600 hover:underline"
+                >
+                  첨부 {i + 1}
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
+      ) : null}
+
+      <div className="mt-6 space-y-4 rounded-lg border border-neutral-200 bg-white p-4">
+        <Field label="상태">
+          <Select
+            value={status}
+            onChange={(e) => setStatus(e.target.value as InquiryStatus)}
+            className="max-w-xs"
+          >
+            {INQUIRY_STATUSES.map((s) => (
+              <option key={s} value={s}>
+                {STATUS_KO[s] ?? s}
+              </option>
+            ))}
+          </Select>
+        </Field>
         <Field label="내부 메모">
           <Textarea
             value={note}

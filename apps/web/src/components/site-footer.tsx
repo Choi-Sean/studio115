@@ -6,65 +6,48 @@ export async function SiteFooter({
 }: {
   settings: Record<string, string>;
 }) {
-  const [t, tn] = await Promise.all([
-    getTranslations('footer'),
-    getTranslations('nav'),
-  ]);
-
-  const name = settings['company.name'] ?? 'Studio115';
-  const email = settings['contact.email'];
-  const phone = settings['contact.phone'];
-  const insta = settings['social.instagram'];
+  const t = await getTranslations('footer');
   const year = new Date().getFullYear();
 
+  const rows: Array<[string, string | undefined]> = [
+    [t('legal.company'), settings['legal.bizName']],
+    [t('legal.owner'), settings['legal.owner']],
+    [t('legal.address'), settings['legal.address']],
+    [t('legal.phone'), settings['legal.phone']],
+    [t('legal.email'), settings['legal.email']],
+    [t('legal.bizNumber'), settings['legal.bizNumber']],
+    [t('legal.mailOrder'), settings['legal.mailOrderNumber']],
+    [t('legal.hosting'), settings['legal.hosting']],
+  ];
+
   return (
-    <footer className="border-t border-line">
-      <div className="mx-auto grid max-w-[1280px] gap-10 px-5 py-14 lg:grid-cols-3 lg:px-8">
-        <div>
-          <p className="font-display text-lg">{name}</p>
-          <p className="mt-2 text-sm text-ink-muted">{t('tagline')}</p>
+    <footer className="mt-24 border-t border-line">
+      <div className="mx-auto max-w-[1400px] px-5 py-10 lg:px-10">
+        <div className="flex flex-wrap gap-x-6 gap-y-2 font-mono text-xs tracking-label text-ink">
+          <Link href="/terms" className="u-underline">
+            {t('terms')}
+          </Link>
+          <Link href="/privacy" className="u-underline">
+            {t('privacy')}
+          </Link>
         </div>
 
-        <div>
-          <p className="u-kicker mb-3">{t('sitemap')}</p>
-          <ul className="space-y-2 text-sm text-ink-soft">
-            <li><Link href="/projects" className="hover:text-ink">{tn('projects')}</Link></li>
-            <li><Link href="/services" className="hover:text-ink">{tn('services')}</Link></li>
-            <li><Link href="/about" className="hover:text-ink">{tn('about')}</Link></li>
-            <li><Link href="/contact" className="hover:text-ink">{tn('contact')}</Link></li>
-          </ul>
-        </div>
+        <dl className="mt-8 grid gap-x-8 gap-y-1.5 text-[0.72rem] leading-relaxed text-ink-muted sm:grid-cols-2 lg:grid-cols-4">
+          {rows.map(([label, value]) =>
+            value ? (
+              <div key={label} className="flex gap-2">
+                <dt className="shrink-0 font-mono uppercase tracking-label">
+                  {label}
+                </dt>
+                <dd className="text-ink-soft">{value}</dd>
+              </div>
+            ) : null,
+          )}
+        </dl>
 
-        <div>
-          <p className="u-kicker mb-3">{t('contact')}</p>
-          <ul className="space-y-2 text-sm text-ink-soft">
-            {email ? (
-              <li>
-                <a href={`mailto:${email}`} className="hover:text-ink">{email}</a>
-              </li>
-            ) : null}
-            {phone ? (
-              <li>
-                <a href={`tel:${phone.replace(/[^0-9+]/g, '')}`} className="hover:text-ink">
-                  {phone}
-                </a>
-              </li>
-            ) : null}
-            {insta ? (
-              <li>
-                <a href={insta} target="_blank" rel="noreferrer" className="hover:text-ink">
-                  Instagram
-                </a>
-              </li>
-            ) : null}
-          </ul>
-        </div>
-      </div>
-
-      <div className="border-t border-line">
-        <div className="mx-auto max-w-[1280px] px-5 py-6 text-xs text-ink-muted lg:px-8">
-          © {year} {name}. {t('rights')}
-        </div>
+        <p className="mt-8 font-mono text-[0.68rem] uppercase tracking-label text-ink-muted">
+          © {year} Studio115. {t('rights')}
+        </p>
       </div>
     </footer>
   );

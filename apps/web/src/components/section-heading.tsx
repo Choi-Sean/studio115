@@ -1,23 +1,29 @@
 import { cn } from '@/lib/utils';
 
 export function SectionHeading({
-  kicker,
+  label,
   title,
   children,
   className,
 }: {
-  kicker?: string;
-  title: string;
+  label?: string;
+  title?: string;
   children?: React.ReactNode;
   className?: string;
 }) {
   return (
-    <div className={cn('max-w-prose', className)}>
-      {kicker ? <p className="u-kicker mb-3">{kicker}</p> : null}
-      <h2 className="text-2xl leading-tight sm:text-3xl md:text-[2.5rem]">
-        {title}
-      </h2>
-      {children ? <p className="mt-4 text-ink-soft">{children}</p> : null}
+    <div className={cn('', className)}>
+      {label ? <p className="u-label">{label}</p> : null}
+      {title ? (
+        <h1 className="mt-3 text-xl font-medium tracking-tight sm:text-2xl">
+          {title}
+        </h1>
+      ) : null}
+      {children ? (
+        <p className="mt-3 max-w-prose text-sm leading-relaxed text-ink-soft">
+          {children}
+        </p>
+      ) : null}
     </div>
   );
 }

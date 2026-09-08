@@ -1,7 +1,8 @@
 import type {
-  BudgetRange,
+  ContractStatus,
   InquiryStatus,
   ProjectCategory,
+  ProjectScope,
   UserRole,
 } from './enums';
 
@@ -32,8 +33,14 @@ export interface ProjectDto {
   summary: LocalizedText;
   description: LocalizedText;
   category: ProjectCategory;
-  location: string | null;
+  /** WORK detail meta (보통공간 style). */
+  type: string | null; // "Salon", "Cafe", "Office"…
+  location: string | null; // "Okjeongdong-ro, Yangju-si"
+  sizeLabel: string | null; // "122 m²"
   areaSqm: number | null;
+  involvement: string | null; // "Design, Construction"
+  completionDate: string | null; // "12.2023"
+  photography: string | null; // credit
   year: number | null;
   coverImageUrl: string | null;
   images: ProjectImageDto[];
@@ -59,10 +66,15 @@ export interface InquiryDto {
   name: string;
   phone: string;
   email: string | null;
+  industry: string | null;
+  businessName: string | null;
+  region: string | null;
+  addressDetail: string | null;
+  scopes: ProjectScope[];
+  contractStatus: ContractStatus | null;
   message: string;
-  projectType: string | null;
-  budgetRange: BudgetRange | null;
-  preferredContact: string | null;
+  budgetText: string | null;
+  attachments: string[];
   status: InquiryStatus;
   adminNote: string | null;
   createdAt: string;

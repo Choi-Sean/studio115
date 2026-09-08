@@ -1,8 +1,7 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Container } from '@/components/container';
-import { SectionHeading } from '@/components/section-heading';
-import { getSettings } from '@/lib/api';
+import { getProjects, getServices, getSettings } from '@/lib/api';
 
 export async function generateMetadata({
   params,
@@ -11,7 +10,28 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'about' });
-  return { title: t('title'), description: t('intro') };
+  return { title: t('title') };
+}
+
+function LabelList({
+  label,
+  items,
+}: {
+  label: string;
+  items: string[];
+}) {
+  return (
+    <div className="border-t border-line pt-4">
+      <p className="font-mono text-[0.68rem] uppercase tracking-label text-ink-muted">
+        {label}
+      </p>
+      <ul className="mt-3 space-y-1.5 text-xs text-ink-soft">
+        {items.map((it, i) => (
+          <li key={i}>{it}</li>
+        ))}
+      </ul>
+    </div>
+  );
 }
 
 export default async function AboutPage({
@@ -22,45 +42,53 @@ export default async function AboutPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const [t, settings] = await Promise.all([
+  const [t, services, projects, settings] = await Promise.all([
     getTranslations('about'),
+    getServices(),
+    getProjects({ pageSize: 12 }),
     getSettings(),
   ]);
 
-  const description =
-    settings[locale === 'en' ? 'company.description.en' : 'company.description.ko'];
-
-  const values = ['one', 'two', 'three'] as const;
+  const coreValues = (['one', 'two', 'three'] as const).map((k) =>
+    t(`coreValues.${k}`),
+  );
 
   return (
-    <div className="py-16 md:py-24">
-      <Container>
-        <SectionHeading title={t('title')}>{t('intro')}</SectionHeading>
+    <Container className="py-8">
+      <p className="u-label">{t('title')}</p>
 
-        <div className="mt-14 grid gap-10 md:grid-cols-2 md:gap-16">
-          <div>
-            <h2 className="font-display text-xl">{t('bodyTitle')}</h2>
-            <p className="mt-4 leading-relaxed text-ink-soft">{t('body')}</p>
-          </div>
-          {description ? (
-            <p className="text-ink-soft md:pt-10">{description}</p>
-          ) : null}
-        </div>
+      <p className="mt-10 max-w-3xl text-2xl font-medium leading-snug sm:text-3xl md:text-4xl">
+        “{settings['company.tagline.en']}”
+      </p>
+      <p className="mt-2 text-lg text-ink-muted">
+        “{settings['company.tagline.ko']}”
+      </p>
 
-        <div className="mt-20">
-          <p className="u-kicker">{t('valuesTitle')}</p>
-          <div className="mt-8 grid gap-8 border-t border-line pt-8 md:grid-cols-3">
-            {values.map((v) => (
-              <div key={v}>
-                <h3 className="font-display text-lg">{t(`values.${v}.title`)}</h3>
-                <p className="mt-2 text-sm text-ink-soft">
-                  {t(`values.${v}.body`)}
-                </p>
-              </div>
-            ))}
+      <div className="mt-16 grid gap-10 md:grid-cols-[1fr_18rem] md:gap-16">
+        <div className="max-w-prose space-y-5 text-sm leading-relaxed">
+          <p className="text-ink-soft">{settings['about.lead.en']}</p>
+          <p className="text-ink-soft">{settings['about.body.en']}</p>
+          <div className="space-y-4 border-t border-line pt-6">
+            <p className="text-ink-soft">{settings['about.lead.ko']}</p>
+            <p className="text-ink-soft">{settings['about.body.ko']}</p>
           </div>
         </div>
-      </Container>
-    </div>
+
+        <div className="space-y-8">
+          <LabelList
+            label={t('sections.services')}
+            items={services.map((s) => s.title.en.toUpperCase())}
+          />
+          <LabelList
+            label={t('sections.coreValues')}
+            items={coreValues}
+          />
+          <LabelList
+            label={t('sections.featuredSpaces')}
+            items={projects.items.map((p) => p.title.en)}
+          />
+        </div>
+      </div>
+    </Container>
   );
 }

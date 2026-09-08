@@ -7,60 +7,50 @@ import { LocaleSwitcher } from './locale-switcher';
 import { cn } from '@/lib/utils';
 
 const NAV = [
-  { href: '/', key: 'home' },
-  { href: '/projects', key: 'projects' },
-  { href: '/services', key: 'services' },
-  { href: '/about', key: 'about' },
+  { href: '/', key: 'work' },
+  { href: '/stiio', key: 'stiio' },
   { href: '/contact', key: 'contact' },
+  { href: '/about', key: 'about' },
 ] as const;
 
-export function SiteHeader({ settings }: { settings: Record<string, string> }) {
+export function SiteHeader() {
   const t = useTranslations('nav');
-  const tc = useTranslations('cta');
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const name = settings['company.name'] ?? 'Studio115';
 
   useEffect(() => setOpen(false), [pathname]);
 
   const isActive = (href: string) =>
-    href === '/' ? pathname === '/' : pathname.startsWith(href);
+    href === '/'
+      ? pathname === '/' || pathname.startsWith('/work')
+      : pathname.startsWith(href);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-paper/85 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-[1280px] items-center justify-between px-5 lg:px-8">
-        <Link href="/" className="font-display text-lg tracking-tightish">
-          {name}
+    <header className="sticky top-0 z-40 bg-paper/90 backdrop-blur">
+      <div className="mx-auto flex h-14 max-w-[1400px] items-center justify-between px-5 lg:px-10">
+        <Link href="/" className="text-[0.95rem] font-medium tracking-wide">
+          Studio<span className="text-ink-muted">115</span>
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-9 md:flex">
           {NAV.map((n) => (
             <Link
               key={n.href}
               href={n.href}
               className={cn(
-                'u-link-underline text-sm',
-                isActive(n.href) ? 'text-ink' : 'text-ink-soft hover:text-ink',
+                'font-mono text-xs tracking-label transition-colors',
+                isActive(n.href) ? 'text-ink' : 'text-ink-muted hover:text-ink',
               )}
             >
               {t(n.key)}
             </Link>
           ))}
+          <LocaleSwitcher className="ml-1" />
         </nav>
-
-        <div className="hidden items-center gap-5 md:flex">
-          <LocaleSwitcher />
-          <Link
-            href="/contact"
-            className="rounded-full border border-ink px-4 py-1.5 text-[0.7rem] uppercase tracking-[0.18em] transition-colors hover:bg-ink hover:text-paper"
-          >
-            {tc('inquiry')}
-          </Link>
-        </div>
 
         <button
           type="button"
-          className="flex flex-col gap-1.5 p-1 md:hidden"
+          className="flex flex-col gap-[5px] p-1 md:hidden"
           aria-label={open ? t('closeMenu') : t('openMenu')}
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
@@ -73,27 +63,21 @@ export function SiteHeader({ settings }: { settings: Record<string, string> }) {
 
       {open ? (
         <div className="border-t border-line bg-paper md:hidden">
-          <nav className="mx-auto flex max-w-[1280px] flex-col px-5 py-3">
+          <nav className="mx-auto flex max-w-[1400px] flex-col px-5 py-2">
             {NAV.map((n) => (
               <Link
                 key={n.href}
                 href={n.href}
                 className={cn(
-                  'py-3 text-base',
-                  isActive(n.href) ? 'text-ink' : 'text-ink-soft',
+                  'py-3 font-mono text-sm tracking-label',
+                  isActive(n.href) ? 'text-ink' : 'text-ink-muted',
                 )}
               >
                 {t(n.key)}
               </Link>
             ))}
-            <div className="mt-2 flex items-center justify-between border-t border-line pt-4">
+            <div className="border-t border-line py-4">
               <LocaleSwitcher />
-              <Link
-                href="/contact"
-                className="rounded-full border border-ink px-4 py-1.5 text-[0.7rem] uppercase tracking-[0.18em]"
-              >
-                {tc('inquiry')}
-              </Link>
             </div>
           </nav>
         </div>

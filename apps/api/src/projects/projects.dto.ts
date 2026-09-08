@@ -52,7 +52,12 @@ export class CreateProjectDto {
   @IsIn(CATEGORIES)
   category!: ProjectCategory;
 
+  @ApiPropertyOptional() @IsOptional() @IsString() type?: string;
   @ApiPropertyOptional() @IsOptional() @IsString() location?: string;
+  @ApiPropertyOptional() @IsOptional() @IsString() sizeLabel?: string;
+  @ApiPropertyOptional() @IsOptional() @IsString() involvement?: string;
+  @ApiPropertyOptional() @IsOptional() @IsString() completionDate?: string;
+  @ApiPropertyOptional() @IsOptional() @IsString() photography?: string;
 
   @ApiPropertyOptional()
   @IsOptional()

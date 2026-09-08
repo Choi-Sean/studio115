@@ -18,12 +18,21 @@ export class InquiriesService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(dto: CreateInquiryDto) {
-    // Honeypot: silently accept but drop obvious bots.
-    if (dto.company && dto.company.trim().length > 0) {
+    // Honeypot: drop obvious bots.
+    if (dto.website && dto.website.trim().length > 0) {
       throw new BadRequestException('Rejected');
     }
-    const { company: _hp, ...data } = dto;
-    const row = await this.prisma.inquiry.create({ data });
+    if (!dto.privacyConsent) {
+      throw new BadRequestException('개인정보 수집·이용 동의가 필요합니다.');
+    }
+    const { website: _hp, privacyConsent: _c, scopes, attachments, ...rest } = dto;
+    const row = await this.prisma.inquiry.create({
+      data: {
+        ...rest,
+        scopes: scopes ?? [],
+        attachments: attachments ?? [],
+      },
+    });
     return toInquiryDto(row);
   }
 

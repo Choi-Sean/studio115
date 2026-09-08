@@ -46,10 +46,7 @@ export class StorageController {
   ) {
     if (!file) throw new BadRequestException('file is required');
     if (!key) throw new BadRequestException('key is required');
-    if (!this.storage.save) {
-      throw new BadRequestException('This storage driver has no direct upload');
-    }
-    await this.storage.save(key, file.buffer, file.mimetype);
+    await this.storage.put(key, file.buffer, file.mimetype);
     return { key, publicUrl: this.storage.publicUrl(key) };
   }
 }

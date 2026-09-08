@@ -1,16 +1,22 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
+  Inject,
   Param,
   Patch,
   Post,
   Query,
+  UploadedFiles,
+  UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import { ApiBearerAuth, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { Public } from '../auth/public.decorator';
 import { Roles } from '../auth/roles.decorator';
+import { STORAGE_DRIVER, safeKey, type StorageDriver } from '../storage/storage.types';
 import { InquiriesService } from './inquiries.service';
 import {
   CreateInquiryDto,
@@ -18,15 +24,43 @@ import {
   UpdateInquiryDto,
 } from './inquiries.dto';
 
+const MAX_FILE_BYTES = 15 * 1024 * 1024;
+const ALLOWED = /^(image\/|application\/pdf$)/;
+
+type MulterFile = { originalname: string; mimetype: string; buffer: Buffer; size: number };
+
 @ApiTags('inquiries')
 @Controller('inquiries')
 export class InquiriesController {
-  constructor(private readonly inquiries: InquiriesService) {}
+  constructor(
+    private readonly inquiries: InquiriesService,
+    @Inject(STORAGE_DRIVER) private readonly storage: StorageDriver,
+  ) {}
 
   @Public()
   @Post()
   create(@Body() dto: CreateInquiryDto) {
     return this.inquiries.create(dto);
+  }
+
+  @Public()
+  @Post('attachments')
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(
+    FilesInterceptor('files', 10, { limits: { fileSize: MAX_FILE_BYTES } }),
+  )
+  async attachments(@UploadedFiles() files: MulterFile[] = []) {
+    if (files.length === 0) throw new BadRequestException('No files');
+    const urls: string[] = [];
+    for (const f of files) {
+      if (!ALLOWED.test(f.mimetype)) {
+        throw new BadRequestException(`Unsupported file type: ${f.mimetype}`);
+      }
+      const key = safeKey(f.originalname, 'inquiries');
+      await this.storage.put(key, f.buffer, f.mimetype);
+      urls.push(this.storage.publicUrl(key));
+    }
+    return { urls };
   }
 }
 

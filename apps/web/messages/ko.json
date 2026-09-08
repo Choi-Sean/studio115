@@ -1,120 +1,179 @@
 {
   "meta": {
-    "titleDefault": "Studio115 — 인테리어 디자인 스튜디오",
-    "titleTemplate": "%s · Studio115",
-    "description": "Studio115는 주거와 상업 공간을 아우르는 인테리어 디자인 스튜디오입니다. 설계부터 시공, 스타일링까지 한 팀이 책임집니다."
+    "titleDefault": "Studio115",
+    "titleTemplate": "%s — Studio115",
+    "description": "스튜디오115는 주거와 상업 공간을 다루는 인테리어·건축 스튜디오입니다."
   },
   "nav": {
-    "home": "홈",
-    "projects": "프로젝트",
-    "services": "서비스",
-    "about": "스튜디오",
-    "contact": "문의",
+    "work": "WORK",
+    "stiio": "STIIO",
+    "contact": "CONTACT",
+    "about": "ABOUT",
+    "process": "WORK PROCESS",
     "openMenu": "메뉴 열기",
     "closeMenu": "메뉴 닫기"
   },
-  "cta": {
-    "inquiry": "프로젝트 문의하기",
-    "viewProjects": "프로젝트 보기",
-    "viewAll": "전체 보기",
-    "backToProjects": "프로젝트 목록",
-    "readMore": "자세히 보기"
+  "common": {
+    "loading": "불러오는 중…",
+    "comingSoon": "COMING SOON",
+    "backToWork": "WORK",
+    "all": "전체",
+    "call": "전화",
+    "instagram": "인스타그램"
   },
-  "home": {
-    "heroKicker": "Interior Design Studio",
-    "heroTitle": "공간을 짓는 사람들",
-    "heroBody": "Studio115는 사는 방식과 일하는 방식에서 출발해 공간을 설계합니다. 주거부터 상업 공간까지, 설계·시공·스타일링을 하나의 팀이 끝까지 책임집니다.",
-    "featuredKicker": "Selected Work",
-    "featuredTitle": "최근 프로젝트",
-    "servicesKicker": "What We Do",
-    "servicesTitle": "서비스",
-    "servicesBody": "기획부터 준공까지, 필요한 단계만 골라 맡기셔도 됩니다.",
-    "statsProjects": "완료 프로젝트",
-    "statsYears": "업력",
-    "statsAwards": "수상",
-    "ctaTitle": "새로운 공간을 계획하고 계신가요?",
-    "ctaBody": "간단한 정보만 남겨 주시면 2 영업일 안에 연락드립니다."
-  },
-  "projects": {
-    "title": "프로젝트",
-    "intro": "주거, 상업, 오피스 공간의 작업을 모았습니다. 카테고리로 필터링할 수 있습니다.",
-    "filterAll": "전체",
-    "empty": "해당 조건의 프로젝트가 아직 없습니다.",
-    "category": {
-      "RESIDENTIAL": "주거",
-      "COMMERCIAL": "상업",
-      "OFFICE": "오피스",
-      "HOSPITALITY": "호스피탈리티",
-      "RETAIL": "리테일"
+  "work": {
+    "title": "WORK",
+    "intro": "주거와 상업 공간의 작업입니다.",
+    "empty": "해당 유형의 프로젝트가 아직 없습니다.",
+    "categories": {
+      "RESIDENTIAL": "RESIDENTIAL",
+      "COMMERCIAL": "COMMERCIAL",
+      "OFFICE": "OFFICE",
+      "HOSPITALITY": "HOSPITALITY",
+      "RETAIL": "RETAIL"
     },
     "meta": {
-      "location": "위치",
-      "area": "면적",
-      "year": "연도",
-      "category": "유형"
+      "type": "TYPE",
+      "location": "LOCATION",
+      "size": "SIZE",
+      "involvement": "INVOLVEMENT",
+      "completion": "DATE OF COMPLETION",
+      "photography": "PHOTOGRAPHY"
     }
   },
-  "services": {
-    "title": "서비스",
-    "intro": "Studio115가 제공하는 작업 범위입니다. 프로젝트 성격에 맞춰 조합해 진행합니다."
-  },
-  "about": {
-    "title": "스튜디오",
-    "intro": "우리는 유행이 아니라 생활에서 오래 견디는 공간을 만듭니다.",
-    "bodyTitle": "일하는 방식",
-    "body": "모든 프로젝트는 현장 실측과 생활 인터뷰에서 시작합니다. 도면과 3D로 충분히 검토한 뒤 착공하고, 시공 중에도 디자이너가 현장을 지킵니다. (플레이스홀더 본문)",
-    "valuesTitle": "우리가 지키는 것",
-    "values": {
-      "one": { "title": "정직한 견적", "body": "항목별로 열어 둔 견적서. 진행 중 추가 비용은 사전에 합의합니다." },
-      "two": { "title": "한 팀의 책임", "body": "설계와 시공을 분리하지 않습니다. 연락 창구는 하나입니다." },
-      "three": { "title": "오래 가는 마감", "body": "보이지 않는 곳의 시공 품질을 우선합니다." }
-    }
+  "stiio": {
+    "title": "STIIO",
+    "intro": "스튜디오115와 연결되는 브랜드들입니다. 인테리어에서 출발해 패브릭·가구·소품으로 확장합니다.",
+    "brands": {
+      "interior": {
+        "name": "스튜디오115",
+        "tag": "인테리어",
+        "desc": "주거·상업 공간의 설계와 시공."
+      },
+      "textile": {
+        "name": "스튜디오115 텍스타일",
+        "tag": "패브릭",
+        "desc": "커튼, 러그, 패브릭 컬렉션."
+      },
+      "furniture": {
+        "name": "스튜디오115 퍼니처",
+        "tag": "가구",
+        "desc": "공간에 맞춘 제작 가구."
+      },
+      "home": {
+        "name": "스튜디오115 홈",
+        "tag": "홈데코",
+        "desc": "조명, 오브제, 리빙 소품."
+      }
+    },
+    "galleryTitle": "OBJECTS",
+    "galleryHint": "이미지에 마우스를 올리면 이름이 보입니다.",
+    "journalTitle": "JOURNAL",
+    "journalIntro": "인테리어에 대한 상식과 정보를 정리해 공유할 예정입니다.",
+    "journalComingSoon": "준비 중입니다."
   },
   "contact": {
-    "title": "프로젝트 문의",
-    "intro": "공간 유형과 대략적인 예산, 일정만 알려 주셔도 좋습니다. 확인 후 담당 디자이너가 연락드립니다.",
-    "infoTitle": "연락처",
+    "title": "CONTACT",
+    "intro": "상담 및 문의는 아래 양식으로 남겨 주세요. 확인 후 담당자가 연락드립니다.",
+    "infoTitle": "INFO",
     "hoursLabel": "운영 시간",
+    "processLink": "작업 진행 절차 보기",
     "form": {
-      "name": "이름",
+      "name": "성함",
       "phone": "연락처",
-      "email": "이메일 (선택)",
-      "message": "문의 내용",
-      "messagePlaceholder": "공간 유형, 위치, 평형, 희망 일정 등을 자유롭게 적어 주세요.",
-      "projectType": "공간 유형 (선택)",
-      "projectTypePlaceholder": "예: 아파트 32평, 성수동 카페",
-      "budget": "예상 예산 (선택)",
-      "preferredContact": "선호 연락 방법 (선택)",
-      "preferredContactPlaceholder": "예: 전화 / 문자 / 이메일",
-      "budgetOptions": {
-        "none": "선택 안 함",
-        "UNDER_20M": "2천만원 미만",
-        "FROM_20M_TO_50M": "2천만 ~ 5천만원",
-        "FROM_50M_TO_100M": "5천만 ~ 1억원",
-        "OVER_100M": "1억원 이상",
-        "UNDECIDED": "미정"
+      "email": "이메일",
+      "industry": "업종",
+      "businessName": "상호",
+      "businessNameHint": "예비 상호도 괜찮습니다",
+      "region": "프로젝트 지역",
+      "regionPlaceholder": "주소",
+      "addressDetail": "상세 주소",
+      "scope": "프로젝트 유형",
+      "scopeOptions": {
+        "CONSTRUCTION": "공간 시공",
+        "DESIGN": "공간 디자인",
+        "BRANDING": "브랜딩 디자인"
       },
-      "submit": "문의 보내기",
+      "contract": "부동산 계약 여부",
+      "contractOptions": {
+        "SIGNED": "계약 완료",
+        "IN_PROGRESS": "계약 중",
+        "NONE": "미계약"
+      },
+      "files": "프로젝트 정보",
+      "filesHint": "현장 사진 / 현장 도면 / 원하시는 컨셉 사진 첨부",
+      "filesButton": "파일 올리기",
+      "description": "프로젝트 설명",
+      "descriptionHint": "현장 층수 / 면적(평수) / 실측 가능 여부 / 공사 예정일 & 오픈 예정일",
+      "budget": "프로젝트 예산",
+      "budgetHint": "대략적인 금액을 적어 주세요",
+      "consent": "개인정보 수집 및 이용 동의",
+      "consentAgree": "개인정보 수집 및 이용에 동의합니다.",
+      "consentText": "스튜디오115(이하 '회사')는 상담·문의 처리를 위하여 성함, 연락처, 이메일, 프로젝트 관련 정보를 수집합니다. 수집한 개인정보는 문의 응대 및 상담 목적으로만 이용하며, 목적 달성 후 관계 법령에 따른 보존 기간이 없는 경우 지체 없이 파기합니다. 동의를 거부할 권리가 있으며, 거부 시 문의 접수가 제한될 수 있습니다.",
+      "submit": "제출",
       "sending": "보내는 중…",
       "successTitle": "문의가 접수되었습니다",
-      "successBody": "2 영업일 안에 연락드리겠습니다. 감사합니다.",
+      "successBody": "확인 후 담당자가 연락드리겠습니다. 감사합니다.",
       "errorBody": "전송에 실패했습니다. 잠시 후 다시 시도하거나 전화로 연락 주세요.",
-      "requiredHint": "* 표시는 필수 항목입니다."
+      "requiredHint": "* 표시는 필수 항목입니다.",
+      "uploading": "업로드 중…"
     }
   },
+  "process": {
+    "title": "WORK PROCESS",
+    "subtitle": "작업 진행 절차",
+    "intro": "문의부터 사후관리까지, 스튜디오115의 작업은 7단계로 진행됩니다.",
+    "steps": {
+      "1": { "title": "온라인 & 전화 문의", "note": "", "body": "홈페이지 양식 또는 전화로 프로젝트 개요를 알려 주세요." },
+      "2": { "title": "사무실 상담", "note": "", "body": "사무실에서 요구사항과 예산, 일정을 구체적으로 논의합니다." },
+      "3": { "title": "실측 및 본 계약", "note": "", "body": "현장 실측 후 견적을 확정하고 계약을 진행합니다." },
+      "4": { "title": "디자인 미팅", "note": "약 3주 소요", "body": "도면과 3D, 자재 제안을 함께 검토하며 디자인을 확정합니다." },
+      "5": { "title": "공사 시작", "note": "4~8주 소요", "body": "디자이너가 현장을 관리하며 시공을 진행합니다." },
+      "6": { "title": "공사 완료 및 촬영", "note": "", "body": "마감 점검 후 완료하고, 필요 시 촬영을 진행합니다." },
+      "7": { "title": "사후 관리", "note": "", "body": "하자 보수와 유지 관리를 지원합니다." }
+    }
+  },
+  "about": {
+    "title": "ABOUT",
+    "sections": {
+      "services": "SERVICES",
+      "coreValues": "CORE VALUES",
+      "featuredSpaces": "FEATURED SPACES"
+    },
+    "coreValues": {
+      "one": "Creating spaces with purpose",
+      "two": "Commitment to quality and detail",
+      "three": "Crafting timeless spaces"
+    }
+  },
+  "terms": {
+    "title": "이용약관",
+    "updated": "시행일: 2026-01-01",
+    "body": "본 약관은 스튜디오115(이하 '회사')가 운영하는 웹사이트의 이용 조건과 절차, 이용자와 회사의 권리·의무 및 책임사항을 규정합니다. 이용자는 본 사이트를 통해 제공되는 정보를 참고 목적으로 이용할 수 있으며, 회사의 사전 동의 없이 콘텐츠를 복제·배포·상업적으로 이용할 수 없습니다. 본 약관에 명시되지 않은 사항은 관계 법령 및 상관례에 따릅니다. (플레이스홀더 — 실제 약관으로 교체 예정)"
+  },
+  "privacy": {
+    "title": "개인정보처리방침",
+    "updated": "시행일: 2026-01-01",
+    "body": "스튜디오115(이하 '회사')는 개인정보 보호법 제30조에 따라 정보주체의 개인정보를 보호하고 관련 고충을 신속하게 처리하기 위하여 개인정보 처리방침을 수립·공개합니다. 회사는 상담·문의 처리를 위해 성함, 연락처, 이메일, 프로젝트 관련 정보를 수집하며, 해당 목적 외의 용도로 이용하지 않습니다. 개인정보는 목적 달성 후 지체 없이 파기하며, 정보주체는 열람·정정·삭제·처리정지를 요구할 수 있습니다. 개인정보 보호책임자에게 문의하실 수 있습니다. (플레이스홀더 — 실제 방침으로 교체 예정)"
+  },
   "footer": {
-    "tagline": "인테리어 디자인 · 설계 · 시공",
-    "sitemap": "바로가기",
-    "contact": "연락처",
+    "terms": "이용약관",
+    "privacy": "개인정보처리방침",
+    "legal": {
+      "company": "상호명",
+      "owner": "대표자",
+      "address": "사업장 주소",
+      "phone": "연락처",
+      "email": "이메일",
+      "bizNumber": "사업자등록번호",
+      "mailOrder": "통신판매업신고번호",
+      "hosting": "호스팅 제공자"
+    },
     "rights": "All rights reserved."
   },
   "notFound": {
     "title": "페이지를 찾을 수 없습니다",
     "body": "주소가 바뀌었거나 삭제된 페이지일 수 있습니다.",
-    "home": "홈으로 돌아가기"
-  },
-  "common": {
-    "sqm": "㎡",
-    "loading": "불러오는 중…"
+    "home": "WORK 로 돌아가기"
   }
 }

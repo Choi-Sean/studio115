@@ -65,7 +65,7 @@ export default function DashboardPage() {
                     <StatusBadge status={q.status} />
                     <span className="font-medium">{q.name}</span>
                     <span className="hidden text-neutral-400 sm:inline">
-                      {q.projectType ?? '—'}
+                      {q.industry ?? '—'}
                     </span>
                   </span>
                   <span className="shrink-0 text-xs text-neutral-400">

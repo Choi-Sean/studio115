@@ -1,120 +1,163 @@
 {
   "meta": {
-    "titleDefault": "Studio115 — Interior Design Studio",
-    "titleTemplate": "%s · Studio115",
-    "description": "Studio115 is an interior design studio working across residential and commercial spaces — design, build and styling handled by one team."
+    "titleDefault": "Studio115",
+    "titleTemplate": "%s — Studio115",
+    "description": "Studio115 is an interior and architecture studio working across residential and commercial spaces."
   },
   "nav": {
-    "home": "Home",
-    "projects": "Projects",
-    "services": "Services",
-    "about": "Studio",
-    "contact": "Contact",
+    "work": "WORK",
+    "stiio": "STIIO",
+    "contact": "CONTACT",
+    "about": "ABOUT",
+    "process": "WORK PROCESS",
     "openMenu": "Open menu",
     "closeMenu": "Close menu"
   },
-  "cta": {
-    "inquiry": "Start a project",
-    "viewProjects": "View projects",
-    "viewAll": "View all",
-    "backToProjects": "All projects",
-    "readMore": "Read more"
+  "common": {
+    "loading": "Loading…",
+    "comingSoon": "COMING SOON",
+    "backToWork": "WORK",
+    "all": "All",
+    "call": "Call",
+    "instagram": "Instagram"
   },
-  "home": {
-    "heroKicker": "Interior Design Studio",
-    "heroTitle": "We build spaces that live",
-    "heroBody": "Studio115 designs from the way people live and work. From homes to commercial spaces, one team owns design, construction and styling end to end.",
-    "featuredKicker": "Selected Work",
-    "featuredTitle": "Recent projects",
-    "servicesKicker": "What We Do",
-    "servicesTitle": "Services",
-    "servicesBody": "Take the whole journey from brief to handover, or just the parts you need.",
-    "statsProjects": "Projects delivered",
-    "statsYears": "Years in practice",
-    "statsAwards": "Awards",
-    "ctaTitle": "Planning a new space?",
-    "ctaBody": "Leave a few details and we'll get back to you within two business days."
-  },
-  "projects": {
-    "title": "Projects",
-    "intro": "A selection of residential, commercial and workplace work. Filter by category below.",
-    "filterAll": "All",
-    "empty": "No projects match this filter yet.",
-    "category": {
-      "RESIDENTIAL": "Residential",
-      "COMMERCIAL": "Commercial",
-      "OFFICE": "Office",
-      "HOSPITALITY": "Hospitality",
-      "RETAIL": "Retail"
+  "work": {
+    "title": "WORK",
+    "intro": "Selected residential and commercial work.",
+    "empty": "No projects of this type yet.",
+    "categories": {
+      "RESIDENTIAL": "RESIDENTIAL",
+      "COMMERCIAL": "COMMERCIAL",
+      "OFFICE": "OFFICE",
+      "HOSPITALITY": "HOSPITALITY",
+      "RETAIL": "RETAIL"
     },
     "meta": {
-      "location": "Location",
-      "area": "Area",
-      "year": "Year",
-      "category": "Type"
+      "type": "TYPE",
+      "location": "LOCATION",
+      "size": "SIZE",
+      "involvement": "INVOLVEMENT",
+      "completion": "DATE OF COMPLETION",
+      "photography": "PHOTOGRAPHY"
     }
   },
-  "services": {
-    "title": "Services",
-    "intro": "The scope Studio115 covers. We combine these to fit the nature of each project."
-  },
-  "about": {
-    "title": "Studio",
-    "intro": "We make spaces that hold up in daily life, not just in photos.",
-    "bodyTitle": "How we work",
-    "body": "Every project starts with an on-site survey and a conversation about how you live. We resolve it in drawings and 3D before breaking ground, and a designer stays on site through construction. (Placeholder body.)",
-    "valuesTitle": "What we hold to",
-    "values": {
-      "one": { "title": "Honest estimates", "body": "Line-item quotes, kept open. Any change in cost is agreed before the work." },
-      "two": { "title": "One team, accountable", "body": "Design and build are not split. You have a single point of contact." },
-      "three": { "title": "Finishes that last", "body": "We prioritise the quality of the work you can't see." }
-    }
+  "stiio": {
+    "title": "STIIO",
+    "intro": "Brands connected to Studio115 — starting with interiors and extending into textile, furniture and home objects.",
+    "brands": {
+      "interior": { "name": "Studio115", "tag": "Interior", "desc": "Design and build for homes and commercial spaces." },
+      "textile": { "name": "Studio115 Textile", "tag": "Fabric", "desc": "Curtains, rugs and fabric collections." },
+      "furniture": { "name": "Studio115 Furniture", "tag": "Furniture", "desc": "Bespoke pieces made for the space." },
+      "home": { "name": "Studio115 Home", "tag": "Home", "desc": "Lighting, objects and living goods." }
+    },
+    "galleryTitle": "OBJECTS",
+    "galleryHint": "Hover an image to see its name.",
+    "journalTitle": "JOURNAL",
+    "journalIntro": "Notes and know-how about interiors, coming soon.",
+    "journalComingSoon": "In preparation."
   },
   "contact": {
-    "title": "Start a project",
-    "intro": "The space type, a rough budget and a timeline are enough to begin. A designer will follow up after we review it.",
-    "infoTitle": "Contact",
+    "title": "CONTACT",
+    "intro": "Send a consultation request with the form below. We'll get back to you after reviewing it.",
+    "infoTitle": "INFO",
     "hoursLabel": "Hours",
+    "processLink": "See the work process",
     "form": {
       "name": "Name",
       "phone": "Phone",
-      "email": "Email (optional)",
-      "message": "Message",
-      "messagePlaceholder": "Space type, location, size, timeline — anything useful.",
-      "projectType": "Space type (optional)",
-      "projectTypePlaceholder": "e.g. 105㎡ apartment, cafe in Seongsu",
-      "budget": "Budget (optional)",
-      "preferredContact": "Preferred contact (optional)",
-      "preferredContactPlaceholder": "e.g. phone / text / email",
-      "budgetOptions": {
-        "none": "No preference",
-        "UNDER_20M": "Under ₩20M",
-        "FROM_20M_TO_50M": "₩20M – ₩50M",
-        "FROM_50M_TO_100M": "₩50M – ₩100M",
-        "OVER_100M": "Over ₩100M",
-        "UNDECIDED": "Undecided"
+      "email": "Email",
+      "industry": "Industry",
+      "businessName": "Business name",
+      "businessNameHint": "A tentative name is fine",
+      "region": "Project location",
+      "regionPlaceholder": "Address",
+      "addressDetail": "Address detail",
+      "scope": "Project type",
+      "scopeOptions": {
+        "CONSTRUCTION": "Space construction",
+        "DESIGN": "Space design",
+        "BRANDING": "Branding design"
       },
-      "submit": "Send inquiry",
+      "contract": "Property contract status",
+      "contractOptions": {
+        "SIGNED": "Signed",
+        "IN_PROGRESS": "In progress",
+        "NONE": "Not signed"
+      },
+      "files": "Project files",
+      "filesHint": "Attach site photos / floor plans / reference images",
+      "filesButton": "Upload files",
+      "description": "Project description",
+      "descriptionHint": "Floors / area / survey availability / construction & opening dates",
+      "budget": "Project budget",
+      "budgetHint": "An approximate figure is fine",
+      "consent": "Consent to collection & use of personal data",
+      "consentAgree": "I agree to the collection and use of my personal data.",
+      "consentText": "Studio115 (\"the Company\") collects your name, contact details, email and project information to handle consultation requests. This data is used only to respond to your inquiry and is destroyed without delay once that purpose is fulfilled, unless a retention period applies by law. You may decline consent; declining may limit our ability to process your inquiry.",
+      "submit": "Submit",
       "sending": "Sending…",
       "successTitle": "Your inquiry is in",
-      "successBody": "We'll be in touch within two business days. Thank you.",
+      "successBody": "We'll be in touch after reviewing it. Thank you.",
       "errorBody": "Something went wrong. Please try again shortly or call us.",
-      "requiredHint": "Fields marked * are required."
+      "requiredHint": "Fields marked * are required.",
+      "uploading": "Uploading…"
     }
   },
+  "process": {
+    "title": "WORK PROCESS",
+    "subtitle": "How a project runs",
+    "intro": "From first inquiry to aftercare, a Studio115 project runs in seven steps.",
+    "steps": {
+      "1": { "title": "Online & phone inquiry", "note": "", "body": "Tell us the outline of the project via the form or by phone." },
+      "2": { "title": "Studio consultation", "note": "", "body": "We discuss requirements, budget and schedule in detail at the studio." },
+      "3": { "title": "Site survey & contract", "note": "", "body": "We survey the site, finalise the estimate and sign the contract." },
+      "4": { "title": "Design meetings", "note": "approx. 3 weeks", "body": "We review drawings, 3D and material proposals together and lock the design." },
+      "5": { "title": "Construction", "note": "4–8 weeks", "body": "A designer manages the site through construction." },
+      "6": { "title": "Completion & photography", "note": "", "body": "We check finishes, complete the work and photograph it if needed." },
+      "7": { "title": "Aftercare", "note": "", "body": "We support defect repair and maintenance." }
+    }
+  },
+  "about": {
+    "title": "ABOUT",
+    "sections": {
+      "services": "SERVICES",
+      "coreValues": "CORE VALUES",
+      "featuredSpaces": "FEATURED SPACES"
+    },
+    "coreValues": {
+      "one": "Creating spaces with purpose",
+      "two": "Commitment to quality and detail",
+      "three": "Crafting timeless spaces"
+    }
+  },
+  "terms": {
+    "title": "Terms of Use",
+    "updated": "Effective: 2026-01-01",
+    "body": "These terms govern the use of the website operated by Studio115 (\"the Company\"), including the conditions of use and the rights and obligations of users and the Company. Information provided through this site is for reference only and may not be reproduced, redistributed or used commercially without the Company's prior consent. Matters not specified here follow applicable law and common practice. (Placeholder — to be replaced with the final terms.)"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "updated": "Effective: 2026-01-01",
+    "body": "Studio115 (\"the Company\") establishes and discloses this privacy policy under Article 30 of the Personal Information Protection Act to protect the personal data of data subjects and to handle related grievances promptly. The Company collects your name, contact details, email and project information to handle consultation requests, and does not use it for any other purpose. Personal data is destroyed without delay once its purpose is fulfilled. Data subjects may request access, correction, deletion or suspension of processing. (Placeholder — to be replaced with the final policy.)"
+  },
   "footer": {
-    "tagline": "Interior design · architecture · build",
-    "sitemap": "Sitemap",
-    "contact": "Contact",
+    "terms": "Terms of Use",
+    "privacy": "Privacy Policy",
+    "legal": {
+      "company": "Company",
+      "owner": "Owner",
+      "address": "Address",
+      "phone": "Phone",
+      "email": "Email",
+      "bizNumber": "Business no.",
+      "mailOrder": "Mail-order licence",
+      "hosting": "Hosting"
+    },
     "rights": "All rights reserved."
   },
   "notFound": {
     "title": "Page not found",
     "body": "The page may have moved or been removed.",
-    "home": "Back to home"
-  },
-  "common": {
-    "sqm": "㎡",
-    "loading": "Loading…"
+    "home": "Back to WORK"
   }
 }

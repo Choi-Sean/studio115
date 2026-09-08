@@ -21,8 +21,8 @@ export interface StorageDriver {
     prefix?: string;
   }): Promise<PresignedUpload>;
   publicUrl(key: string): string;
-  /** Only the local (dev) driver implements this — accepts a direct upload. */
-  save?(key: string, body: Buffer, contentType: string): Promise<void>;
+  /** Write bytes straight through the server (used for local dev + public uploads). */
+  put(key: string, body: Buffer, contentType: string): Promise<void>;
 }
 
 export const STORAGE_DRIVER = 'STORAGE_DRIVER';

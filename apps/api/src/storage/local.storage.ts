@@ -35,7 +35,7 @@ export class LocalStorage implements StorageDriver {
     return `${this.apiBase}/uploads/${key}`;
   }
 
-  async save(key: string, body: Buffer): Promise<void> {
+  async put(key: string, body: Buffer): Promise<void> {
     const dest = join(this.root, key);
     await mkdir(dirname(dest), { recursive: true });
     await writeFile(dest, body);

@@ -1,24 +1,28 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
 import {
+  ArrayMaxSize,
+  IsArray,
+  IsBoolean,
   IsEmail,
   IsIn,
-  IsInt,
   IsOptional,
   IsString,
   MaxLength,
   MinLength,
 } from 'class-validator';
 import {
-  BUDGET_RANGES,
+  CONTRACT_STATUSES,
   INQUIRY_STATUSES,
-  type BudgetRange,
+  PROJECT_SCOPES,
+  type ContractStatus,
   type InquiryStatus,
+  type ProjectScope,
 } from '@studio115/shared';
 import { PaginationQueryDto } from '../common/pagination-query.dto';
 
-const BUDGETS = BUDGET_RANGES as unknown as string[];
 const STATUSES = INQUIRY_STATUSES as unknown as string[];
+const SCOPES = PROJECT_SCOPES as unknown as string[];
+const CONTRACTS = CONTRACT_STATUSES as unknown as string[];
 
 export class CreateInquiryDto {
   @ApiProperty()
@@ -38,34 +42,69 @@ export class CreateInquiryDto {
   @IsEmail()
   email?: string;
 
-  @ApiProperty()
+  @ApiProperty({ description: '업종' })
+  @IsString()
+  @MinLength(1)
+  @MaxLength(80)
+  industry!: string;
+
+  @ApiPropertyOptional({ description: '상호 (예비상호)' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(120)
+  businessName?: string;
+
+  @ApiProperty({ description: '프로젝트 지역 (주소)' })
+  @IsString()
+  @MinLength(1)
+  @MaxLength(200)
+  region!: string;
+
+  @ApiPropertyOptional({ description: '상세주소' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(200)
+  addressDetail?: string;
+
+  @ApiPropertyOptional({ enum: PROJECT_SCOPES, isArray: true })
+  @IsOptional()
+  @IsArray()
+  @IsIn(SCOPES, { each: true })
+  scopes?: ProjectScope[];
+
+  @ApiPropertyOptional({ enum: CONTRACT_STATUSES })
+  @IsOptional()
+  @IsIn(CONTRACTS)
+  contractStatus?: ContractStatus;
+
+  @ApiProperty({ description: '프로젝트 설명' })
   @IsString()
   @MinLength(5)
-  @MaxLength(4000)
+  @MaxLength(5000)
   message!: string;
 
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({ description: '프로젝트 예산 (자유 입력)' })
   @IsOptional()
   @IsString()
-  @MaxLength(80)
-  projectType?: string;
+  @MaxLength(200)
+  budgetText?: string;
 
-  @ApiPropertyOptional({ enum: BUDGET_RANGES })
+  @ApiPropertyOptional({ type: [String], description: '첨부 파일 URL' })
   @IsOptional()
-  @IsIn(BUDGETS)
-  budgetRange?: BudgetRange;
+  @IsArray()
+  @ArrayMaxSize(20)
+  @IsString({ each: true })
+  attachments?: string[];
 
-  @ApiPropertyOptional()
-  @IsOptional()
-  @IsString()
-  @MaxLength(40)
-  preferredContact?: string;
+  @ApiProperty({ description: '개인정보 수집·이용 동의' })
+  @IsBoolean()
+  privacyConsent!: boolean;
 
-  /** Honeypot — must stay empty. Bots fill it in. */
+  /** Honeypot — must stay empty. */
   @ApiPropertyOptional({ description: 'Leave empty (spam trap)' })
   @IsOptional()
   @IsString()
-  company?: string;
+  website?: string;
 }
 
 export class UpdateInquiryDto {

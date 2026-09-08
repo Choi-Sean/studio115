@@ -11,16 +11,16 @@ export function LocaleSwitcher({ className }: { className?: string }) {
   const router = useRouter();
 
   return (
-    <div className={cn('flex items-center gap-2 text-xs', className)}>
+    <div className={cn('flex items-center gap-1.5 font-mono text-xs', className)}>
       {routing.locales.map((l, i) => (
-        <span key={l} className="flex items-center gap-2">
+        <span key={l} className="flex items-center gap-1.5">
           {i > 0 ? <span className="text-line">/</span> : null}
           <button
             type="button"
             onClick={() => router.replace(pathname, { locale: l })}
             aria-current={l === locale ? 'true' : undefined}
             className={cn(
-              'uppercase tracking-[0.2em] transition-colors',
+              'uppercase tracking-label transition-colors',
               l === locale ? 'text-ink' : 'text-ink-muted hover:text-ink',
             )}
           >

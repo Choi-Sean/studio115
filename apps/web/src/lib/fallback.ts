@@ -13,20 +13,26 @@ type Mini = {
   sko: string;
   sen: string;
   category: ProjectDto['category'];
+  type: string;
   location: string;
+  sizeLabel: string;
   areaSqm: number;
+  involvement: string;
+  completionDate: string;
+  photography: string;
   year: number;
   featured: boolean;
   shots: number;
 };
 
 const RAW: Mini[] = [
-  { slug: 'hannam-penthouse', ko: '한남동 펜트하우스 리노베이션', en: 'Hannam-dong Penthouse Renovation', sko: '한강이 내려다보이는 78평 펜트하우스를 미니멀한 톤으로 재구성했습니다.', sen: 'A 258㎡ penthouse overlooking the Han River, rebuilt in a calm minimal palette.', category: 'RESIDENTIAL', location: '서울 용산구', areaSqm: 258, year: 2024, featured: true, shots: 4 },
-  { slug: 'seongsu-cafe-grey', ko: "성수동 카페 '그레이'", en: "Seongsu Cafe 'Grey'", sko: '노출 콘크리트와 스테인리스를 대비시킨 40평 규모의 스페셜티 카페.', sen: 'A 132㎡ specialty cafe contrasting raw concrete with brushed stainless.', category: 'HOSPITALITY', location: '서울 성동구', areaSqm: 132, year: 2024, featured: true, shots: 4 },
-  { slug: 'gangnam-office-remodel', ko: '강남 오피스 리모델링', en: 'Gangnam Office Remodel', sko: '80명 규모 IT 기업의 라운지·회의공간을 중심으로 한 업무공간 재설계.', sen: 'Workspace redesign for an 80-person tech company, centred on lounge and meeting zones.', category: 'OFFICE', location: '서울 강남구', areaSqm: 640, year: 2023, featured: true, shots: 3 },
-  { slug: 'pangyo-townhouse', ko: '판교 타운하우스', en: 'Pangyo Townhouse', sko: '3층 단독주택의 계단실을 집의 중심으로 끌어올린 프로젝트.', sen: 'A three-storey house reorganised around a sculptural central stair.', category: 'RESIDENTIAL', location: '경기 성남시', areaSqm: 214, year: 2023, featured: false, shots: 3 },
-  { slug: 'cheongdam-flagship', ko: '청담 플래그십 스토어', en: 'Cheongdam Flagship Store', sko: '패션 브랜드의 2개 층 플래그십. 아치와 마이크로토핑으로 통일감을 줬습니다.', sen: 'A two-level fashion flagship unified through arches and micro-topping floors.', category: 'RETAIL', location: '서울 강남구', areaSqm: 320, year: 2022, featured: false, shots: 3 },
-  { slug: 'jeju-stay-oreum', ko: '제주 스테이 오름', en: 'Jeju Stay Oreum', sko: '중산간 지대의 독채 스테이. 제주석과 편백을 주재료로 사용했습니다.', sen: "A stand-alone stay in Jeju's midslopes, built with basalt and hinoki.", category: 'HOSPITALITY', location: '제주 제주시', areaSqm: 96, year: 2022, featured: false, shots: 4 },
+  { slug: 'villa-travertine', ko: '빌라 트래버틴', en: 'VILLA TRAVERTINE', sko: '트래버틴과 오크로 마감한 전용 82평 빌라.', sen: 'A 271㎡ villa finished in travertine and oak.', category: 'RESIDENTIAL', type: 'Residence', location: 'Cheongdam-dong, Seoul', sizeLabel: '271 m²', areaSqm: 271, involvement: 'Design, Construction', completionDate: '08.2024', photography: 'Donggyu Kim', year: 2024, featured: true, shots: 5 },
+  { slug: 'grid-seongsu', ko: '그리드 성수', en: 'GRID SEONGSU', sko: '노출 콘크리트 골조를 그대로 살린 성수동 편집숍 겸 카페.', sen: 'A Seongsu concept store and cafe with an exposed concrete frame.', category: 'COMMERCIAL', type: 'Retail, Cafe', location: 'Seongsu-dong, Seoul', sizeLabel: '164 m²', areaSqm: 164, involvement: 'Design, Construction', completionDate: '03.2024', photography: 'Donggyu Kim', year: 2024, featured: true, shots: 4 },
+  { slug: 'miwoococo-house', ko: '미우코코 하우스', en: 'MIWOOCOCO HOUSE', sko: '두 세대가 함께 사는 협소주택.', sen: 'A narrow two-family house organised around its stair core.', category: 'RESIDENTIAL', type: 'Residence', location: 'Yeonhui-dong, Seoul', sizeLabel: '138 m²', areaSqm: 138, involvement: 'Design', completionDate: '11.2023', photography: 'Sunghwan Yoon', year: 2023, featured: true, shots: 4 },
+  { slug: 'tower-palace', ko: '타워팰리스', en: 'TOWER PALACE', sko: '고층 아파트 전면 리노베이션.', sen: 'A full high-rise apartment renovation.', category: 'RESIDENTIAL', type: 'Residence', location: 'Dogok-dong, Seoul', sizeLabel: '198 m²', areaSqm: 198, involvement: 'Design, Construction', completionDate: '06.2023', photography: 'Donggyu Kim', year: 2023, featured: false, shots: 3 },
+  { slug: '109hannam', ko: '109 한남', en: '109HANNAM', sko: '한강이 보이는 펜트하우스.', sen: 'A river-facing penthouse.', category: 'RESIDENTIAL', type: 'Residence', location: 'Hannam-dong, Seoul', sizeLabel: '258 m²', areaSqm: 258, involvement: 'Design, Construction', completionDate: '12.2022', photography: 'Donggyu Kim', year: 2022, featured: false, shots: 4 },
+  { slug: 'yangpyeong-house', ko: '양평 주택', en: 'YANGPYEONG HOUSE', sko: '전원 단독주택. 편백과 제주석을 주재료로.', sen: 'A countryside house built mainly with hinoki and basalt.', category: 'RESIDENTIAL', type: 'Residence', location: 'Yangpyeong-gun, Gyeonggi', sizeLabel: '112 m²', areaSqm: 112, involvement: 'Design, Construction', completionDate: '05.2022', photography: 'Sunghwan Yoon', year: 2022, featured: false, shots: 3 },
+  { slug: 'cheongdam-c-villa', ko: '청담 C.빌라', en: 'CHEONGDAM C.VILLA', sko: '복층 빌라. 아치 개구부로 두 층의 시선을 연결.', sen: 'A duplex villa linked by arched openings.', category: 'RESIDENTIAL', type: 'Residence', location: 'Cheongdam-dong, Seoul', sizeLabel: '221 m²', areaSqm: 221, involvement: 'Design', completionDate: '09.2021', photography: 'Donggyu Kim', year: 2021, featured: false, shots: 3 },
 ];
 
 export const FALLBACK_PROJECTS: ProjectDto[] = RAW.map((r, i) => ({
@@ -39,8 +45,13 @@ export const FALLBACK_PROJECTS: ProjectDto[] = RAW.map((r, i) => ({
     en: `${r.sen}\n\n(Placeholder body — write the brief, materials, process and outcome here.)`,
   },
   category: r.category,
+  type: r.type,
   location: r.location,
+  sizeLabel: r.sizeLabel,
   areaSqm: r.areaSqm,
+  involvement: r.involvement,
+  completionDate: r.completionDate,
+  photography: r.photography,
   year: r.year,
   coverImageUrl: pic(`${r.slug}-1`),
   images: Array.from({ length: r.shots }, (_, s) => ({
@@ -57,11 +68,10 @@ export const FALLBACK_PROJECTS: ProjectDto[] = RAW.map((r, i) => ({
 }));
 
 export const FALLBACK_SERVICES: ServiceDto[] = [
-  { slug: 'residential', ko: '주거 인테리어', en: 'Residential Interiors', dko: '아파트, 단독주택, 펜트하우스의 전체 리노베이션과 부분 리모델링.', den: 'Full and partial renovations for apartments, houses and penthouses.', icon: 'home' },
-  { slug: 'commercial', ko: '상업 공간', en: 'Commercial & F&B', dko: '카페, 레스토랑, 편집숍 등 브랜드 경험을 담은 상업 공간 설계.', den: 'Cafes, restaurants and shops designed around the brand experience.', icon: 'store' },
-  { slug: 'office', ko: '오피스 디자인', en: 'Office Design', dko: '조직의 일하는 방식을 반영한 업무공간 기획과 설계.', den: 'Workplace planning and design that reflects how a team actually works.', icon: 'briefcase' },
-  { slug: 'design-build', ko: '설계·시공', en: 'Design & Build', dko: '설계부터 시공, 감리까지 한 팀이 책임지는 턴키 방식.', den: 'One accountable team from drawings through construction and supervision.', icon: 'ruler' },
-  { slug: 'styling', ko: '스타일링·FF&E', en: 'Styling & FF&E', dko: '가구, 조명, 오브제 큐레이션과 촬영을 위한 스타일링.', den: 'Furniture, lighting and object curation, plus styling for photography.', icon: 'sofa' },
+  { slug: 'residential-design', ko: '주거 디자인', en: 'Residential Design', dko: '아파트, 단독주택, 빌라의 전체 리노베이션과 부분 리모델링.', den: 'Full and partial renovations for apartments, houses and villas.', icon: 'home' },
+  { slug: 'commercial-design', ko: '상업 디자인', en: 'Commercial Design', dko: '카페, 리테일, 오피스 등 브랜드 경험을 담은 상업 공간 설계.', den: 'Cafes, retail and offices designed around the brand experience.', icon: 'store' },
+  { slug: 'architecture', ko: '건축', en: 'Architecture', dko: '신축·대수선 설계와 인허가, 감리.', den: 'New-build and major-renovation design, permits and supervision.', icon: 'ruler' },
+  { slug: 'furniture-design', ko: '가구 디자인', en: 'Furniture Design', dko: '공간에 맞춘 제작 가구와 FF&E 큐레이션.', den: 'Bespoke built-in furniture and FF&E curation.', icon: 'sofa' },
 ].map((s, i) => ({
   id: `fallback-svc-${s.slug}`,
   slug: s.slug,
@@ -74,15 +84,29 @@ export const FALLBACK_SERVICES: ServiceDto[] = [
 
 export const FALLBACK_SETTINGS: Record<string, string> = {
   'company.name': 'Studio115',
-  'company.tagline.ko': '공간을 짓는 사람들',
-  'company.tagline.en': 'We build spaces that live',
-  'contact.email': 'hello@studio115.kr',
-  'contact.phone': '02-000-0000',
-  'contact.address.ko': '서울특별시 성동구 어딘가로 115',
-  'contact.address.en': '115 Somewhere-ro, Seongdong-gu, Seoul',
+  'company.nameKo': '스튜디오115',
+  'company.tagline.ko': '자신의 가치를 따르세요',
+  'company.tagline.en': 'Follow your own values',
+  'about.lead.en':
+    'STUDIO115 is an interior and architecture studio creating residential and commercial spaces where timeless materials meet a considered, lived-in calm.',
+  'about.lead.ko':
+    '스튜디오115는 주거와 상업 공간을 다루는 인테리어·건축 스튜디오입니다. 오래 견디는 재료와 절제된 디테일로, 시간이 지나도 편안한 공간을 만듭니다.',
+  'about.body.en':
+    'From the first survey to post-handover care, one team owns design and construction. Restrained elegance meets everyday function.',
+  'about.body.ko':
+    '설계부터 시공, 사후관리까지 하나의 팀이 책임집니다. 절제된 완성도와 생활의 기능을 함께 봅니다. (플레이스홀더 문구)',
+  'contact.email': 'studio115@naver.com',
+  'contact.phone': '070-4177-8699',
+  'contact.address.ko': '경기도 파주시 해울2길 16 (다율동) 610호',
+  'contact.address.en': '115, Haeul 2-gil, Paju-si, Gyeonggi-do, Korea',
   'contact.hours': 'Mon–Fri 10:00–19:00',
-  'social.instagram': 'https://instagram.com/',
-  'stats.projects': '128',
-  'stats.years': '12',
-  'stats.awards': '9',
+  'social.instagram': 'https://instagram.com/studio115',
+  'legal.bizName': '스튜디오115',
+  'legal.owner': '김서우',
+  'legal.address': '경기도 파주시 해울2길 16 (다율동) 610호',
+  'legal.phone': '070-4177-8699',
+  'legal.email': 'studio115@naver.com',
+  'legal.bizNumber': '414-15-01143',
+  'legal.mailOrderNumber': '2024-경기파주-0633',
+  'legal.hosting': '(주)아임웹',
 };

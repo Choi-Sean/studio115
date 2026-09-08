@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { Fraunces, Noto_Sans_KR } from 'next/font/google';
+import { JetBrains_Mono, Noto_Sans_KR } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import { routing, type AppLocale } from '@/i18n/routing';
 import { SiteHeader } from '@/components/site-header';
 import { SiteFooter } from '@/components/site-footer';
+import { FloatingActions } from '@/components/floating-actions';
 import { getSettings } from '@/lib/api';
 import { SITE_URL } from '@/lib/env';
 import '../globals.css';
@@ -17,11 +18,10 @@ const sans = Noto_Sans_KR({
   display: 'swap',
 });
 
-const display = Fraunces({
+const mono = JetBrains_Mono({
   subsets: ['latin'],
-  weight: ['400', '500', '600'],
-  style: ['normal', 'italic'],
-  variable: '--font-display',
+  weight: ['400', '500'],
+  variable: '--font-mono',
   display: 'swap',
 });
 
@@ -62,12 +62,16 @@ export default async function LocaleLayout({
   const [messages, settings] = await Promise.all([getMessages(), getSettings()]);
 
   return (
-    <html lang={locale} className={`${sans.variable} ${display.variable}`}>
+    <html lang={locale} className={`${sans.variable} ${mono.variable}`}>
       <body className="flex min-h-dvh flex-col">
         <NextIntlClientProvider messages={messages}>
-          <SiteHeader settings={settings} />
+          <SiteHeader />
           <main className="flex-1">{children}</main>
           <SiteFooter settings={settings} />
+          <FloatingActions
+            phone={settings['contact.phone']}
+            instagram={settings['social.instagram']}
+          />
         </NextIntlClientProvider>
       </body>
     </html>
