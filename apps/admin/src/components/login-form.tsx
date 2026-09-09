@@ -36,7 +36,7 @@ export function LoginForm() {
 
   return (
     <form onSubmit={onSubmit} className="space-y-4">
-      <Field label="아이디">
+      <Field label="아이디" required>
         <Input
           name="email"
           type="text"
@@ -45,7 +45,7 @@ export function LoginForm() {
           defaultValue="admin"
         />
       </Field>
-      <Field label="비밀번호">
+      <Field label="비밀번호" required>
         <Input
           name="password"
           type="password"

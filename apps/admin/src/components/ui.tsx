@@ -23,15 +23,20 @@ export function Label({
 export function Field({
   label,
   hint,
+  required,
   children,
 }: {
   label: string;
   hint?: string;
+  required?: boolean;
   children: React.ReactNode;
 }) {
   return (
     <div>
-      <Label hint={hint}>{label}</Label>
+      <Label hint={hint}>
+        {label}
+        {required ? <span className="ml-0.5 text-red-500">*</span> : null}
+      </Label>
       {children}
     </div>
   );

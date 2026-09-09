@@ -4,14 +4,20 @@ import { useEffect, useState } from 'react';
 import { ApiError, apiFetch, useApi } from '@/lib/api';
 import { Button, Field, Input, PageHeader } from '@/components/ui';
 
-type FieldDef = { key: string; label: string; hint?: string; textarea?: boolean };
+type FieldDef = {
+  key: string;
+  label: string;
+  hint?: string;
+  textarea?: boolean;
+  required?: boolean;
+};
 
 const GROUPS: { title: string; fields: FieldDef[] }[] = [
   {
     title: '회사',
     fields: [
-      { key: 'company.nameKo', label: '회사명 (KO)' },
-      { key: 'company.name', label: 'Company name (EN)' },
+      { key: 'company.nameKo', label: '회사명 (KO)', required: true },
+      { key: 'company.name', label: 'Company name (EN)', required: true },
       { key: 'company.tagline.ko', label: '태그라인 (KO)' },
       { key: 'company.tagline.en', label: 'Tagline (EN)' },
     ],
@@ -19,7 +25,7 @@ const GROUPS: { title: string; fields: FieldDef[] }[] = [
   {
     title: '연락처 (사이트 표시용)',
     fields: [
-      { key: 'contact.email', label: '이메일' },
+      { key: 'contact.email', label: '이메일', required: true },
       { key: 'contact.phone', label: '전화번호', hint: '비우면 플로팅 전화 버튼 숨김' },
       { key: 'contact.address.ko', label: '주소 (KO)' },
       { key: 'contact.address.en', label: 'Address (EN)' },
@@ -28,16 +34,16 @@ const GROUPS: { title: string; fields: FieldDef[] }[] = [
     ],
   },
   {
-    title: '푸터 · 사업자 정보 (전자상거래법)',
+    title: '푸터 · 사업자 정보 (전자상거래법 필수 표기)',
     fields: [
-      { key: 'legal.bizName', label: '상호명' },
-      { key: 'legal.owner', label: '대표자' },
-      { key: 'legal.address', label: '사업장 주소' },
-      { key: 'legal.phone', label: '연락처' },
-      { key: 'legal.email', label: '이메일' },
-      { key: 'legal.bizNumber', label: '사업자등록번호' },
-      { key: 'legal.mailOrderNumber', label: '통신판매업 신고번호' },
-      { key: 'legal.hosting', label: '호스팅 제공자' },
+      { key: 'legal.bizName', label: '상호명', required: true },
+      { key: 'legal.owner', label: '대표자', required: true },
+      { key: 'legal.address', label: '사업장 주소', required: true },
+      { key: 'legal.phone', label: '연락처', required: true },
+      { key: 'legal.email', label: '이메일', required: true },
+      { key: 'legal.bizNumber', label: '사업자등록번호', required: true },
+      { key: 'legal.mailOrderNumber', label: '통신판매업 신고번호', required: true },
+      { key: 'legal.hosting', label: '호스팅 제공자', required: true },
       { key: 'footer.notice', label: '하단 안내문', hint: '자유 문구 (비우면 숨김)' },
     ],
   },
@@ -96,7 +102,7 @@ export default function SiteInfoPage() {
             </h2>
             <div className="grid gap-4 rounded-lg border border-neutral-200 bg-white p-4 sm:grid-cols-2">
               {g.fields.map((f) => (
-                <Field key={f.key} label={f.label} hint={f.hint}>
+                <Field key={f.key} label={f.label} hint={f.hint} required={f.required}>
                   <Input
                     value={values[f.key] ?? ''}
                     onChange={(e) =>

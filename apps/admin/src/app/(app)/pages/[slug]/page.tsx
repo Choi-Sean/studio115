@@ -64,18 +64,18 @@ export default function PageEditor({
 
       <div className="space-y-6">
         <div className="grid gap-4 sm:grid-cols-2">
-          <Field label="제목 (KO)">
+          <Field label="제목 (KO)" required>
             <Input value={titleKo} onChange={(e) => setTitleKo(e.target.value)} />
           </Field>
-          <Field label="Title (EN)">
+          <Field label="Title (EN)" required>
             <Input value={titleEn} onChange={(e) => setTitleEn(e.target.value)} />
           </Field>
         </div>
 
-        <Field label="본문 (KO)">
+        <Field label="본문 (KO)" required>
           <RichEditor value={bodyKo} onChange={setBodyKo} prefix="pages" minHeight="14rem" />
         </Field>
-        <Field label="Body (EN)">
+        <Field label="Body (EN)" required>
           <RichEditor value={bodyEn} onChange={setBodyEn} prefix="pages" minHeight="14rem" />
         </Field>
 

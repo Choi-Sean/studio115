@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import type { ServiceDto } from '@studio115/shared';
 import { ApiError, apiFetch } from '@/lib/api';
-import { slugify, slugifyInput } from '@/lib/utils';
+import { slugify } from '@/lib/utils';
 import { Button, Field, Input, Textarea } from './ui';
 
 export function ServiceForm({
@@ -19,7 +19,6 @@ export function ServiceForm({
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [slug, setSlug] = useState(initial?.slug ?? '');
-  const [slugTouched, setSlugTouched] = useState(Boolean(initial?.slug));
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -63,38 +62,33 @@ export function ServiceForm({
       className="space-y-4 rounded-lg border border-neutral-200 bg-white p-4"
     >
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="제목 (KO)">
+        <Field label="제목 (KO)" required>
           <Input name="titleKo" required defaultValue={initial?.title.ko} />
         </Field>
-        <Field label="Title (EN)">
+        <Field label="Title (EN)" required>
           <Input
             name="titleEn"
             required
             defaultValue={initial?.title.en}
-            onChange={(e) => {
-              if (!slugTouched) setSlug(slugify(e.target.value));
-            }}
+            onChange={(e) => setSlug(slugify(e.target.value))}
           />
         </Field>
-        <Field label="슬러그">
+        <Field label="슬러그" hint="영문 제목에서 자동 생성 · 수정 불가">
           <Input
             name="slug"
             value={slug}
-            onChange={(e) => {
-              setSlugTouched(true);
-              setSlug(slugifyInput(e.target.value));
-            }}
-            onBlur={(e) => setSlug(slugify(e.target.value))}
-            required
+            readOnly
+            tabIndex={-1}
+            className="bg-neutral-100 text-neutral-500"
           />
         </Field>
         <Field label="아이콘" hint="home / store / briefcase / ruler / sofa">
           <Input name="icon" defaultValue={initial?.icon ?? ''} />
         </Field>
-        <Field label="설명 (KO)">
+        <Field label="설명 (KO)" required>
           <Textarea name="descriptionKo" required defaultValue={initial?.description.ko} />
         </Field>
-        <Field label="Description (EN)">
+        <Field label="Description (EN)" required>
           <Textarea name="descriptionEn" required defaultValue={initial?.description.en} />
         </Field>
         <Field label="정렬">

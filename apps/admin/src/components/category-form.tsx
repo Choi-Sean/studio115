@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import type { CategoryDto } from '@studio115/shared';
 import { ApiError, apiFetch } from '@/lib/api';
-import { slugify, slugifyInput } from '@/lib/utils';
+import { slugify } from '@/lib/utils';
 import { Button, Field, Input } from './ui';
 
 export function CategoryForm({
@@ -19,7 +19,6 @@ export function CategoryForm({
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [slug, setSlug] = useState(initial?.slug ?? '');
-  const [slugTouched, setSlugTouched] = useState(Boolean(initial?.slug));
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -57,29 +56,24 @@ export function CategoryForm({
       onSubmit={onSubmit}
       className="grid gap-4 rounded-lg border border-neutral-200 bg-white p-4 sm:grid-cols-4"
     >
-      <Field label="이름 (KO)">
+      <Field label="이름 (KO)" required>
         <Input name="nameKo" required defaultValue={initial?.name.ko} />
       </Field>
-      <Field label="Name (EN)">
+      <Field label="Name (EN)" required>
         <Input
           name="nameEn"
           required
           defaultValue={initial?.name.en}
-          onChange={(e) => {
-            if (!slugTouched) setSlug(slugify(e.target.value));
-          }}
+          onChange={(e) => setSlug(slugify(e.target.value))}
         />
       </Field>
-      <Field label="슬러그" hint="URL">
+      <Field label="슬러그" hint="영문명에서 자동 생성 · 수정 불가">
         <Input
           name="slug"
           value={slug}
-          onChange={(e) => {
-            setSlugTouched(true);
-            setSlug(slugifyInput(e.target.value));
-          }}
-          onBlur={(e) => setSlug(slugify(e.target.value))}
-          required
+          readOnly
+          tabIndex={-1}
+          className="bg-neutral-100 text-neutral-500"
         />
       </Field>
       <Field label="정렬">

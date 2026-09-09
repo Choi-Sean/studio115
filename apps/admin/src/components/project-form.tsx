@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import type { CategoryDto, ProjectDto } from '@studio115/shared';
 import { ApiError, apiFetch, useApi } from '@/lib/api';
 import { uploadMedia } from '@/lib/upload';
-import { slugify, slugifyInput } from '@/lib/utils';
+import { slugify } from '@/lib/utils';
 import { RichEditor } from './rich-editor';
 import { Button, Field, Input, Select } from './ui';
 
@@ -25,7 +25,6 @@ export function ProjectForm({ initial }: { initial?: ProjectDto }) {
   const [busy, setBusy] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [slug, setSlug] = useState(initial?.slug ?? '');
-  const [slugTouched, setSlugTouched] = useState(Boolean(initial?.slug));
   const [categoryId, setCategoryId] = useState(initial?.category.id ?? '');
   const [descKo, setDescKo] = useState(initial?.description.ko ?? '');
   const [descEn, setDescEn] = useState(initial?.description.en ?? '');
@@ -138,32 +137,27 @@ export function ProjectForm({ initial }: { initial?: ProjectDto }) {
   return (
     <form onSubmit={onSubmit} className="max-w-3xl space-y-8">
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="제목 (KO)">
+        <Field label="제목 (KO)" required>
           <Input name="titleKo" required defaultValue={initial?.title.ko} />
         </Field>
-        <Field label="Title (EN)">
+        <Field label="Title (EN)" required>
           <Input
             name="titleEn"
             required
             defaultValue={initial?.title.en}
-            onChange={(e) => {
-              if (!slugTouched) setSlug(slugify(e.target.value));
-            }}
+            onChange={(e) => setSlug(slugify(e.target.value))}
           />
         </Field>
-        <Field label="슬러그" hint="URL 경로">
+        <Field label="슬러그" hint="영문 제목에서 자동 생성 · 수정 불가">
           <Input
             name="slug"
             value={slug}
-            onChange={(e) => {
-              setSlugTouched(true);
-              setSlug(slugifyInput(e.target.value));
-            }}
-            onBlur={(e) => setSlug(slugify(e.target.value))}
-            required
+            readOnly
+            tabIndex={-1}
+            className="bg-neutral-100 text-neutral-500"
           />
         </Field>
-        <Field label="카테고리">
+        <Field label="카테고리" required>
           <Select
             value={categoryId}
             onChange={(e) => setCategoryId(e.target.value)}
@@ -182,18 +176,18 @@ export function ProjectForm({ initial }: { initial?: ProjectDto }) {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="요약 (KO)">
+        <Field label="요약 (KO)" required>
           <Input name="summaryKo" required defaultValue={initial?.summary.ko} />
         </Field>
-        <Field label="Summary (EN)">
+        <Field label="Summary (EN)" required>
           <Input name="summaryEn" required defaultValue={initial?.summary.en} />
         </Field>
       </div>
 
-      <Field label="본문 (KO)">
+      <Field label="본문 (KO)" required>
         <RichEditor value={descKo} onChange={setDescKo} prefix="projects" />
       </Field>
-      <Field label="Body (EN)">
+      <Field label="Body (EN)" required>
         <RichEditor value={descEn} onChange={setDescEn} prefix="projects" />
       </Field>
 
