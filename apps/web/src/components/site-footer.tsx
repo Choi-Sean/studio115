@@ -23,6 +23,12 @@ export async function SiteFooter({
   return (
     <footer className="mt-24 border-t border-line">
       <div className="mx-auto max-w-[1400px] px-5 py-10 lg:px-10">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/logo.png"
+          alt="Studio115"
+          className="mb-6 h-5 w-auto opacity-60"
+        />
         <div className="flex flex-wrap gap-x-6 gap-y-2 font-mono text-xs tracking-label text-ink">
           <Link href="/terms" className="u-underline">
             {t('terms')}

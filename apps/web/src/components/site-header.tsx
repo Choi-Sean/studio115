@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Link, usePathname } from '@/i18n/navigation';
 import { LocaleSwitcher } from './locale-switcher';
+import { Logo } from './logo';
 import { cn } from '@/lib/utils';
 
 const NAV = [
@@ -28,8 +29,8 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 bg-paper/90 backdrop-blur">
       <div className="mx-auto flex h-14 max-w-[1400px] items-center justify-between px-5 lg:px-10">
-        <Link href="/" className="text-[0.95rem] font-medium tracking-wide">
-          Studio<span className="text-ink-muted">115</span>
+        <Link href="/" aria-label="Studio115 — home" className="shrink-0">
+          <Logo />
         </Link>
 
         <nav className="hidden items-center gap-9 md:flex">

@@ -29,8 +29,11 @@ export function Sidebar() {
   return (
     <aside className="flex w-56 shrink-0 flex-col border-r border-neutral-200 bg-white">
       <div className="border-b border-neutral-200 px-5 py-4">
-        <p className="font-semibold">Studio115</p>
-        <p className="text-xs text-neutral-400">Admin</p>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/logo.png" alt="Studio115" className="h-5 w-auto" />
+        <p className="mt-2 font-mono text-[0.62rem] uppercase tracking-[0.22em] text-neutral-400">
+          Admin
+        </p>
       </div>
       <nav className="flex-1 space-y-1 p-3">
         {NAV.map((n) => (
