@@ -16,7 +16,8 @@ const config: Config = {
         accent: '#111111',
       },
       fontFamily: {
-        sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
+        // Orbit has no Hangul, so Korean glyphs fall through to Noto Sans KR.
+        sans: ['var(--font-orbit)', 'var(--font-noto)', 'system-ui', 'sans-serif'],
         mono: ['var(--font-mono)', 'ui-monospace', 'SFMono-Regular', 'monospace'],
       },
       letterSpacing: {

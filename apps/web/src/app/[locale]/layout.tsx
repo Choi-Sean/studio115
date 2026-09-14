@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { JetBrains_Mono, Noto_Sans_KR } from 'next/font/google';
+import { JetBrains_Mono, Noto_Sans_KR, Orbit } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import { routing, type AppLocale } from '@/i18n/routing';
@@ -11,10 +11,20 @@ import { getSettings } from '@/lib/api';
 import { SITE_URL } from '@/lib/env';
 import '../globals.css';
 
-const sans = Noto_Sans_KR({
+// Korean fallback — Orbit (below) has no Hangul glyphs, so CSS font-family
+// fallback renders Korean text in this and Latin/numerals in Orbit.
+const notoSansKr = Noto_Sans_KR({
   subsets: ['latin'],
   weight: ['400', '500', '700'],
-  variable: '--font-sans',
+  variable: '--font-noto',
+  display: 'swap',
+});
+
+const orbit = Orbit({
+  subsets: ['latin'],
+  weight: '400',
+  style: 'normal',
+  variable: '--font-orbit',
   display: 'swap',
 });
 
@@ -62,7 +72,10 @@ export default async function LocaleLayout({
   const [messages, settings] = await Promise.all([getMessages(), getSettings()]);
 
   return (
-    <html lang={locale} className={`${sans.variable} ${mono.variable}`}>
+    <html
+      lang={locale}
+      className={`${notoSansKr.variable} ${orbit.variable} ${mono.variable}`}
+    >
       <body className="flex min-h-dvh flex-col">
         <NextIntlClientProvider messages={messages}>
           <SiteHeader />

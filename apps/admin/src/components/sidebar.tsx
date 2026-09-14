@@ -11,6 +11,7 @@ const NAV = [
   { href: '/projects', label: '프로젝트' },
   { href: '/categories', label: '카테고리' },
   { href: '/services', label: '서비스' },
+  { href: '/brands', label: 'STIIO 브랜드' },
   { href: '/pages', label: '페이지' },
   { href: '/inquiries', label: '문의' },
   { href: '/site', label: '사이트 정보' },
@@ -30,7 +31,7 @@ export function Sidebar() {
     <aside className="flex w-56 shrink-0 flex-col border-r border-neutral-200 bg-white">
       <div className="border-b border-neutral-200 px-5 py-4">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/logo.png" alt="Studio115" className="h-5 w-auto" />
+        <img src="/logo.png" alt="Studio115" className="h-6 w-auto" />
         <p className="mt-2 font-mono text-[0.62rem] uppercase tracking-[0.22em] text-neutral-400">
           Admin
         </p>
