@@ -1,4 +1,5 @@
 import { getTranslations } from 'next-intl/server';
+import { InstagramIcon } from './icons';
 
 export async function FloatingActions({
   phone,
@@ -31,11 +32,7 @@ export async function FloatingActions({
           aria-label={t('instagram')}
           className="grid h-11 w-11 place-items-center rounded-full bg-ink text-paper transition-transform hover:-translate-y-0.5"
         >
-          <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
-            <rect x="3" y="3" width="18" height="18" rx="5" />
-            <circle cx="12" cy="12" r="4" />
-            <circle cx="17" cy="7" r="1.1" fill="currentColor" stroke="none" />
-          </svg>
+          <InstagramIcon className="h-[18px] w-[18px]" />
         </a>
       ) : null}
     </div>

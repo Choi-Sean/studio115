@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
+import { InstagramIcon } from './icons';
 
 export async function SiteFooter({
   settings,
@@ -28,13 +29,26 @@ export async function SiteFooter({
           alt="Studio115"
           className="mb-6 h-5 w-auto opacity-60"
         />
-        <div className="flex flex-wrap gap-x-6 gap-y-2 font-mono text-xs tracking-label text-ink">
-          <Link href="/terms" className="u-underline">
-            {t('terms')}
-          </Link>
-          <Link href="/privacy" className="u-underline">
-            {t('privacy')}
-          </Link>
+        <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
+          <div className="flex flex-wrap gap-x-6 gap-y-2 font-mono text-xs tracking-label text-ink">
+            <Link href="/terms" className="u-underline">
+              {t('terms')}
+            </Link>
+            <Link href="/privacy" className="u-underline">
+              {t('privacy')}
+            </Link>
+          </div>
+          {settings['social.instagram'] ? (
+            <a
+              href={settings['social.instagram']}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Instagram"
+              className="text-ink-muted transition-colors hover:text-ink"
+            >
+              <InstagramIcon className="h-5 w-5" />
+            </a>
+          ) : null}
         </div>
 
         <dl className="mt-8 grid gap-x-8 gap-y-1.5 text-[0.72rem] leading-relaxed text-ink-muted sm:grid-cols-2 lg:grid-cols-4">
