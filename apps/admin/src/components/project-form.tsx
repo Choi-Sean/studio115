@@ -246,54 +246,88 @@ export function ProjectForm({ initial }: { initial?: ProjectDto }) {
         </div>
 
         <div className="space-y-3">
-          {media.map((m, i) => (
-            <div
-              key={i}
-              className="rounded-md border border-neutral-200 bg-white p-3"
-            >
-              <div className="flex items-center gap-2">
-                <span className="w-5 text-center text-xs text-neutral-400">
-                  {i + 1}
-                </span>
-                <Select
-                  value={m.type}
-                  onChange={(e) =>
-                    patchMedia(i, { type: e.target.value as MediaRow['type'] })
-                  }
-                  className="max-w-28"
-                >
-                  <option value="IMAGE">이미지</option>
-                  <option value="VIDEO">영상</option>
-                </Select>
-                <Input
-                  value={m.url}
-                  onChange={(e) => patchMedia(i, { url: e.target.value })}
-                  placeholder="https://…"
-                />
-                <Button
-                  type="button"
-                  variant="danger"
-                  onClick={() => setMedia((p) => p.filter((_, j) => j !== i))}
-                >
-                  ✕
-                </Button>
-              </div>
-              <div className="mt-2 flex gap-2 pl-7">
-                <Input
-                  value={m.alt}
-                  onChange={(e) => patchMedia(i, { alt: e.target.value })}
-                  placeholder="alt 텍스트"
-                />
-                {m.type === 'VIDEO' ? (
+          {media.map((m, i) => {
+            const isCover = i === media.findIndex((x) => x.type === 'IMAGE');
+            return (
+              <div
+                key={i}
+                className="rounded-md border border-neutral-200 bg-white p-3"
+              >
+                <div className="flex items-center gap-2">
+                  <span className="w-5 text-center text-xs text-neutral-400">
+                    {i + 1}
+                  </span>
+
+                  {/* Live thumbnail — shows what will actually render on the site */}
+                  <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded bg-neutral-100">
+                    {m.url.trim() ? (
+                      m.type === 'VIDEO' ? (
+                        <video
+                          src={m.url}
+                          muted
+                          playsInline
+                          preload="metadata"
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={m.url}
+                          alt=""
+                          className="h-full w-full object-cover"
+                          onError={(e) => {
+                            e.currentTarget.style.visibility = 'hidden';
+                          }}
+                        />
+                      )
+                    ) : null}
+                    {isCover ? (
+                      <span className="absolute bottom-0 left-0 right-0 bg-black/60 py-0.5 text-center text-[0.6rem] leading-none text-white">
+                        커버
+                      </span>
+                    ) : null}
+                  </div>
+
+                  <Select
+                    value={m.type}
+                    onChange={(e) =>
+                      patchMedia(i, { type: e.target.value as MediaRow['type'] })
+                    }
+                    className="max-w-28"
+                  >
+                    <option value="IMAGE">이미지</option>
+                    <option value="VIDEO">영상</option>
+                  </Select>
                   <Input
-                    value={m.posterUrl}
-                    onChange={(e) => patchMedia(i, { posterUrl: e.target.value })}
-                    placeholder="포스터 이미지 URL (선택)"
+                    value={m.url}
+                    onChange={(e) => patchMedia(i, { url: e.target.value })}
+                    placeholder="https://…"
                   />
-                ) : null}
+                  <Button
+                    type="button"
+                    variant="danger"
+                    onClick={() => setMedia((p) => p.filter((_, j) => j !== i))}
+                  >
+                    ✕
+                  </Button>
+                </div>
+                <div className="mt-2 flex gap-2 pl-[4.75rem]">
+                  <Input
+                    value={m.alt}
+                    onChange={(e) => patchMedia(i, { alt: e.target.value })}
+                    placeholder="alt 텍스트"
+                  />
+                  {m.type === 'VIDEO' ? (
+                    <Input
+                      value={m.posterUrl}
+                      onChange={(e) => patchMedia(i, { posterUrl: e.target.value })}
+                      placeholder="포스터 이미지 URL (선택)"
+                    />
+                  ) : null}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
           {media.length === 0 ? (
             <p className="text-sm text-neutral-400">
               파일을 추가하거나 URL을 직접 붙여넣으세요.
