@@ -43,7 +43,6 @@ const GROUPS: { title: string; fields: FieldDef[] }[] = [
       { key: 'legal.email', label: '이메일', required: true },
       { key: 'legal.bizNumber', label: '사업자등록번호', required: true },
       { key: 'legal.mailOrderNumber', label: '통신판매업 신고번호', required: true },
-      { key: 'legal.hosting', label: '호스팅 제공자', required: true },
       { key: 'footer.notice', label: '하단 안내문', hint: '자유 문구 (비우면 숨김)' },
     ],
   },

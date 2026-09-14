@@ -17,7 +17,6 @@ export async function SiteFooter({
     [t('legal.email'), settings['legal.email']],
     [t('legal.bizNumber'), settings['legal.bizNumber']],
     [t('legal.mailOrder'), settings['legal.mailOrderNumber']],
-    [t('legal.hosting'), settings['legal.hosting']],
   ];
 
   return (
@@ -57,9 +56,19 @@ export async function SiteFooter({
           </p>
         ) : null}
 
-        <p className="mt-8 font-mono text-[0.68rem] uppercase tracking-label text-ink-muted">
-          © {year} Studio115. {t('rights')}
-        </p>
+        <div className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[0.68rem] uppercase tracking-label text-ink-muted">
+          <p>
+            © {year} Studio115. {t('rights')}
+          </p>
+          <a
+            href="https://www.linkedin.com/in/sean1991/"
+            target="_blank"
+            rel="noreferrer"
+            className="hover:text-ink"
+          >
+            Powered by Sean
+          </a>
+        </div>
       </div>
     </footer>
   );
