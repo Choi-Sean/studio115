@@ -15,7 +15,9 @@ export async function WorkCard({
 
   return (
     <Link href={`/work/${project.slug}`} className="group block">
-      <div className="relative aspect-[4/3] overflow-hidden bg-line">
+      {/* Most uploads are portrait (site photos shot vertically) — a 4:5 frame
+          crops them gently; a wider landscape frame would slice off far more. */}
+      <div className="relative aspect-[4/5] overflow-hidden bg-line">
         {project.coverImageUrl ? (
           <Image
             src={project.coverImageUrl}

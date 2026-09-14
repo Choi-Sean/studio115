@@ -64,14 +64,17 @@ export default async function WorkDetailPage({ params }: { params: Params }) {
       </div>
 
       {p.coverImageUrl ? (
-        <div className="relative mt-6 aspect-[16/10] w-full bg-line">
+        // Most uploads are portrait — contain (not cover) so nothing is ever
+        // cropped, in a capped-width box so a tall photo doesn't blow out
+        // the page height on wide screens.
+        <div className="relative mx-auto mt-6 aspect-[4/5] w-full max-w-2xl bg-line">
           <Image
             src={p.coverImageUrl}
             alt={pick(p.title, locale)}
             fill
             priority
-            sizes="100vw"
-            className="object-cover"
+            sizes="(min-width:672px) 672px, 100vw"
+            className="object-contain"
           />
         </div>
       ) : null}
@@ -110,13 +113,16 @@ export default async function WorkDetailPage({ params }: { params: Params }) {
                 <source src={m.url} />
               </video>
             ) : (
-              <div key={m.id} className="relative aspect-[16/10] w-full bg-line">
+              <div
+                key={m.id}
+                className="relative mx-auto aspect-[4/5] w-full max-w-2xl bg-line"
+              >
                 <Image
                   src={m.url}
                   alt={m.alt ?? pick(p.title, locale)}
                   fill
-                  sizes="100vw"
-                  className="object-cover"
+                  sizes="(min-width:672px) 672px, 100vw"
+                  className="object-contain"
                 />
               </div>
             ),
