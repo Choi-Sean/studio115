@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
+import { Fragment } from 'react';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import type { ProjectMediaDto } from '@studio115/shared';
 import { Container } from '@/components/container';
 import { RichHtml } from '@/components/rich-html';
 import { Link } from '@/i18n/navigation';
@@ -25,6 +27,45 @@ export async function generateMetadata({
   };
 }
 
+// Most uploads are portrait — contain (not cover) so nothing is ever cropped,
+// capped to a readable column width so a tall photo doesn't blow out the
+// page height on wide screens.
+function Media({
+  media,
+  alt,
+  priority,
+}: {
+  media: ProjectMediaDto;
+  alt: string;
+  priority?: boolean;
+}) {
+  if (media.type === 'VIDEO') {
+    return (
+      <video
+        controls
+        playsInline
+        preload="metadata"
+        poster={media.posterUrl ?? undefined}
+        className="w-full max-w-2xl bg-line"
+      >
+        <source src={media.url} />
+      </video>
+    );
+  }
+  return (
+    <div className="relative aspect-[4/5] w-full max-w-2xl bg-line">
+      <Image
+        src={media.url}
+        alt={media.alt ?? alt}
+        fill
+        priority={priority}
+        sizes="(min-width:672px) 672px, 100vw"
+        className="object-contain"
+      />
+    </div>
+  );
+}
+
 export default async function WorkDetailPage({ params }: { params: Params }) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
@@ -45,6 +86,32 @@ export default async function WorkDetailPage({ params }: { params: Params }) {
     [t('meta.photography'), p.photography],
   ];
 
+  // Fall back to the cover image alone if no media rows were ever added.
+  const items: ProjectMediaDto[] =
+    p.media.length > 0
+      ? p.media
+      : p.coverImageUrl
+        ? [{ id: 'cover', type: 'IMAGE', url: p.coverImageUrl, posterUrl: null, alt: null, order: 0 }]
+        : [];
+
+  const infoPanel = (
+    <dl className="border-t border-line">
+      {meta.map(([k, v]) =>
+        v ? (
+          <div
+            key={k}
+            className="flex justify-between gap-4 border-b border-line py-2.5"
+          >
+            <dt className="font-mono text-[0.68rem] uppercase tracking-label text-ink-muted">
+              {k}
+            </dt>
+            <dd className="text-right text-xs text-ink-soft">{v}</dd>
+          </div>
+        ) : null,
+      )}
+    </dl>
+  );
+
   return (
     <Container className="py-8">
       <Link
@@ -63,72 +130,27 @@ export default async function WorkDetailPage({ params }: { params: Params }) {
         </p>
       </div>
 
-      {p.coverImageUrl ? (
-        // Most uploads are portrait — contain (not cover) so nothing is ever
-        // cropped, in a capped-width box so a tall photo doesn't blow out
-        // the page height on wide screens.
-        <div className="relative mx-auto mt-6 aspect-[4/5] w-full max-w-2xl bg-line">
-          <Image
-            src={p.coverImageUrl}
-            alt={pick(p.title, locale)}
-            fill
-            priority
-            sizes="(min-width:672px) 672px, 100vw"
-            className="object-contain"
-          />
-        </div>
+      {pick(p.description, locale) ? (
+        <RichHtml html={pick(p.description, locale)} className="mt-8 max-w-prose" />
       ) : null}
 
-      <div className="mt-10 grid gap-10 md:grid-cols-[1fr_18rem] md:gap-16">
-        <RichHtml html={pick(p.description, locale)} className="max-w-prose" />
-        <dl className="h-max border-t border-line md:sticky md:top-20">
-          {meta.map(([k, v]) =>
-            v ? (
-              <div
-                key={k}
-                className="flex justify-between gap-4 border-b border-line py-2.5"
-              >
-                <dt className="font-mono text-[0.68rem] uppercase tracking-label text-ink-muted">
-                  {k}
-                </dt>
-                <dd className="text-right text-xs text-ink-soft">{v}</dd>
-              </div>
-            ) : null,
-          )}
-        </dl>
+      {/* Desktop: images left, spec sheet sticky on the right.
+          Mobile: images stack full-width, spec sheet right after the first one. */}
+      <div className="mt-10 md:grid md:grid-cols-[1fr_18rem] md:items-start md:gap-16">
+        <div className="space-y-4">
+          {items.length === 0 ? <div className="md:hidden">{infoPanel}</div> : null}
+          {items.map((m, i) => (
+            <Fragment key={m.id}>
+              <Media media={m} alt={pick(p.title, locale)} priority={i === 0} />
+              {i === 0 ? <div className="md:hidden">{infoPanel}</div> : null}
+            </Fragment>
+          ))}
+        </div>
+
+        <div className="mt-10 md:sticky md:top-20 md:mt-0 md:block hidden">
+          {infoPanel}
+        </div>
       </div>
-
-      {p.media.length > 0 ? (
-        <div className="mt-14 space-y-4">
-          {p.media.map((m) =>
-            m.type === 'VIDEO' ? (
-              <video
-                key={m.id}
-                controls
-                playsInline
-                preload="metadata"
-                poster={m.posterUrl ?? undefined}
-                className="w-full bg-line"
-              >
-                <source src={m.url} />
-              </video>
-            ) : (
-              <div
-                key={m.id}
-                className="relative mx-auto aspect-[4/5] w-full max-w-2xl bg-line"
-              >
-                <Image
-                  src={m.url}
-                  alt={m.alt ?? pick(p.title, locale)}
-                  fill
-                  sizes="(min-width:672px) 672px, 100vw"
-                  className="object-contain"
-                />
-              </div>
-            ),
-          )}
-        </div>
-      ) : null}
     </Container>
   );
 }
