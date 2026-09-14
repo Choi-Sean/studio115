@@ -133,38 +133,35 @@ export function ProjectPreview({
         ) : null}
 
         <div className="mt-6 grid gap-6 sm:grid-cols-[1fr_11rem]">
-          <div className="space-y-2">
+          {/* Images/video always fill the column width, natural height — no
+              cropping, matching how the real WORK detail page shows them. */}
+          <div className="space-y-3">
             {media.length > 0 ? (
-              media.slice(0, 3).map((m, i) => (
-                <div
-                  key={i}
-                  className="relative aspect-[4/5] w-full max-w-[220px] overflow-hidden"
-                  style={{ background: LINE }}
-                >
-                  {m.url.trim() ? (
-                    m.type === 'IMAGE' ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={m.url}
-                        alt=""
-                        className="h-full w-full object-contain"
-                      />
-                    ) : (
-                      <video
-                        src={m.url}
-                        muted
-                        playsInline
-                        preload="metadata"
-                        className="h-full w-full object-contain"
-                      />
-                    )
-                  ) : null}
-                </div>
-              ))
+              media.map((m, i) =>
+                m.type === 'IMAGE' ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    key={i}
+                    src={m.url}
+                    alt=""
+                    loading={i === 0 ? 'eager' : 'lazy'}
+                    className="block w-full bg-white"
+                  />
+                ) : (
+                  <video
+                    key={i}
+                    src={m.url}
+                    muted
+                    playsInline
+                    preload="metadata"
+                    className="block w-full bg-white"
+                  />
+                ),
+              )
             ) : (
               <div
-                className="flex aspect-[4/5] w-full max-w-[220px] items-center justify-center text-center text-[0.65rem]"
-                style={{ background: LINE, color: INK_MUTED }}
+                className="flex aspect-[4/5] w-full items-center justify-center text-center text-[0.65rem]"
+                style={{ background: '#ffffff', border: `1px dashed ${LINE}`, color: INK_MUTED }}
               >
                 이미지를 추가하면
                 <br />

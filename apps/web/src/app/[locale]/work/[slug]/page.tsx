@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { Fragment } from 'react';
-import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import type { ProjectMediaDto } from '@studio115/shared';
@@ -27,9 +26,8 @@ export async function generateMetadata({
   };
 }
 
-// Most uploads are portrait — contain (not cover) so nothing is ever cropped,
-// capped to a readable column width so a tall photo doesn't blow out the
-// page height on wide screens.
+// Always full column width, natural height — never cropped, whatever the
+// source aspect ratio (most uploads are portrait, some may be landscape).
 function Media({
   media,
   alt,
@@ -46,23 +44,20 @@ function Media({
         playsInline
         preload="metadata"
         poster={media.posterUrl ?? undefined}
-        className="w-full max-w-2xl bg-line"
+        className="block w-full bg-paper"
       >
         <source src={media.url} />
       </video>
     );
   }
   return (
-    <div className="relative aspect-[4/5] w-full max-w-2xl bg-line">
-      <Image
-        src={media.url}
-        alt={media.alt ?? alt}
-        fill
-        priority={priority}
-        sizes="(min-width:672px) 672px, 100vw"
-        className="object-contain"
-      />
-    </div>
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={media.url}
+      alt={media.alt ?? alt}
+      loading={priority ? 'eager' : 'lazy'}
+      className="block w-full bg-paper"
+    />
   );
 }
 

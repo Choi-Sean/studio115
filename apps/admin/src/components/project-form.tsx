@@ -59,6 +59,16 @@ export function ProjectForm({ initial }: { initial?: ProjectDto }) {
     setMedia((prev) => prev.map((m, j) => (j === i ? { ...m, ...patch } : m)));
   }
 
+  function moveMedia(i: number, dir: -1 | 1) {
+    setMedia((prev) => {
+      const j = i + dir;
+      if (j < 0 || j >= prev.length) return prev;
+      const next = [...prev];
+      [next[i], next[j]] = [next[j], next[i]];
+      return next;
+    });
+  }
+
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
@@ -148,8 +158,8 @@ export function ProjectForm({ initial }: { initial?: ProjectDto }) {
   }
 
   return (
-    <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_26rem] xl:items-start">
-      <form onSubmit={onSubmit} className="max-w-3xl space-y-8">
+    <div className="grid gap-8 xl:grid-cols-2 xl:items-start">
+      <form onSubmit={onSubmit} className="space-y-8">
         <div className="grid gap-4 sm:grid-cols-2">
           <Field label="제목 (KO)" required>
             <Input
@@ -300,6 +310,28 @@ export function ProjectForm({ initial }: { initial?: ProjectDto }) {
                       {i + 1}
                     </span>
 
+                    {/* Reorder */}
+                    <div className="flex shrink-0 flex-col">
+                      <button
+                        type="button"
+                        disabled={i === 0}
+                        onClick={() => moveMedia(i, -1)}
+                        aria-label="위로 이동"
+                        className="text-neutral-400 hover:text-neutral-900 disabled:opacity-20"
+                      >
+                        ▲
+                      </button>
+                      <button
+                        type="button"
+                        disabled={i === media.length - 1}
+                        onClick={() => moveMedia(i, 1)}
+                        aria-label="아래로 이동"
+                        className="text-neutral-400 hover:text-neutral-900 disabled:opacity-20"
+                      >
+                        ▼
+                      </button>
+                    </div>
+
                     {/* Live thumbnail — shows what will actually render on the site */}
                     <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded bg-neutral-100">
                       {m.url.trim() ? (
@@ -353,7 +385,7 @@ export function ProjectForm({ initial }: { initial?: ProjectDto }) {
                       ✕
                     </Button>
                   </div>
-                  <div className="mt-2 flex gap-2 pl-[4.75rem]">
+                  <div className="mt-2 flex gap-2 pl-[7rem]">
                     <Input
                       value={m.alt}
                       onChange={(e) => patchMedia(i, { alt: e.target.value })}
