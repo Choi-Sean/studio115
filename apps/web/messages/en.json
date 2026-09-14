@@ -42,14 +42,6 @@
     }
   },
   "stiio": {
-    "title": "STIIO",
-    "intro": "Brands connected to Studio115 — starting with interiors and extending into textile, furniture and home objects.",
-    "brands": {
-      "interior": { "name": "Studio115", "tag": "Interior", "desc": "Design and build for homes and commercial spaces." },
-      "textile": { "name": "Studio115 Textile", "tag": "Fabric", "desc": "Curtains, rugs and fabric collections." },
-      "furniture": { "name": "Studio115 Furniture", "tag": "Furniture", "desc": "Bespoke pieces made for the space." },
-      "home": { "name": "Studio115 Home", "tag": "Home", "desc": "Lighting, objects and living goods." }
-    },
     "galleryTitle": "OBJECTS",
     "galleryHint": "Hover an image to see its name.",
     "journalTitle": "JOURNAL",
@@ -150,8 +142,7 @@
       "phone": "Phone",
       "email": "Email",
       "bizNumber": "Business no.",
-      "mailOrder": "Mail-order licence",
-      "hosting": "Hosting"
+      "mailOrder": "Mail-order licence"
     },
     "rights": "All rights reserved."
   },

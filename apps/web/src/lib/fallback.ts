@@ -1,4 +1,5 @@
 import type {
+  BrandDto,
   CategoryDto,
   PageDto,
   ProjectDto,
@@ -107,6 +108,22 @@ export const FALLBACK_SERVICES: ServiceDto[] = [
   published: true,
 }));
 
+export const FALLBACK_BRANDS: BrandDto[] = [
+  { slug: 'studio115', tko: '인테리어', ten: 'Interior', ko: '스튜디오115', en: 'Studio115', dko: '주거·상업 공간의 설계와 시공.', den: 'Design and build for homes and commercial spaces.', live: true },
+  { slug: 'studio115-textile', tko: '패브릭', ten: 'Fabric', ko: '스튜디오115 텍스타일', en: 'Studio115 Textile', dko: '커튼, 러그, 패브릭 컬렉션.', den: 'Curtains, rugs and fabric collections.', live: false },
+  { slug: 'studio115-furniture', tko: '가구', ten: 'Furniture', ko: '스튜디오115 퍼니처', en: 'Studio115 Furniture', dko: '공간에 맞춘 제작 가구.', den: 'Bespoke pieces made for the space.', live: false },
+  { slug: 'studio115-home', tko: '홈데코', ten: 'Home', ko: '스튜디오115 홈', en: 'Studio115 Home', dko: '조명, 오브제, 리빙 소품.', den: 'Lighting, objects and living goods.', live: false },
+].map((b, i) => ({
+  id: `fallback-brand-${b.slug}`,
+  slug: b.slug,
+  tag: { ko: b.tko, en: b.ten },
+  name: { ko: b.ko, en: b.en },
+  description: { ko: b.dko, en: b.den },
+  live: b.live,
+  published: true,
+  order: i,
+}));
+
 export const FALLBACK_PAGES: Record<string, PageDto> = {
   about: {
     slug: 'about',
@@ -114,6 +131,15 @@ export const FALLBACK_PAGES: Record<string, PageDto> = {
     body: {
       ko: '<p>스튜디오115는 주거와 상업 공간을 다루는 인테리어·건축 스튜디오입니다. 오래 견디는 재료와 절제된 디테일로, 시간이 지나도 편안한 공간을 만듭니다.</p>',
       en: '<p>STUDIO115 is an interior and architecture studio creating residential and commercial spaces where timeless materials meet a considered, lived-in calm.</p>',
+    },
+    updatedAt: '2024-01-01T00:00:00.000Z',
+  },
+  stiio: {
+    slug: 'stiio',
+    title: { ko: 'STIIO', en: 'STIIO' },
+    body: {
+      ko: '<p>스튜디오115와 연결되는 브랜드들입니다. 인테리어에서 출발해 패브릭·가구·소품으로 확장합니다.</p>',
+      en: '<p>Brands connected to Studio115 — starting with interiors and extending into textile, furniture and home objects.</p>',
     },
     updatedAt: '2024-01-01T00:00:00.000Z',
   },
@@ -158,6 +184,5 @@ export const FALLBACK_SETTINGS: Record<string, string> = {
   'legal.email': 'gksqhfma0306@naver.com',
   'legal.bizNumber': '249-48-00951',
   'legal.mailOrderNumber': '',
-  'legal.hosting': '위대한 Sean Choi',
   'footer.notice': '최상화에게 440만원 입금 부탁드립니다 🙏',
 };

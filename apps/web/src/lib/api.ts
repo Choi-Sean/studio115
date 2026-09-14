@@ -1,4 +1,5 @@
 import type {
+  BrandDto,
   CategoryDto,
   InstagramMediaDto,
   PageDto,
@@ -8,6 +9,7 @@ import type {
 } from '@studio115/shared';
 import { API_URL } from './env';
 import {
+  FALLBACK_BRANDS,
   FALLBACK_CATEGORIES,
   FALLBACK_PAGES,
   FALLBACK_PROJECTS,
@@ -74,6 +76,10 @@ export async function getProject(slug: string): Promise<ProjectDto | null> {
   } catch {
     return fallback;
   }
+}
+
+export function getBrands(): Promise<BrandDto[]> {
+  return get<BrandDto[]>('/brands', FALLBACK_BRANDS);
 }
 
 export function getServices(): Promise<ServiceDto[]> {

@@ -6,6 +6,7 @@ import { PageHeader } from '@/components/ui';
 
 const LABEL: Record<string, string> = {
   about: 'ABOUT (회사소개)',
+  stiio: 'STIIO (인트로 문구)',
   terms: '이용약관',
   privacy: '개인정보처리방침',
 };

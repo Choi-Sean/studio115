@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Container } from '@/components/container';
-import { SectionHeading } from '@/components/section-heading';
+import { RichHtml } from '@/components/rich-html';
 import { HoverGallery } from '@/components/hover-gallery';
-import { getProjects } from '@/lib/api';
+import { getBrands, getPage, getProjects } from '@/lib/api';
+import { pick } from '@/lib/format';
 
 export async function generateMetadata({
   params,
@@ -11,12 +12,9 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: 'stiio' });
-  return { title: t('title'), description: t('intro') };
+  const page = await getPage('stiio');
+  return { title: pick(page.title, locale) };
 }
-
-const BRAND_KEYS = ['interior', 'textile', 'furniture', 'home'] as const;
-const LIVE = new Set(['interior']);
 
 export default async function StiioPage({
   params,
@@ -26,9 +24,11 @@ export default async function StiioPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const [t, tCommon, projects] = await Promise.all([
-    getTranslations('stiio'),
+  const [tCommon, t, page, brands, projects] = await Promise.all([
     getTranslations('common'),
+    getTranslations('stiio'),
+    getPage('stiio'),
+    getBrands(),
     getProjects({ pageSize: 8 }),
   ]);
 
@@ -41,36 +41,32 @@ export default async function StiioPage({
 
   return (
     <Container className="py-8">
-      <SectionHeading label={t('title')} title={undefined}>
-        {t('intro')}
-      </SectionHeading>
+      <p className="u-label">{pick(page.title, locale)}</p>
+      <RichHtml html={pick(page.body, locale)} className="mt-3 max-w-prose" />
 
       {/* Sub-brands */}
       <div className="mt-10 grid gap-px border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
-        {BRAND_KEYS.map((k) => {
-          const live = LIVE.has(k);
-          return (
-            <div
-              key={k}
-              className="flex min-h-40 flex-col justify-between bg-paper p-5"
-            >
-              <div>
-                <p className="font-mono text-[0.7rem] uppercase tracking-label text-ink-muted">
-                  {t(`brands.${k}.tag`)}
-                </p>
-                <p className="mt-2 font-medium">{t(`brands.${k}.name`)}</p>
-                <p className="mt-1.5 text-sm text-ink-soft">
-                  {t(`brands.${k}.desc`)}
-                </p>
-              </div>
-              {!live ? (
-                <p className="mt-4 font-mono text-[0.7rem] uppercase tracking-label text-ink-muted">
-                  {tCommon('comingSoon')}
-                </p>
-              ) : null}
+        {brands.map((b) => (
+          <div
+            key={b.id}
+            className="flex min-h-40 flex-col justify-between bg-paper p-5"
+          >
+            <div>
+              <p className="font-mono text-[0.7rem] uppercase tracking-label text-ink-muted">
+                {pick(b.tag, locale)}
+              </p>
+              <p className="mt-2 font-medium">{pick(b.name, locale)}</p>
+              <p className="mt-1.5 text-sm text-ink-soft">
+                {pick(b.description, locale)}
+              </p>
             </div>
-          );
-        })}
+            {!b.live ? (
+              <p className="mt-4 font-mono text-[0.7rem] uppercase tracking-label text-ink-muted">
+                {tCommon('comingSoon')}
+              </p>
+            ) : null}
+          </div>
+        ))}
       </div>
 
       {/* Hover gallery */}

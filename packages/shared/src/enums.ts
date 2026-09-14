@@ -32,5 +32,5 @@ export type Locale = (typeof LOCALES)[number];
 export const DEFAULT_LOCALE: Locale = 'ko';
 
 /** Slugs of the editable long-form pages (`Page` table). */
-export const EDITABLE_PAGE_SLUGS = ['about', 'terms', 'privacy'] as const;
+export const EDITABLE_PAGE_SLUGS = ['about', 'stiio', 'terms', 'privacy'] as const;
 export type EditablePageSlug = (typeof EDITABLE_PAGE_SLUGS)[number];

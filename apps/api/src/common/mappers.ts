@@ -1,4 +1,5 @@
 import type {
+  Brand,
   Category,
   Inquiry,
   Page,
@@ -7,6 +8,7 @@ import type {
   Service,
 } from '@prisma/client';
 import type {
+  BrandDto,
   CategoryDto,
   CategoryRefDto,
   ContractStatus,
@@ -85,6 +87,19 @@ export function toServiceDto(s: Service): ServiceDto {
     icon: s.icon,
     order: s.order,
     published: s.published,
+  };
+}
+
+export function toBrandDto(b: Brand): BrandDto {
+  return {
+    id: b.id,
+    slug: b.slug,
+    tag: { ko: b.tagKo, en: b.tagEn },
+    name: { ko: b.nameKo, en: b.nameEn },
+    description: { ko: b.descriptionKo, en: b.descriptionEn },
+    live: b.live,
+    published: b.published,
+    order: b.order,
   };
 }
 

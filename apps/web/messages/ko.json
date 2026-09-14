@@ -42,30 +42,6 @@
     }
   },
   "stiio": {
-    "title": "STIIO",
-    "intro": "스튜디오115와 연결되는 브랜드들입니다. 인테리어에서 출발해 패브릭·가구·소품으로 확장합니다.",
-    "brands": {
-      "interior": {
-        "name": "스튜디오115",
-        "tag": "인테리어",
-        "desc": "주거·상업 공간의 설계와 시공."
-      },
-      "textile": {
-        "name": "스튜디오115 텍스타일",
-        "tag": "패브릭",
-        "desc": "커튼, 러그, 패브릭 컬렉션."
-      },
-      "furniture": {
-        "name": "스튜디오115 퍼니처",
-        "tag": "가구",
-        "desc": "공간에 맞춘 제작 가구."
-      },
-      "home": {
-        "name": "스튜디오115 홈",
-        "tag": "홈데코",
-        "desc": "조명, 오브제, 리빙 소품."
-      }
-    },
     "galleryTitle": "OBJECTS",
     "galleryHint": "이미지에 마우스를 올리면 이름이 보입니다.",
     "journalTitle": "JOURNAL",
@@ -166,8 +142,7 @@
       "phone": "연락처",
       "email": "이메일",
       "bizNumber": "사업자등록번호",
-      "mailOrder": "통신판매업신고번호",
-      "hosting": "호스팅 제공자"
+      "mailOrder": "통신판매업신고번호"
     },
     "rights": "All rights reserved."
   },

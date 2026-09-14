@@ -68,6 +68,17 @@ export interface ProjectDto {
   updatedAt: string;
 }
 
+export interface BrandDto {
+  id: string;
+  slug: string;
+  tag: LocalizedText;
+  name: LocalizedText;
+  description: LocalizedText;
+  live: boolean;
+  published: boolean;
+  order: number;
+}
+
 export interface ServiceDto {
   id: string;
   slug: string;

@@ -62,7 +62,6 @@ async function seedSettings() {
     'legal.email': 'gksqhfma0306@naver.com',
     'legal.bizNumber': '249-48-00951',
     'legal.mailOrderNumber': '',
-    'legal.hosting': '위대한 Sean Choi',
     // TODO(joke): 클라이언트 전달/실배포 전 삭제 (admin 사이트 설정에서 비우면 됨)
     'footer.notice': '최상화에게 440만원 입금 부탁드립니다 🙏',
   };
@@ -94,6 +93,15 @@ const PAGES = [
       '<p>These terms govern the use of the website operated by Studio115 ("the Company"). Information provided here is for reference only and may not be reproduced, redistributed or used commercially without the Company\'s prior consent. Matters not specified here follow applicable law and common practice. <em>(Placeholder — replace with the final terms.)</em></p>',
     bodyKo:
       '<p>본 약관은 스튜디오115(이하 \'회사\')가 운영하는 웹사이트의 이용 조건과 절차, 이용자와 회사의 권리·의무를 규정합니다. 이용자는 본 사이트의 정보를 참고 목적으로 이용할 수 있으며, 회사의 사전 동의 없이 콘텐츠를 복제·배포·상업적으로 이용할 수 없습니다. 명시되지 않은 사항은 관계 법령 및 상관례에 따릅니다. <em>(플레이스홀더 — 실제 약관으로 교체)</em></p>',
+  },
+  {
+    slug: 'stiio',
+    titleKo: 'STIIO',
+    titleEn: 'STIIO',
+    bodyKo:
+      '<p>스튜디오115와 연결되는 브랜드들입니다. 인테리어에서 출발해 패브릭·가구·소품으로 확장합니다.</p>',
+    bodyEn:
+      '<p>Brands connected to Studio115 — starting with interiors and extending into textile, furniture and home objects.</p>',
   },
   {
     slug: 'privacy',
@@ -212,6 +220,61 @@ async function seedServices() {
   console.log(`  services: ${SERVICES.length}`);
 }
 
+const BRANDS = [
+  {
+    slug: 'studio115',
+    tagKo: '인테리어',
+    tagEn: 'Interior',
+    nameKo: '스튜디오115',
+    nameEn: 'Studio115',
+    descriptionKo: '주거·상업 공간의 설계와 시공.',
+    descriptionEn: 'Design and build for homes and commercial spaces.',
+    live: true,
+  },
+  {
+    slug: 'studio115-textile',
+    tagKo: '패브릭',
+    tagEn: 'Fabric',
+    nameKo: '스튜디오115 텍스타일',
+    nameEn: 'Studio115 Textile',
+    descriptionKo: '커튼, 러그, 패브릭 컬렉션.',
+    descriptionEn: 'Curtains, rugs and fabric collections.',
+    live: false,
+  },
+  {
+    slug: 'studio115-furniture',
+    tagKo: '가구',
+    tagEn: 'Furniture',
+    nameKo: '스튜디오115 퍼니처',
+    nameEn: 'Studio115 Furniture',
+    descriptionKo: '공간에 맞춘 제작 가구.',
+    descriptionEn: 'Bespoke pieces made for the space.',
+    live: false,
+  },
+  {
+    slug: 'studio115-home',
+    tagKo: '홈데코',
+    tagEn: 'Home',
+    nameKo: '스튜디오115 홈',
+    nameEn: 'Studio115 Home',
+    descriptionKo: '조명, 오브제, 리빙 소품.',
+    descriptionEn: 'Lighting, objects and living goods.',
+    live: false,
+  },
+];
+
+async function seedBrands() {
+  for (let i = 0; i < BRANDS.length; i++) {
+    const b = BRANDS[i];
+    await prisma.brand.upsert({
+      where: { slug: b.slug },
+      update: { ...b, order: i, published: true },
+      create: { ...b, order: i, published: true },
+    });
+  }
+  console.log(`  brands: ${BRANDS.length}`);
+}
+
 async function seedInquiries() {
   if ((await prisma.inquiry.count()) > 0) {
     console.log('  inquiries: skipped (already present)');
@@ -246,6 +309,7 @@ async function main() {
   await seedPages();
   await seedProjects();
   await seedServices();
+  await seedBrands();
   await seedInquiries();
   console.log('Done.');
 }

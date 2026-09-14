@@ -101,6 +101,24 @@ model Service {
   @@map("Service")
 }
 
+model Brand {
+  id            String   @id @default(cuid()) @map("Id") @db.NVarChar(30)
+  slug          String   @unique @map("Slug") @db.NVarChar(200)
+  tagKo         String   @map("TagKo")
+  tagEn         String   @map("TagEn")
+  nameKo        String   @map("NameKo")
+  nameEn        String   @map("NameEn")
+  descriptionKo String   @map("DescriptionKo") @db.NVarChar(2000)
+  descriptionEn String   @map("DescriptionEn") @db.NVarChar(2000)
+  live          Boolean  @default(false) @map("Live")
+  published     Boolean  @default(true) @map("Published")
+  order         Int      @default(0) @map("Order")
+  createdAt     DateTime @default(now()) @map("CreatedAt")
+  updatedAt     DateTime @updatedAt @map("UpdatedAt")
+
+  @@map("Brand")
+}
+
 model Page {
   id        String   @id @default(cuid()) @map("Id") @db.NVarChar(30)
   slug      String   @unique @map("Slug") @db.NVarChar(100) // about | terms | privacy

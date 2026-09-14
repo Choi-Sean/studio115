@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { RolesGuard } from './auth/roles.guard';
 import { CategoriesModule } from './categories/categories.module';
+import { BrandsModule } from './brands/brands.module';
 import { ProjectsModule } from './projects/projects.module';
 import { ServicesModule } from './services/services.module';
 import { PagesModule } from './pages/pages.module';
@@ -22,6 +23,7 @@ import { HealthModule } from './health/health.module';
     AuthModule,
     StorageModule,
     CategoriesModule,
+    BrandsModule,
     ProjectsModule,
     ServicesModule,
     PagesModule,
