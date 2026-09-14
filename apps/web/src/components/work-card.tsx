@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { getLocale } from 'next-intl/server';
 import type { ProjectDto } from '@studio115/shared';
 import { Link } from '@/i18n/navigation';
@@ -19,13 +18,13 @@ export async function WorkCard({
           crops them gently; a wider landscape frame would slice off far more. */}
       <div className="relative aspect-[4/5] overflow-hidden bg-line">
         {project.coverImageUrl ? (
-          <Image
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
             src={project.coverImageUrl}
             alt={pick(project.title, locale)}
-            fill
-            sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
-            className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-            priority={priority}
+            loading={priority ? 'eager' : 'lazy'}
+            fetchPriority={priority ? 'high' : undefined}
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
           />
         ) : null}
       </div>
