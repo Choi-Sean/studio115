@@ -27,13 +27,16 @@ export async function WorkCard({
             className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
           />
         ) : null}
+        {/* Title/meta stay hidden until hover, same as the STIIO OBJECTS gallery. */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-paper/0 px-4 text-center opacity-0 transition-all duration-300 group-hover:bg-paper/85 group-hover:opacity-100">
+          <p className="font-mono text-xs uppercase tracking-label text-ink">
+            {project.title.en}
+          </p>
+          <p className="text-[0.72rem] text-ink-muted">
+            {[project.type, project.location].filter(Boolean).join(' · ')}
+          </p>
+        </div>
       </div>
-      <p className="mt-2.5 font-mono text-xs uppercase tracking-label text-ink">
-        {project.title.en}
-      </p>
-      <p className="mt-0.5 text-[0.72rem] text-ink-muted">
-        {[project.type, project.location].filter(Boolean).join(' · ')}
-      </p>
     </Link>
   );
 }
