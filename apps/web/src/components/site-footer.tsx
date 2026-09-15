@@ -10,10 +10,14 @@ export async function SiteFooter({
   const t = await getTranslations('footer');
   const year = new Date().getFullYear();
 
-  const rows: Array<[string, string | undefined]> = [
+  // Row 1: identity — company / owner / address, fixed 3 across.
+  const primaryRows: Array<[string, string | undefined]> = [
     [t('legal.company'), settings['legal.bizName']],
     [t('legal.owner'), settings['legal.owner']],
     [t('legal.address'), settings['legal.address']],
+  ];
+  // Row 2: contact / registration details, dropped below.
+  const secondaryRows: Array<[string, string | undefined]> = [
     [t('legal.phone'), settings['legal.phone']],
     [t('legal.email'), settings['legal.email']],
     [t('legal.bizNumber'), settings['legal.bizNumber']],
@@ -22,7 +26,7 @@ export async function SiteFooter({
 
   return (
     <footer className="mt-24 border-t border-line">
-      <div className="mx-auto max-w-[1400px] px-5 py-10 lg:px-10">
+      <div className="mx-auto max-w-[1400px] px-5 py-10 lg:px-14">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/logo.png"
@@ -51,14 +55,35 @@ export async function SiteFooter({
           ) : null}
         </div>
 
-        <dl className="mt-8 grid gap-x-8 gap-y-1.5 text-[0.72rem] leading-relaxed text-ink-muted sm:grid-cols-2 lg:grid-cols-4">
-          {rows.map(([label, value]) =>
+        <dl className="mt-8 grid gap-x-8 gap-y-1.5 text-[0.72rem] leading-relaxed text-ink-muted sm:grid-cols-3">
+          {primaryRows.map(([label, value]) =>
             value ? (
               <div key={label} className="flex gap-2">
                 <dt className="shrink-0 font-mono uppercase tracking-label">
                   {label}
                 </dt>
                 <dd className="text-ink-soft">{value}</dd>
+              </div>
+            ) : null,
+          )}
+        </dl>
+
+        <dl className="mt-1.5 grid gap-x-8 gap-y-1.5 text-[0.72rem] leading-relaxed text-ink-muted sm:grid-cols-2 lg:grid-cols-4">
+          {secondaryRows.map(([label, value]) =>
+            value ? (
+              <div key={label} className="flex gap-2">
+                <dt className="shrink-0 font-mono uppercase tracking-label">
+                  {label}
+                </dt>
+                <dd className="text-ink-soft">
+                  {label === t('legal.email') ? (
+                    <a href={`mailto:${value}`} className="u-underline">
+                      {value}
+                    </a>
+                  ) : (
+                    value
+                  )}
+                </dd>
               </div>
             ) : null,
           )}
