@@ -30,7 +30,7 @@ export function SiteHeader() {
     <header className="sticky top-0 z-40 bg-paper/90 backdrop-blur">
       <div className="mx-auto flex h-14 max-w-[1400px] items-center justify-between px-5 lg:px-10">
         <Link href="/" aria-label="Studio115 — home" className="shrink-0">
-          <Logo />
+          <Logo className="h-7 w-auto" />
         </Link>
 
         <nav className="hidden items-center gap-9 md:flex">
@@ -39,7 +39,7 @@ export function SiteHeader() {
               key={n.href}
               href={n.href}
               className={cn(
-                'font-mono text-xs tracking-label transition-colors',
+                'font-mono text-sm tracking-label transition-colors',
                 isActive(n.href) ? 'text-ink' : 'text-ink-muted hover:text-ink',
               )}
             >

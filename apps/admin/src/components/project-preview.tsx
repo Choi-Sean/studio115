@@ -1,17 +1,19 @@
 'use client';
 
-import { JetBrains_Mono, Noto_Sans_KR, Orbit } from 'next/font/google';
+import { JetBrains_Mono, Noto_Sans_KR } from 'next/font/google';
+import localFont from 'next/font/local';
 
-// Same three faces the public site uses, loaded here too so the preview
-// isn't just laid out right — it actually looks like the real page.
+// Same faces the public site uses, loaded here too so the preview isn't
+// just laid out right — it actually looks like the real page.
 const noto = Noto_Sans_KR({
   subsets: ['latin'],
   weight: ['400', '500', '700'],
   variable: '--pv-noto',
   display: 'swap',
 });
-const orbit = Orbit({
-  subsets: ['latin'],
+// Korean "Orbit" by Sooun Cho / JAMO — draws Hangul + Latin itself.
+const orbit = localFont({
+  src: '../fonts/orbit-kr/Orbit-Regular.woff2',
   weight: '400',
   style: 'normal',
   variable: '--pv-orbit',

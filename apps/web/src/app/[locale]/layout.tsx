@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { JetBrains_Mono, Noto_Sans_KR, Orbit } from 'next/font/google';
+import { JetBrains_Mono, Noto_Sans_KR } from 'next/font/google';
+import localFont from 'next/font/local';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import { routing, type AppLocale } from '@/i18n/routing';
@@ -11,8 +12,8 @@ import { getSettings } from '@/lib/api';
 import { SITE_URL } from '@/lib/env';
 import '../globals.css';
 
-// Korean fallback — Orbit (below) has no Hangul glyphs, so CSS font-family
-// fallback renders Korean text in this and Latin/numerals in Orbit.
+// Noto Sans KR stays as the last-resort fallback for any glyph Orbit lacks
+// (rare hanja, obsolete jamo) — Orbit itself now covers Hangul + Latin.
 const notoSansKr = Noto_Sans_KR({
   subsets: ['latin'],
   weight: ['400', '500', '700'],
@@ -20,8 +21,10 @@ const notoSansKr = Noto_Sans_KR({
   display: 'swap',
 });
 
-const orbit = Orbit({
-  subsets: ['latin'],
+// Korean "Orbit" by Sooun Cho / JAMO (noonnu.cc) — unlike Google Fonts'
+// Latin-only "Orbit", this one draws both Hangul and Latin glyphs itself.
+const orbit = localFont({
+  src: '../../fonts/orbit-kr/Orbit-Regular.woff2',
   weight: '400',
   style: 'normal',
   variable: '--font-orbit',
