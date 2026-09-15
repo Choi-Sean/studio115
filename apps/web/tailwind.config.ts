@@ -16,9 +16,18 @@ const config: Config = {
         accent: '#111111',
       },
       fontFamily: {
-        // Orbit has no Hangul, so Korean glyphs fall through to Noto Sans KR.
         sans: ['var(--font-orbit)', 'var(--font-noto)', 'system-ui', 'sans-serif'],
-        mono: ['var(--font-mono)', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+        // JetBrains Mono has no Hangul either — without a Korean fallback here,
+        // any Korean text styled with font-mono (labels, breadcrumbs, nav)
+        // skipped straight to the OS default instead of Orbit.
+        mono: [
+          'var(--font-mono)',
+          'var(--font-orbit)',
+          'var(--font-noto)',
+          'ui-monospace',
+          'SFMono-Regular',
+          'monospace',
+        ],
       },
       letterSpacing: {
         label: '0.14em',
