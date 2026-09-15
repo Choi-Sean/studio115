@@ -8,7 +8,6 @@ import { RichHtml } from '@/components/rich-html';
 import { Link } from '@/i18n/navigation';
 import { getProject } from '@/lib/api';
 import { pick } from '@/lib/format';
-import { cn } from '@/lib/utils';
 
 type Params = Promise<{ locale: string; slug: string }>;
 
@@ -27,22 +26,21 @@ export async function generateMetadata({
   };
 }
 
-// Full column width, natural height — never cropped, whatever the source
-// aspect ratio (most uploads are portrait, some may be landscape). The
-// hero (first) image is additionally height-capped so a very tall portrait
-// still fits within the first screen instead of running well past the fold;
-// width then scales down with it to keep the aspect ratio, so it's shrunk
-// rather than cropped.
+// Mobile: simple full width, natural height, never cropped. Desktop: every
+// image is capped to the viewport height so each one is fully visible on
+// one screen — width scales down with it (never cropped), so a tall
+// portrait shrinks instead of running past the fold.
+const MEDIA_CLASS =
+  'block w-full bg-paper md:mx-auto md:h-auto md:w-auto md:max-w-full md:max-h-[80vh]';
+
 function Media({
   media,
   alt,
   priority,
-  hero,
 }: {
   media: ProjectMediaDto;
   alt: string;
   priority?: boolean;
-  hero?: boolean;
 }) {
   if (media.type === 'VIDEO') {
     return (
@@ -51,7 +49,7 @@ function Media({
         playsInline
         preload="metadata"
         poster={media.posterUrl ?? undefined}
-        className={cn('block w-full bg-paper', hero && 'mx-auto max-h-[80vh] w-auto max-w-full')}
+        className={MEDIA_CLASS}
       >
         <source src={media.url} />
       </video>
@@ -63,7 +61,7 @@ function Media({
       src={media.url}
       alt={media.alt ?? alt}
       loading={priority ? 'eager' : 'lazy'}
-      className={cn('block w-full bg-paper', hero && 'mx-auto max-h-[80vh] w-auto max-w-full')}
+      className={MEDIA_CLASS}
     />
   );
 }
@@ -136,14 +134,14 @@ export default async function WorkDetailPage({ params }: { params: Params }) {
         <RichHtml html={pick(p.description, locale)} className="mt-8 max-w-prose" />
       ) : null}
 
-      {/* Desktop: images left, spec sheet sticky on the right.
+      {/* Desktop: images left (60%), spec sheet sticky on the right (40%).
           Mobile: images stack full-width, spec sheet right after the first one. */}
-      <div className="mt-10 md:grid md:grid-cols-[1fr_18rem] md:items-start md:gap-16">
+      <div className="mt-10 md:grid md:grid-cols-[3fr_2fr] md:items-start md:gap-16">
         <div className="space-y-4">
           {items.length === 0 ? <div className="md:hidden">{infoPanel}</div> : null}
           {items.map((m, i) => (
             <Fragment key={m.id}>
-              <Media media={m} alt={pick(p.title, locale)} priority={i === 0} hero={i === 0} />
+              <Media media={m} alt={pick(p.title, locale)} priority={i === 0} />
               {i === 0 ? <div className="md:hidden">{infoPanel}</div> : null}
             </Fragment>
           ))}

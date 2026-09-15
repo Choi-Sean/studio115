@@ -68,7 +68,7 @@ export async function SiteFooter({
           )}
         </dl>
 
-        <dl className="mt-1.5 grid gap-x-8 gap-y-1.5 text-[0.72rem] leading-relaxed text-ink-muted sm:grid-cols-2 lg:grid-cols-4">
+        <dl className="mt-1.5 grid gap-x-8 gap-y-1.5 text-[0.72rem] leading-relaxed text-ink-muted sm:grid-cols-3">
           {secondaryRows.map(([label, value]) =>
             value ? (
               <div key={label} className="flex gap-2">
