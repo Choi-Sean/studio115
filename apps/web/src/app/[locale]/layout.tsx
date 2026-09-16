@@ -54,9 +54,14 @@ export async function generateMetadata({
     title: { default: t('titleDefault'), template: t('titleTemplate') },
     description: t('description'),
     openGraph: {
-      siteName: 'Studio115',
+      siteName: 'Studiollo',
       type: 'website',
       locale: locale === 'en' ? 'en_US' : 'ko_KR',
+      images: [{ url: '/og-image.png', width: 3705, height: 2230 }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      images: ['/og-image.png'],
     },
   };
 }

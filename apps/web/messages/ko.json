@@ -1,12 +1,12 @@
 {
   "meta": {
-    "titleDefault": "Studio115",
-    "titleTemplate": "%s — Studio115",
+    "titleDefault": "Studiollo",
+    "titleTemplate": "%s - Studiollo",
     "description": "스튜디오115는 주거와 상업 공간을 다루는 인테리어·건축 스튜디오입니다."
   },
   "nav": {
     "work": "WORK",
-    "stiio": "STIIO",
+    "stiio": "STllO",
     "contact": "CONTACT",
     "about": "ABOUT",
     "process": "WORK PROCESS",
@@ -49,7 +49,7 @@
     "journalComingSoon": "준비 중입니다."
   },
   "contact": {
-    "title": "CONTACT",
+    "title": "Contact",
     "intro": "상담 및 문의는 아래 양식으로 남겨 주세요. 확인 후 담당자가 연락드립니다.",
     "infoTitle": "INFO",
     "hoursLabel": "운영 시간",
@@ -110,7 +110,7 @@
     }
   },
   "about": {
-    "title": "ABOUT",
+    "title": "About",
     "sections": {
       "services": "SERVICES",
       "coreValues": "CORE VALUES",

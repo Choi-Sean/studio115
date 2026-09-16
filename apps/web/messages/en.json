@@ -1,12 +1,12 @@
 {
   "meta": {
-    "titleDefault": "Studio115",
-    "titleTemplate": "%s — Studio115",
+    "titleDefault": "Studiollo",
+    "titleTemplate": "%s - Studiollo",
     "description": "Studio115 is an interior and architecture studio working across residential and commercial spaces."
   },
   "nav": {
     "work": "WORK",
-    "stiio": "STIIO",
+    "stiio": "STllO",
     "contact": "CONTACT",
     "about": "ABOUT",
     "process": "WORK PROCESS",
@@ -49,7 +49,7 @@
     "journalComingSoon": "In preparation."
   },
   "contact": {
-    "title": "CONTACT",
+    "title": "Contact",
     "intro": "Send a consultation request with the form below. We'll get back to you after reviewing it.",
     "infoTitle": "INFO",
     "hoursLabel": "Hours",
@@ -110,7 +110,7 @@
     }
   },
   "about": {
-    "title": "ABOUT",
+    "title": "About",
     "sections": {
       "services": "SERVICES",
       "coreValues": "CORE VALUES",

@@ -13,7 +13,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'work' });
-  return { title: t('title'), description: t('intro') };
+  // Homepage keeps just the brand name as its tab title, bypassing the
+  // "%s - Studiollo" template every other page uses.
+  return { title: { absolute: 'Studiollo' }, description: t('intro') };
 }
 
 export default async function WorkGridPage({

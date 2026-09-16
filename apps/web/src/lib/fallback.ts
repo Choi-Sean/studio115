@@ -136,7 +136,7 @@ export const FALLBACK_PAGES: Record<string, PageDto> = {
   },
   stiio: {
     slug: 'stiio',
-    title: { ko: 'STIIO', en: 'STIIO' },
+    title: { ko: 'STllO', en: 'STllO' },
     body: {
       ko: '<p>스튜디오115와 연결되는 브랜드들입니다. 인테리어에서 출발해 패브릭·가구·소품으로 확장합니다.</p>',
       en: '<p>Brands connected to Studio115 — starting with interiors and extending into textile, furniture and home objects.</p>',
